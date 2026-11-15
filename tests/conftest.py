@@ -2,6 +2,7 @@ import os
 
 os.environ["DATABASE_URL"] = "sqlite://"  # tem de vir antes de importar o app
 os.environ["SPACE_WEATHER"] = "off"       # testes nunca chamam a NASA (usam snapshot ou monkeypatch)
+os.environ["GEMINI_API_KEY"] = ""          # testes nunca chamam a Gemini ao vivo; sempre o fallback offline
 
 import pytest  # noqa: E402
 
