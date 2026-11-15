@@ -228,6 +228,12 @@ button { font-family: inherit; cursor: pointer; }
 .mini-switch input:checked + .ms-track { background: #1d7a78; border-color: #57e6c9; }
 .mini-switch input:checked + .ms-track .ms-thumb { transform: translateX(15px); background: #8ff5e2; }
 
+.vital-icon.indigo { background: linear-gradient(150deg,#4a4f9e,#232454); color: #cfd0ff; }
+.vital-card-btn { cursor: pointer; text-align: left; font: inherit; border: 1px solid var(--line); transition: transform .16s ease, box-shadow .16s ease; }
+.vital-card-btn:hover { transform: translateY(-2px); box-shadow: var(--shadow), var(--inset-hi); }
+.vital-open-hint { margin-left: auto; color: var(--muted); display: grid; place-items: center; align-self: center; }
+.meter.sleep-meter > span { background: linear-gradient(90deg,#6a6fc4,#3a3c80); }
+
 /* ─────────── vitais ocupam o palco principal ─────────── */
 .vitals-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; flex: 1; }
 .vital-card { border-radius: var(--radius-sm); padding: 14px 15px; background: var(--glass-strong); border: 1px solid var(--line); box-shadow: var(--shadow-sm), var(--inset-hi); display: flex; flex-direction: column; gap: 7px; position: relative; overflow: hidden; min-height: 138px; }
@@ -467,6 +473,99 @@ button { font-family: inherit; cursor: pointer; }
 .ed-table td { padding: 8px 12px; border-top: 1px solid rgba(23,58,58,.08); font-weight: 700; color: var(--ink); }
 .ed-table td:last-child { font-weight: 900; }
 
+/* === B.I.P voando entre canto e chat === */
+.bip-fly { position: fixed; z-index: 80; pointer-events: none; filter: drop-shadow(0 16px 28px rgba(3, 18, 18, .55)); will-change: transform; }
+.bip-fly svg { width: 100%; height: 100%; overflow: visible; animation: bipHover 2.4s ease-in-out infinite; }
+.bip-bot-btn { transition: opacity .25s ease, transform .25s ease; }
+.bip-bot-btn.bip-ghost { opacity: 0; pointer-events: none; transform: scale(.5) translateY(22px); }
+.chat-hero .bip-hero-svg { visibility: hidden; }
+.chat-hero.bip-landed .bip-hero-svg { visibility: visible; animation: heroLand .6s cubic-bezier(.3, 1.55, .4, 1) both; }
+@keyframes heroLand {
+  0% { transform: scale(.5) translateY(46px); opacity: 0; }
+  55% { transform: scale(1.22) translateY(-7px); opacity: 1; }
+  80% { transform: scale(.94) translateY(2px); }
+  100% { transform: scale(1) translateY(0); }
+}
+.bip-hero-svg { transform-box: fill-box; transform-origin: 50% 100%; }
+
+/* faíscas ao pousar */
+.bip-sparks { position: fixed; z-index: 81; width: 0; height: 0; opacity: 0; pointer-events: none; }
+.bip-sparks i { position: absolute; top: 0; left: 0; width: 9px; height: 9px; border-radius: 50%; background: #ffd166; box-shadow: 0 0 12px rgba(255, 209, 102, .95); opacity: 0; }
+.bip-sparks-burst { opacity: 1; }
+.bip-sparks-burst i { animation: sparkFly .62s ease-out both; }
+.bip-sparks-burst i:nth-child(1) { --sx: -52px; --sy: -34px; }
+.bip-sparks-burst i:nth-child(2) { --sx: 54px; --sy: -30px; }
+.bip-sparks-burst i:nth-child(3) { --sx: -34px; --sy: 26px; }
+.bip-sparks-burst i:nth-child(4) { --sx: 38px; --sy: 30px; }
+.bip-sparks-burst i:nth-child(5) { --sx: -62px; --sy: 4px; }
+.bip-sparks-burst i:nth-child(6) { --sx: 64px; --sy: 6px; }
+@keyframes sparkFly { 0% { transform: translate(0, 0) scale(1.4); opacity: 1; } 100% { transform: translate(var(--sx), var(--sy)) scale(.25); opacity: 0; } }
+
+/* ─────────── SLEEP & RECOVERY ─────────── */
+.sleep-detail-backdrop { position: fixed; inset: 0; z-index: 62; display: grid; place-items: center; background: rgba(8, 28, 28, .58); backdrop-filter: blur(7px); -webkit-backdrop-filter: blur(7px); padding: 22px; animation: screenIn .3s ease; }
+.sleep-sheet { position: relative; width: min(940px, 100%); max-height: 88vh; overflow-y: auto; background: var(--glass-strong); border: 1px solid var(--line); border-radius: var(--radius); padding: 24px 26px; box-shadow: var(--shadow); scrollbar-width: thin; }
+.sleep-sheet h2 { font-family: 'Space Grotesk'; color: var(--deep); font-size: 1.35rem; }
+.sleep-sheet-head { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding-right: 40px; }
+.sleep-sheet-sub { font-size: .78rem; font-weight: 700; margin-top: 2px; }
+
+.sleep-readiness-pill { position: relative; display: grid; grid-auto-flow: column; align-items: center; gap: 10px; padding: 8px 14px 8px 8px; border-radius: 999px; background: linear-gradient(165deg,#123f3e,#0c2b2b); border: 1px solid rgba(87,230,201,.3); box-shadow: var(--shadow-sm); }
+.sleep-ring { width: 56px; height: 56px; transform: rotate(-90deg); }
+.sleep-ring-bg { fill: none; stroke: rgba(255,255,255,.14); stroke-width: 6; }
+.sleep-ring-fg { fill: none; stroke: #57e6c9; stroke-width: 6; stroke-linecap: round; stroke-dasharray: 138.2; stroke-dashoffset: 138.2; transition: stroke-dashoffset .8s ease, stroke .4s; }
+.sleep-readiness-num { position: absolute; left: 17px; top: 50%; transform: translateY(-50%); width: 38px; text-align: center; color: #eafff6; font-size: .82rem; line-height: 1; }
+.sleep-readiness-num small { display: block; font-size: .42rem; letter-spacing: .04em; opacity: .75; }
+.sleep-readiness-lbl { font-size: .56rem; font-weight: 900; letter-spacing: .12em; text-transform: uppercase; color: rgba(234,255,246,.85); line-height: 1.4; }
+
+.sleep-sheet-grid { display: grid; grid-template-columns: 1.05fr 1fr; gap: 16px; margin-top: 14px; }
+.sleep-col { display: flex; flex-direction: column; gap: 14px; }
+.sleep-block { background: rgba(255,255,255,.55); border: 1px solid var(--line-soft); border-radius: var(--radius-sm); padding: 14px 15px; box-shadow: var(--shadow-sm); }
+.sleep-block-head { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid rgba(23,58,58,.1); }
+.sleep-block h4 { font-family: 'Space Grotesk'; font-size: .68rem; letter-spacing: .14em; color: var(--ink-soft); text-transform: uppercase; }
+
+.sleep-duration-row { display: flex; align-items: center; gap: 18px; margin-bottom: 10px; }
+.sleep-duration { font-size: 2.6rem; font-weight: 600; color: var(--deep); line-height: 1; }
+.sleep-duration-meta { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 6px 14px; font-size: .68rem; color: var(--muted); font-weight: 700; }
+.sleep-duration-meta b { color: var(--deep); }
+
+.sleep-stage-bar { display: flex; width: 100%; height: 18px; border-radius: 9px; overflow: hidden; border: 1px solid rgba(23,58,58,.16); }
+.sleep-stage-seg { height: 100%; }
+.sleep-stage-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 8px; }
+.sleep-stage-legend span { display: flex; align-items: center; gap: 6px; font-size: .62rem; font-weight: 800; color: var(--ink-soft); }
+.sleep-stage-dot { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+
+.sleep-debt-total { font-size: .72rem; color: var(--terra-deep); font-weight: 700; background: #f7e4d4; border: 1px solid #e3c0a4; border-radius: 999px; padding: 4px 12px; }
+.sleep-week-chart { width: 100%; height: auto; }
+.sleep-week-chart .wk-grid { stroke: rgba(23,58,58,.1); stroke-width: 1; stroke-dasharray: 3 4; }
+.sleep-week-chart .wk-target { stroke: var(--terra); stroke-width: 1.6; stroke-dasharray: 5 4; }
+.sleep-week-chart .wk-val { font: 600 8px 'JetBrains Mono'; fill: var(--ink-soft); text-anchor: middle; }
+.sleep-week-chart .wk-day { font: 800 8.5px 'Nunito'; fill: var(--muted); text-anchor: middle; letter-spacing: .04em; }
+.sleep-week-chart .wk-target-lbl { font: 800 7.5px 'Nunito'; fill: var(--terra-deep); }
+.sleep-target-note { font-size: .64rem; color: var(--muted); font-weight: 700; margin-top: 4px; }
+.sleep-target-note b { color: var(--deep); }
+
+.sleep-day-strip { width: 100%; height: auto; display: block; }
+.sleep-light-note { font-size: .68rem; color: var(--ink-soft); font-weight: 700; margin-top: 8px; line-height: 1.5; }
+.sleep-light-note b { color: var(--deep); }
+
+.sleep-recovery-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.sleep-kpi { background: rgba(255,255,255,.6); border: 1px solid var(--line-soft); border-radius: 13px; padding: 10px 12px; display: flex; flex-direction: column; gap: 3px; }
+.sleep-kpi-lbl { font-size: .58rem; font-weight: 900; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.sleep-kpi-num { font-size: 1.15rem; color: var(--deep); font-weight: 700; line-height: 1.15; }
+.sleep-kpi-num small { font-size: .6rem; color: var(--muted); }
+.sleep-kpi-sub { font-size: .6rem; color: var(--muted); font-weight: 700; }
+
+.sleep-inertia-note { margin-top: 12px; background: #f9e3dc; border: 1.5px solid #e0a18d; color: #571f10; border-radius: 13px; padding: 11px 13px; font-size: .72rem; font-weight: 800; line-height: 1.5; }
+.sleep-inertia-note strong { font-family: 'Space Grotesk'; letter-spacing: .08em; }
+.sleep-footnote { margin-top: 12px; font-size: .62rem; color: var(--muted); line-height: 1.55; font-weight: 600; border-top: 1px solid rgba(23,58,58,.12); padding-top: 10px; }
+.sleep-footnote b { color: var(--deep); }
+
+@media (max-width: 900px) {
+  .sleep-sheet-grid { grid-template-columns: 1fr; }
+  .sleep-duration { font-size: 2rem; }
+  .sleep-duration-meta { grid-template-columns: 1fr 1fr; }
+  .sleep-sheet-head { flex-direction: column; align-items: flex-start; }
+}
+
 /* ─────────── Robô B.I.P + chat ─────────── */
 .bip-bot-btn { position: fixed; right: 22px; bottom: 96px; z-index: 45; border: none; background: none; display: flex; flex-direction: column; align-items: center; gap: 0; }
 .bip-bot-svg { width: 92px; filter: drop-shadow(0 12px 20px rgba(15,62,61,.4)); animation: bipHover 3.2s ease-in-out infinite; transition: transform .2s; }
@@ -505,7 +604,7 @@ button { font-family: inherit; cursor: pointer; }
 @keyframes orbitSpin { to { transform: translate(-50%, -50%) rotate(360deg); } }
 .hero-glow { position: absolute; width: 300px; height: 300px; top: 42%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; background: radial-gradient(circle, rgba(87, 230, 201, .18) 0%, transparent 62%); animation: glowPulse 3.4s ease-in-out infinite; }
 @keyframes glowPulse { 0%,100% { opacity: .65; } 50% { opacity: 1; } }
-.bip-hero-svg { position: relative; width: clamp(128px, 25vh, 215px); height: auto; margin-top: 6px; animation: bipHover 3.6s ease-in-out infinite; }
+.bip-hero-svg { position: relative; width: clamp(128px, 25vh, 215px); height: auto; margin-top: 6px; animation: bipHover 3.6s ease-in-out infinite; filter: drop-shadow(0 10px 30px rgba(87, 230, 201, .30)) drop-shadow(0 0 60px rgba(87, 230, 201, .22)) drop-shadow(0 0 6px rgba(255, 255, 255, .18)); }
 .bip-hero-svg::after { content: ''; position: absolute; left: 50%; bottom: -16px; width: 150px; height: 22px; transform: translateX(-50%); border-radius: 50%; background: radial-gradient(ellipse, rgba(4, 20, 20, .55), transparent 72%); pointer-events: none; }
 
 /* balão de fala do B.I.P */

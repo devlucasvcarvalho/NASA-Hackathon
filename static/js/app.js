@@ -75,7 +75,7 @@ function vitalDefs() {
   return [
   { key: 'heart_rate', label: T('vital.hr'), unit: 'bpm', iconClass: '', delta: T('vital.delta_hr'), deltaKind: 'ok', status: T('vital.status.normal'), statusKind: 'ok', sparkSeed: 1.6, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.3s-6.6-4.4-9.1-9.1C1.7 8.6 3.8 6 7 6c2.1 0 3.7 1.2 5 3 1.3-1.8 2.9-3 5-3 3.2 0 5.3 2.6 4.1 5.2-2.5 4.7-9.1 9.1-9.1 9.1Z"/></svg>' },
   { key: 'spo2', label: T('vital.spo2'), unit: '%', iconClass: 'sky', delta: T('vital.delta_spo2'), deltaKind: 'ok', status: T('vital.status.normal'), statusKind: 'ok', sparkSeed: 4.1, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c3.2 4.4 5.4 7.7 5.4 11a5.4 5.4 0 0 1-10.8 0C6.6 10.7 8.8 7.4 12 3Z"/><path d="M9.5 14.5a2.6 2.6 0 0 0 2.5 2.7"/></svg>' },
-  { key: 'hydration', label: T('vital.hyd'), unit: '%', iconClass: 'sky', delta: T('vital.delta_hyd'), deltaKind: 'ok', status: T('vital.status.ok'), statusKind: 'ok', meter: true, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10M8.5 3 6.6 8.2a4.9 4.9 0 1 0 10.8 0L15.5 3"/><path d="M7.3 13h9.4"/></svg>' },
+  { key: 'sleep', label: 'Sleep', unit: 'h last night', iconClass: 'indigo', delta: 'Debt-free · target 7.5 h', deltaKind: 'ok', status: 'OK', statusKind: 'ok', meter: true, meterRatio: true, sparkSeed: 0, sleepBtn: true, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.4 13.6A8.8 8.8 0 1 1 10.4 3.6a7.1 7.1 0 0 0 10 10Z"/><path d="M17 3.5h3l-3 3h3"/></svg>' },
   { key: 'radiation', label: T('vital.rad'), unit: 'mSv/dia', iconClass: 'gold', delta: T('vital.delta_rad'), deltaKind: 'warn', status: T('vital.status.watch'), statusKind: 'watch', meter: true, meterMax: 180, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/><path d="M12 2a10 10 0 0 1 8.7 5.1l-4.4 2.5M12 22a10 10 0 0 1-8.7-5.1l4.4-2.5M22 12a10 10 0 0 1-5 8.7l-2.5-4.4M2 12a10 10 0 0 1 5-8.7l2.5 4.4"/></svg>' },
   { key: 'bp', label: T('vital.bp'), unit: 'mmHg', iconClass: 'terra', delta: T('vital.delta_bp'), deltaKind: 'ok', status: T('vital.status.normal'), statusKind: 'ok', sparkSeed: 2.8, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4a8 8 0 0 1 8 8h-2.4"/><path d="M12 4a8 8 0 0 0-8 8h2.4"/><path d="M12 12l3.4-3.4"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg>' },
   { key: 'temperature', label: T('vital.temp'), unit: '°C', iconClass: '', delta: T('vital.delta_temp'), deltaKind: 'ok', status: T('vital.status.normal'), statusKind: 'ok', sparkSeed: 5.3, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13.6V5a2 2 0 0 1 4 0v8.6a4.5 4.5 0 1 1-4 0Z"/><circle cx="12" cy="17.5" r="1.4" fill="currentColor" stroke="none"/></svg>' },
@@ -85,17 +85,33 @@ function vitalDefs() {
 function renderVitals(v) {
   lastVitals = v;
   const T = window.t;
+  const sleep = lastSleep && lastSleep.nights && lastSleep.nights.length ? lastSleep.nights[lastSleep.nights.length - 1] : null;
   $('#vitalsGrid').innerHTML = vitalDefs().map(def => {
-    let valueHtml, footExtra = '';
+    let valueHtml, footExtra = '', opening = '<article class="vital-card">', closing = '</article>';
     if (def.key === 'bp') {
       valueHtml = `${Math.round(v.bp_sys)}<small>/</small>${Math.round(v.bp_dia)}<small> mmHg</small>`;
     } else if (def.key === 'radiation') {
       valueHtml = `${v.radiation_dose_rate.toFixed(2)}<small> mSv/dia</small>`;
       const pct = Math.min(100, (v.radiation_cumulative / 180) * 100);
       footExtra = `<div class="meter radiation" title="${v.radiation_cumulative.toFixed(1)} mSv / 180 mSv"><span style="width:${pct.toFixed(1)}%"></span></div><div class="vital-delta delta-warn" style="margin-top:4px">${v.radiation_cumulative.toFixed(1)} mSv · ${pct.toFixed(1)}% ${T('vital.rad_of_limit')}</div>`;
-    } else if (def.key === 'hydration') {
-      valueHtml = `${Math.round(v.hydration)}<small>%</small>`;
-      footExtra = `<div class="meter"><span style="width:${v.hydration}%"></span></div>`;
+    } else if (def.key === 'sleep') {
+      const hours = sleep ? sleep.hours : (v.sleep_hours || 7.0);
+      const ratio = Math.min(100, (hours / 7.5) * 100);
+      const deep = sleep ? sleep.deep_pct : 18;
+      const debt = sleep ? computeWeekDebt(lastSleep.nights) : 0;
+      const status = debt <= 0 ? 'OK' : 'DEBT';
+      const statusKind = debt <= 0 ? 'ok' : 'watch';
+      const fmt = fmtSleepHours(hours);
+      valueHtml = `${fmt}`;
+      footExtra = `<div class="meter sleep-meter" title="Mission target: 7.5 h / night"><span style="width:${ratio.toFixed(1)}%"></span></div><div class="vital-delta delta-ok" style="margin-top:4px">Deep ${deep}%</div>`;
+      opening = `<button class="vital-card vital-card-btn" data-open-sleep type="button" aria-label="Open sleep and recovery details">`;
+      closing = `</button>`;
+      return `${opening}
+        <div class="vital-top"><span class="vital-icon indigo">${def.icon}</span><span class="vital-label">${def.label}</span><span class="vital-open-hint" aria-hidden="true"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></span></div>
+        <div class="vital-value">${valueHtml}<small> h last night</small></div>
+        ${footExtra}
+        <div class="vital-foot"><span class="vital-delta delta-${statusKind === 'ok' ? 'ok' : 'warn'}">${debt <= 0 ? 'On target' : '−' + fmtSleepHours(debt) + ' debt'}</span><span class="vital-status ${statusKind}">${status}</span></div>
+      ${closing}`;
     } else if (def.key === 'temperature') {
       valueHtml = `${v.temperature.toFixed(1)}<small> °C</small>`;
     } else if (def.key === 'spo2') {
@@ -651,6 +667,7 @@ const CI_TABLES = { phys: PHYS, symptom: SYMPTOM, mental: MENTAL, sleep: SLEEP }
 
 const DEFAULT_CHIPS = [
   { text: 'How am I really doing?', ci: '__start__', cls: 'chip-start' },
+  { text: 'Tell me a joke', qKey: 'chat.q_joke' },
   { text: "Today's pending", qKey: 'chat.q_today' },
   { text: 'I have a headache', qKey: 'chat.q_headache' },
   { text: 'Bad sleep', qKey: 'chat.q_sleep' },
@@ -724,7 +741,7 @@ async function askCheckIn(step, delay = 720) {
 
 function startCheckIn() {
   Object.assign(checkIn, { step: null, phys: null, symptom: null, mental: null, sleep: null, physScore: 0, symptomScore: 0, mentalScore: 0, sleepScore: 0 });
-  bipSay('Hey, Elena — good to see you. Let’s do a quick head-to-toe, body and mind.', 600)
+  bipSay('Hey, Elena — good to see you. Ask me anything: the mission, jokes, life… or let me do a quick head-to-toe, body and mind.', 600)
     .then(() => askCheckIn('phys', 750));
 }
 
@@ -800,15 +817,110 @@ async function sendChat(text) {
 }
 
 function isChatOpen() { return !chatPanel.hidden; }
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// ── B.I.P voando do canto para o chat (FLIP) ──
+function flyClone(fromRect, toRect, opts = {}) {
+  const floatBtn = $('#bipBotBtn');
+  const clone = document.createElement('div');
+  clone.className = 'bip-fly';
+  clone.innerHTML = '<svg viewBox="0 0 96 112" aria-hidden="true"><use href="#bipBot"></use></svg>';
+  clone.style.left = `${fromRect.left}px`;
+  clone.style.top = `${fromRect.top}px`;
+  clone.style.width = `${fromRect.width}px`;
+  clone.style.height = `${fromRect.height}px`;
+  document.body.appendChild(clone);
+
+  const dx = (toRect.left + toRect.width / 2) - (fromRect.left + fromRect.width / 2);
+  const dy = (toRect.top + toRect.height / 2) - (fromRect.top + fromRect.height / 2);
+  const scale = Math.min(toRect.width / fromRect.width, 7) * (opts.big ? 1.02 : 1);
+
+  if (prefersReducedMotion) {
+    clone.remove();
+    return Promise.resolve();
+  }
+
+  const anim = clone.animate([
+    { transform: 'translate(0px, 0px) scale(1) rotate(0deg)', offset: 0 },
+    { transform: `translate(${dx * 0.36}px, ${dy * 0.6 - 110}px) scale(${scale * 0.92}) rotate(-11deg)`, offset: 0.36 },
+    { transform: `translate(${dx * 0.82}px, ${dy * 0.92 - 26}px) scale(${scale * 1.06}) rotate(7deg)`, offset: 0.82 },
+    { transform: `translate(${dx}px, ${dy}px) scale(${scale}) rotate(0deg)`, offset: 1 },
+  ], { duration: 760, easing: 'cubic-bezier(.28,.95,.32,1)', fill: 'forwards' });
+
+  // faíscas de comemoração no pouso
+  const sparks = document.createElement('div');
+  sparks.className = 'bip-sparks';
+  sparks.innerHTML = '<i></i><i></i><i></i><i></i><i></i><i></i>';
+  sparks.style.left = `${fromRect.left + fromRect.width / 2}px`;
+  sparks.style.top = `${fromRect.top + fromRect.height / 2}px`;
+  document.body.appendChild(sparks);
+
+  return anim.finished.then(() => {
+    // solta as faíscas na posição final
+    sparks.style.left = `${toRect.left + toRect.width / 2}px`;
+    sparks.style.top = `${toRect.top + toRect.height / 2}px`;
+    sparks.classList.add('bip-sparks-burst');
+    sparks.style.setProperty('--dx', `${dx}px`);
+    sparks.style.setProperty('--dy', `${dy}px`);
+    clone.remove();
+    setTimeout(() => sparks.remove(), 650);
+  }).catch(() => { clone.remove(); sparks.remove(); });
+}
+
 function openChat() {
+  const floatBtn = $('#bipBotBtn');
+  const heroRobot = $('#chatHeroRobot');
+  const floatRect = floatBtn.getBoundingClientRect();
+
   chatPanel.hidden = false;
   document.body.classList.add('chat-open');
   renderChat();
   if (!chatHistory.length) startCheckIn();
   else renderChips(DEFAULT_CHIPS);
-  setTimeout(() => $('#chatInput').focus(), 80);
+
+  if (prefersReducedMotion) {
+    heroRobot.style.visibility = 'visible';
+    $('#chatHero').classList.add('bip-landed');
+    floatBtn.classList.add('bip-ghost');
+    setTimeout(() => $('#chatInput').focus(), 80);
+    return;
+  }
+
+  const heroRect = heroRobot.getBoundingClientRect();
+  heroRobot.style.visibility = 'hidden';
+  $('#chatHero').classList.remove('bip-landed');
+  floatBtn.classList.add('bip-ghost');
+
+  flyClone(floatRect, heroRect).then(() => {
+    $('#chatHero').classList.add('bip-landed');
+    heroRobot.style.visibility = 'visible';
+  });
+
+  setTimeout(() => $('#chatInput').focus(), 130);
 }
-function closeChat() { chatPanel.hidden = true; document.body.classList.remove('chat-open'); }
+
+function closeChat() {
+  const heroRobot = $('#chatHeroRobot');
+  const floatBtn = $('#bipBotBtn');
+
+  if (prefersReducedMotion) {
+    chatPanel.hidden = true;
+    document.body.classList.remove('chat-open');
+    heroRobot.style.visibility = 'visible';
+    floatBtn.classList.remove('bip-ghost');
+    return;
+  }
+
+  const heroRect = heroRobot.getBoundingClientRect();
+  const floatRect = floatBtn.getBoundingClientRect();
+  $('#chatHero').classList.remove('bip-landed');
+  heroRobot.style.visibility = 'hidden';
+  floatBtn.classList.remove('bip-ghost');
+
+  flyClone(heroRect, floatRect, { big: true });
+  chatPanel.hidden = true;
+  document.body.classList.remove('chat-open');
+}
 
 $('#bipBotBtn').addEventListener('click', () => { isChatOpen() ? closeChat() : openChat(); });
 $('#chatCloseBtn').addEventListener('click', closeChat);
@@ -995,6 +1107,188 @@ function bindAvatarReactions() {
   });
 }
 
+/* ═════════ SLEEP — card + painel Sleep & Recovery ═════════ */
+let lastSleep = null;
+const SLEEP_TARGET = 7.5;
+const clampNum = (v, lo, hi) => Math.min(hi, Math.max(lo, v));
+const fmtSleepHours = (h) => { const total = Math.round(h * 60); return `${Math.floor(total / 60)}h ${String(total % 60).padStart(2, '0')}m`; };
+const fmtH = (h) => `${h.toFixed(1)}h`;
+function computeWeekDebt(nights) {
+  if (!nights || !nights.length) return 0;
+  return nights.slice(-7).reduce((acc, n) => acc + Math.max(0, SLEEP_TARGET - n.hours), 0);
+}
+function sleepEfficiency(n) {
+  return clampNum(Math.round(100 - (n.latency_min || 0) * 0.35 - (n.awakenings || 0) * 2.2), 62, 98);
+}
+async function refreshSleep() {
+  try { lastSleep = await (await fetch('/api/sleep')).json(); } catch (e) { console.warn('sleep offline', e); }
+  if (lastVitals) renderVitals(lastVitals);
+}
+
+// ── card no grid de vitais ──
+$('#vitalsGrid').addEventListener('click', e => {
+  const card = e.target.closest('[data-open-sleep]'); if (!card) return;
+  openSleepSheet();
+});
+$('#vitalsGrid').addEventListener('keydown', e => {
+  if (e.key !== 'Enter' && e.key !== ' ') return;
+  const card = e.target.closest('[data-open-sleep]'); if (!card) return;
+  e.preventDefault();
+  openSleepSheet();
+});
+
+function sleepLastNight() {
+  const nights = lastSleep && lastSleep.nights;
+  return nights && nights.length ? nights[nights.length - 1] : null;
+}
+function stageSegments(n) {
+  const awake = clampNum((n.latency_min || 0) / ((n.hours || 7) * 60) * 100 + (n.awakenings || 0) * 1.2, 2, 12);
+  const deep = clampNum(n.deep_pct || 18, 4, 40);
+  const rem = clampNum(n.rem_pct || 21, 4, 40);
+  const light = Math.max(0, 100 - awake - deep - rem);
+  return [
+    { key: 'deep', label: 'Deep', pct: deep, color: '#4a4f9e' },
+    { key: 'light', label: 'Light', pct: light, color: '#5fc7b0' },
+    { key: 'rem', label: 'REM', pct: rem, color: '#f2b366' },
+    { key: 'awake', label: 'Awake', pct: awake, color: '#cfc6b8' },
+  ];
+}
+
+function renderWeekChart(nights) {
+  const svg = $('#sleepWeekChart');
+  if (!nights || !nights.length) { svg.innerHTML = ''; return; }
+  const week = nights.slice(-7);
+  const W = 340, H = 132, top = 16, bottom = 30, barW = 30, gap = (W - 16 - barW * 7) / 6;
+  const maxH = 9;
+  const scaleH = v => (v / maxH) * (H - top - bottom);
+  let x = 8;
+  const bars = week.map(n => {
+    const h = scaleH(n.hours);
+    const y = H - bottom - h;
+    const good = n.hours >= SLEEP_TARGET;
+    const d = new Date(n.day + 'T00:00:00Z');
+    const dow = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'][d.getUTCDay()];
+    const bar = `<rect x="${x}" y="${y}" width="${barW}" height="${Math.max(3, h)}" rx="5" fill="${good ? '#146c6b' : '#c4714b'}" opacity="${good ? '.92' : '.9'}"/>
+      <text class="wk-val" x="${x + barW / 2}" y="${y - 3}">${n.hours.toFixed(1)}</text>
+      <text class="wk-day" x="${x + barW / 2}" y="${H - 12}">${dow}</text>`;
+    x += barW + gap;
+    return bar;
+  }).join('');
+  const targetY = H - bottom - scaleH(SLEEP_TARGET);
+  svg.innerHTML = `<line class="wk-grid" x1="0" y1="${H - bottom}" x2="${W}" y2="${H - bottom}"/>
+    <line class="wk-target" x1="0" y1="${targetY}" x2="${W}" y2="${targetY}"/>
+    <text class="wk-target-lbl" x="${W - 2}" y="${targetY - 3}" text-anchor="end">7.5h</text>
+    ${bars}`;
+}
+
+function renderDayStrip() {
+  const svg = $('#sleepDayStrip');
+  const W = 560, barY = 26, barH = 30;
+  const px = h => (h / 24) * W;
+  // segmentos de luz artificial da cabine
+  const segs = [
+    { x0: 0, x1: 6.5, color: '#131f36', r: 'url(#segL)' },
+    { x0: 6.5, x1: 19.5, color: '#e8b96a' },
+    { x0: 19.5, x1: 22.5, color: '#57402c' },
+    { x0: 22.5, x1: 24, color: '#131f36' },
+  ];
+  const now = new Date();
+  const hourNow = now.getHours() + now.getMinutes() / 60;
+  const youX = px(hourNow);
+  const segRects = segs.map(s => `<rect x="${px(s.x0)}" y="${barY}" width="${px(s.x1) - px(s.x0)}" height="${barH}" fill="${s.color}"/>`).join('');
+  // faixa de sono (atravessa a meia-noite): 22:30→24 + 0→6:30
+  const sleepA = `<rect x="${px(22.5)}" y="${barY - 5}" width="${px(24) - px(22.5)}" height="${barH + 10}" fill="rgba(87,230,201,.16)" stroke="#57e6c9" stroke-width="1.6" stroke-dasharray="5 4" rx="4"/>`;
+  const sleepB = `<rect x="0" y="${barY - 5}" width="${px(6.5)}" height="${barH + 10}" fill="rgba(87,230,201,.16)" stroke="#57e6c9" stroke-width="1.6" stroke-dasharray="5 4" rx="4"/>`;
+  const ticks = [
+    { h: 6.5, lbl: '06:30 sunrise' },
+    { h: 19.5, lbl: '19:30 dim' },
+    { h: 22.5, lbl: '22:30 lights out' },
+  ].map(t => {
+    const x = px(t.h);
+    return `<line x1="${x}" y1="${barY - 8}" x2="${x}" y2="${barY + barH + 8}" stroke="rgba(255,255,255,.75)" stroke-width="1.4"/>
+      <text class="wk-day" x="${x}" y="${barY + barH + 21}" fill="#5f7a7a">${t.lbl}</text>`;
+  }).join('');
+  svg.innerHTML = `<defs><clipPath id="barClip"><rect x="0" y="${barY}" width="${W}" height="${barH}" rx="15"/></clipPath></defs>
+    <g clip-path="url(#barClip)">${segRects}${sleepA}${sleepB}</g>
+    <rect x="0" y="${barY}" width="${W}" height="${barH}" rx="15" fill="none" stroke="rgba(23,58,58,.25)"/>
+    ${ticks}
+    <g transform="translate(${youX}, ${barY + barH / 2})">
+      <circle r="7.5" fill="#ffd166" stroke="#0f3e3d" stroke-width="2.4"/>
+      <text y="-13" text-anchor="middle" style="font:800 8px 'Nunito';fill:#0f3e3d;letter-spacing:.14em">YOU</text>
+    </g>`;
+}
+
+function renderSleepSheet() {
+  const nights = lastSleep && lastSleep.nights ? lastSleep.nights : [];
+  const last = sleepLastNight();
+  const v = lastVitals || {};
+  const sheetDate = $('#sleepSheetDate');
+  if (!last) { sheetDate.textContent = 'No sleep data onboard yet'; return; }
+
+  const d = new Date(last.day + 'T00:00:00Z');
+  sheetDate.textContent = `Night of ${d.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}`;
+
+  // Última noite
+  const eff = sleepEfficiency(last);
+  $('#sleepDuration').textContent = fmtSleepHours(last.hours);
+  $('#sleepEfficiency').textContent = `${eff}%`;
+  $('#sleepLatency').textContent = `${last.latency_min} min`;
+  $('#sleepAwakenings').textContent = String(last.awakenings);
+  const segs = stageSegments(last);
+  $('#sleepStageBar').innerHTML = segs.map(s => `<div class="sleep-stage-seg" style="width:${s.pct}%;background:${s.color}" title="${s.label} ${s.pct.toFixed(0)}%"></div>`).join('');
+  $('#sleepStageLegend').innerHTML = segs.map(s => `<span><i class="sleep-stage-dot" style="background:${s.color}"></i>${s.label} <b class="mono">${s.pct.toFixed(0)}%</b></span>`).join('');
+
+  // Semana
+  renderWeekChart(nights);
+  const debt = computeWeekDebt(nights);
+  const below = nights.slice(-7).filter(n => n.hours < SLEEP_TARGET).length;
+  $('#sleepDebtTotal').textContent = debt <= 0 ? '0h debt' : `−${fmtSleepHours(debt)} sleep debt`;
+  $('#sleepDebtNights').textContent = String(below);
+  const debtBadge = $('#sleepDebtBadge');
+  const avgWeek = nights.length ? nights.slice(-7).reduce((a, n) => a + n.hours, 0) / Math.min(7, nights.length) : 0;
+  debtBadge.textContent = debt <= 0 ? 'ON TARGET' : (avgWeek >= 6.2 ? 'SLEEP DEBT' : 'CRITICAL');
+  debtBadge.className = `status-badge ${debt <= 0 ? 'concluido' : (avgWeek >= 6.2 ? 'pendente' : 'pendente')}`;
+
+  // Circadiano
+  renderDayStrip();
+  const syncBadge = $('#sleepSyncBadge');
+  if (avgWeek >= 7.2) { syncBadge.textContent = 'IN SYNC'; syncBadge.className = 'status-badge concluido'; }
+  else if (avgWeek >= 6.2) { syncBadge.textContent = 'STRAINED'; syncBadge.className = 'status-badge pendente'; }
+  else { syncBadge.textContent = 'DESYNC'; syncBadge.className = 'status-badge pendente'; }
+  $('#sleepLightNote').innerHTML = avgWeek >= 7.2
+    ? 'Cabin lights follow the artificial day/night cycle — you are <b>in sync</b> with it.'
+    : 'You\'re drifting against the cabin light cycle. <b>Avoid bright light after 21:30</b>; lean on the dim-evening scene to pull your clock back.';
+
+  // Recuperação
+  const hrv = v.hrv ?? 62;
+  $('#sleepHrv').innerHTML = `${Math.round(hrv)}<small> ms</small>`;
+  $('#sleepHrvDelta').textContent = 'overnight · recovery marker';
+  $('#sleepNightHr').innerHTML = `${Math.round(last.night_hr)}<small> bpm</small>`;
+  $('#sleepDeep').innerHTML = `${last.deep_pct.toFixed(0)}<small>%</small>`;
+  $('#sleepRem').innerHTML = `${last.rem_pct.toFixed(0)}<small>%</small>`;
+
+  // Prontidão cognitiva + anel
+  const readiness = clampNum(Math.round(56 + (eff - 70) * 0.62 + (last.deep_pct || 18) * 0.72 - (last.awakenings || 0) * 1.6), 35, 98);
+  $('#sleepReadiness').textContent = String(readiness);
+  const ring = $('#sleepRingFg');
+  const C = 2 * Math.PI * 22; // 138.17
+  ring.style.strokeDashoffset = String(C * (1 - readiness / 100));
+  ring.style.stroke = readiness >= 75 ? '#57e6c9' : readiness >= 55 ? '#f2b366' : '#ff8a5c';
+
+  const inertia = $('#sleepInertiaNote');
+  inertia.hidden = !(last.deep_pct >= 22 && readiness < 62);
+}
+
+window.openSleepSheet = async function () {
+  await refreshSleep();
+  renderSleepSheet();
+  $('#sleepSheet').hidden = false;
+};
+function closeSleepSheet() { $('#sleepSheet').hidden = true; }
+$('#sleepSheetClose').addEventListener('click', closeSleepSheet);
+$('#sleepSheet').addEventListener('click', e => { if (e.target.id === 'sleepSheet') closeSleepSheet(); });
+window.addEventListener('keydown', e => { if (e.key === 'Escape' && !$('#sleepSheet').hidden) closeSleepSheet(); });
+
 // (re)carrega o conteúdo que depende do idioma e re-renderiza
 async function loadDynamicContent() {
   try { routineTemplate = (await (await fetch(`/api/routines?lang=${window.BIP_LANG}`)).json()).periods; } catch { routineTemplate = []; }
@@ -1029,6 +1323,7 @@ async function init() {
   setInterval(refreshVitals, 5000);
 
   await refreshVitals();
+  await refreshSleep();
   await loadDynamicContent();
   persistHistory();          // registra snapshot do dia e dispara verificação de conquistas
   evaluateAchievements(true);

@@ -11,8 +11,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/static/css/styles.css?v=17" />
-  <script src="/static/js/i18n.js?v=17"></script>
+  <link rel="stylesheet" href="/static/css/styles.css?v=20" />
+  <script src="/static/js/i18n.js?v=18"></script>
 </head>
 <body>
 
@@ -669,17 +669,17 @@
   <div class="chat-window">
     <button class="chat-close" id="chatCloseBtn" data-i18n-aria="chat.close" aria-label="Fechar chat">×</button>
 
-    <!-- ── coluna do robô: só o B.I.P e o balão de fala ── -->
-    <div class="chat-hero">
+    <!-- ── coluna do robô: B.I.P grande, ao lado da conversa ── -->
+    <div class="chat-hero" id="chatHero">
       <span class="hero-orbit" aria-hidden="true"></span>
       <span class="hero-glow" aria-hidden="true"></span>
 
       <div class="hero-bubble" role="status">
-        <strong>How are you really<br>feeling today?</strong>
-        <span>Physically and mentally —<br>I'm listening.</span>
+        <strong>Hey, it's me.<br>Ask me anything.</strong>
+        <span>Jokes, the mission, life, <br>or how you're really doing.</span>
       </div>
 
-      <svg class="bip-hero-svg" viewBox="0 0 96 112" aria-hidden="true"><use href="#bipBot"></use></svg>
+      <svg class="bip-hero-svg" id="chatHeroRobot" viewBox="0 0 96 112" aria-hidden="true"><use href="#bipBot"></use></svg>
     </div>
 
     <!-- ── coluna da conversa ── -->
@@ -698,6 +698,78 @@
       </form>
     </div>
 
+  </div>
+</aside>
+
+<!-- ═══════════ SLEEP & RECOVERY (detalhe do sono) ═══════════ -->
+<aside class="exam-detail sleep-detail-backdrop" id="sleepSheet" hidden role="dialog" aria-modal="true" aria-label="Sleep and recovery details">
+  <div class="sleep-sheet">
+    <button class="exam-detail-close" id="sleepSheetClose" aria-label="Close sleep report">×</button>
+    <div class="sleep-sheet-head">
+      <div>
+        <p class="result-kicker mono">NIGHTLY REPORT</p>
+        <h2>Sleep &amp; Recovery</h2>
+        <p class="sleep-sheet-sub muted" id="sleepSheetDate">—</p>
+      </div>
+      <div class="sleep-readiness-pill">
+        <svg viewBox="0 0 56 56" class="sleep-ring" aria-hidden="true">
+          <circle class="sleep-ring-bg" cx="28" cy="28" r="22"/>
+          <circle class="sleep-ring-fg" id="sleepRingFg" cx="28" cy="28" r="22"/>
+        </svg>
+        <span class="sleep-readiness-num mono"><b id="sleepReadiness">—</b><small>%</small></span>
+        <span class="sleep-readiness-lbl">Cognitive<br>readiness</span>
+      </div>
+    </div>
+
+    <div class="sleep-sheet-grid">
+      <div class="sleep-col">
+        <!-- Última noite -->
+        <div class="sleep-block">
+          <div class="sleep-block-head"><h4>LAST NIGHT</h4><span class="status-badge" id="sleepDebtBadge">OK</span></div>
+          <div class="sleep-duration-row">
+            <span class="sleep-duration mono" id="sleepDuration">—</span>
+            <div class="sleep-duration-meta">
+              <span>efficiency <b class="mono" id="sleepEfficiency">—</b></span>
+              <span>latency <b class="mono" id="sleepLatency">—</b></span>
+              <span>awakenings <b class="mono" id="sleepAwakenings">—</b></span>
+            </div>
+          </div>
+          <div class="sleep-stage-bar" id="sleepStageBar" aria-label="Sleep stages breakdown"></div>
+          <div class="sleep-stage-legend" id="sleepStageLegend"></div>
+        </div>
+
+        <!-- Semana -->
+        <div class="sleep-block">
+          <div class="sleep-block-head"><h4>SLEEP WEEK</h4><span class="sleep-debt-total mono" id="sleepDebtTotal">—</span></div>
+          <svg class="sleep-week-chart" id="sleepWeekChart" viewBox="0 0 340 132" role="img" aria-label="Sleep duration over the last 7 nights"></svg>
+          <p class="sleep-target-note">Mission target <b>7.5 h / night</b> · <b id="sleepDebtNights">0</b> nights below target</p>
+        </div>
+      </div>
+
+      <div class="sleep-col">
+        <!-- Circadiano -->
+        <div class="sleep-block">
+          <div class="sleep-block-head"><h4>CIRCADIAN &amp; CABIN LIGHT</h4><span class="status-badge ok" id="sleepSyncBadge">IN SYNC</span></div>
+          <svg class="sleep-day-strip" id="sleepDayStrip" viewBox="0 0 560 92" role="img" aria-label="Cabin light schedule vs sleep window"></svg>
+          <p class="sleep-light-note" id="sleepLightNote">Cabin lights follow the artificial day/night cycle — your body clock syncs to it.</p>
+        </div>
+
+        <!-- Recuperação -->
+        <div class="sleep-block">
+          <div class="sleep-block-head"><h4>RECOVERY</h4></div>
+          <div class="sleep-recovery-grid">
+            <div class="sleep-kpi"><span class="sleep-kpi-lbl">HRV (overnight)</span><span class="sleep-kpi-num mono" id="sleepHrv">—</span><span class="sleep-kpi-sub" id="sleepHrvDelta">—</span></div>
+            <div class="sleep-kpi"><span class="sleep-kpi-lbl">Night HR</span><span class="sleep-kpi-num mono" id="sleepNightHr">—</span><span class="sleep-kpi-sub">avg overnight</span></div>
+            <div class="sleep-kpi"><span class="sleep-kpi-lbl">Deep sleep</span><span class="sleep-kpi-num mono" id="sleepDeep">—</span><span class="sleep-kpi-sub">physical recovery</span></div>
+            <div class="sleep-kpi"><span class="sleep-kpi-lbl">REM sleep</span><span class="sleep-kpi-num mono" id="sleepRem">—</span><span class="sleep-kpi-sub">mental recovery</span></div>
+          </div>
+          <div class="sleep-inertia-note" id="sleepInertiaNote" hidden>
+            <strong>SLEEP INERTIA</strong> — you were woken mid–deep sleep. Give it 20–30 min before any precision task (EVA, robotic arm).
+          </div>
+          <p class="sleep-footnote">ISS crews see <b>16 sunrises a day</b> — the cabin's light cycle is your only anchor. NASA target: 7.5 h in bed, lights out 22:30.</p>
+        </div>
+      </div>
+    </div>
   </div>
 </aside>
 
@@ -725,6 +797,6 @@
 </nav>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="/static/js/app.js?v=17"></script>
+<script src="/static/js/app.js?v=21"></script>
 </body>
 </html>

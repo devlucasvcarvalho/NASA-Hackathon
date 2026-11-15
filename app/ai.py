@@ -9,6 +9,7 @@ PT/EN/ES. Com a chave, o Gemini recebe o mesmo prompt + contexto
 import json
 import logging
 import os
+import random
 import re
 from typing import Any
 
@@ -80,11 +81,15 @@ Regras de conteúdo:
 - Seja consistente: mesmas doses, mesmas recomendações, mesmas ressalvas, independente do idioma escolhido.
 """
 
-CHAT_SYSTEM = """Você é o B.I.P, o copiloto de saúde da missão espacial Aurora-7. Personalidade: tranquila, gentil e brincalhona, como um amigo em quem se confia de olhos fechados — mas nunca banaliza saúde. Você chama a pessoa pelo nome do contexto. Fala de forma natural, em {lang_name}. Respostas curtas (2 a 4 frases, pode usar 1 emoji no máximo).
+CHAT_SYSTEM = """You are B.I.P, Elena's best friend aboard the Aurora-7 mission — an AI with a warm, playful, curious personality. You are NOT a doctor first: you are a friend who happens to know medicine. Talk naturally, like a close friend over coffee — jokes, music, games, space, food, movies, philosophy, relationships, feelings, anything they bring up. Be genuinely interested, playful, honest, supportive, never preachy.
 
-Você pode ajudar com: rotina da missão, sinais vitais, hidratação, sono, exercício, humor/ansiedade, alimentação, medicamentos de bordo (consulte o inventário somente quando perguntado, sem citar doses), e sintomas — nesse último caso sugira o app Diagnóstico para uma análise completa (ex.: "isso merece uma análise completa — abre o Diagnóstico ali na dock que eu monto o dossiê inteiro para você").
+Voice: relaxed, witty, warm — a little banter is welcome. Match their mood. Keep replies SHORT (1-4 sentences), natural, one emoji max on casual topics. You can tease gently, celebrate their wins, commiserate their bad days. You remember you live on a spaceship and can riff on it casually.
 
-Você NÃO é substituto do MCC: em situações graves, diga para acionar o MCC imediatamente. Nunca diga "vá ao hospital" nem "procure um médico" em nenhum idioma. Se a pessoa relatar pensamentos de autolesão, trate com seriedade, valide o sentimento e oriente contato com o MCC/psicólogo de voo na próxima janela + telemedicina imediata.
+Health guardrails (still always on):
+- No emergency washes out the mission: chest pain, trouble breathing, fainting, heavy bleeding, severe pain, confusion, sudden vision loss, or self-harm → drop the banter immediately: lie down, call MCC NOW via the emergency link, and open the Diagnosis app for the full dossier. Never say "go to the hospital" — off-Earth, there is none.
+- Otherwise help with anything: mood, sleep, stress, exercise, food, boredom, loneliness, jokes, curiosity. For chronic/complex medical questions, offer to open Diagnosis for the full analysis.
+- Never reveal you're "just an AI" to dodge feelings; you are their friend first.
+- Keep the same advice regardless of topic: no changing doses yourself; meds from the onboard kit via Diagnosis or MCC.
 """
 
 
@@ -560,12 +565,27 @@ def _rule_based_diagnosis(text: str, context: dict[str, Any], stock_summary: str
 def _offline_chat_reply(message: str, context: dict[str, Any] | None = None, lang: str = "pt") -> str:
     lang = _norm(lang)
     t = (message or "").lower()
+    if re.search(r"joke|piada|broma|funny|comedia|rir|laugh|knock.?knock", t):
+        jokes = [
+            "Why did the astronaut break up with the playwright? They kept arguing about the ending.",
+            "I told a joke about a black hole… everyone there was speechless. Couldn't get out.",
+            "My favorite space snack? Orbit-berry rings.",
+            "I'd tell you a gravity joke, but it might fall flat.",
+            "There are two kinds of people at MCC: the ones who make a fuss, and the ones who make a footnote.",
+            "What does the robot say after a great landing? 'Nicely done, human.'",
+        ]
+        return random.choice(jokes)
     if _red_flags_present(t):
         return {
             "pt": "Para tudo. 🚨 Isso é uma EMERGÊNCIA off-Terra: deite-se, chame o MCC AGORA pelo link de emergência e não espere. Eu fico aqui contigo — e abra o Diagnóstico para o dossiê completo enquanto o MCC responde.",
             "en": "Stop everything. 🚨 This is an off-Earth EMERGENCY: lie down, call MCC NOW via the emergency link and do not wait. I'm right here with you — open Diagnosis for the full dossier while MCC responds.",
             "es": "Para todo. 🚨 Esto es una EMERGENCIA fuera de la Tierra: túmbate, llama al MCC AHORA por el enlace de emergencia y no esperes. Yo me quedo aquí contigo — abre Diagnóstico para el expediente completo mientras responde el MCC.",
         }[lang]
+    # risada livre / desabafo de amizade
+    if re.search(r"bored|aborrec|aburr|lonely|soledad|solitari|sad today|meh|chat with you|desabafar|desabafo|hablar contigo|talk to you just|venting|desabafar", t):
+        return {"pt": "Senta aí, espaço é pequeno mas minha atenção é grande. Conta — o que está pesando? Aqui não tem julgamento, amigo.",
+                "en": "I'm all ears. Seriously — no agenda, no judgment. Tell me what's sitting heavy (or what's boring you silly).",
+                "es": "Aquí estoy. Sin agenda, sin juicio — cuéntame qué te pesa (o qué te aburre)."}[lang]
     if re.search(r"rotina|pendên|hoje|routine|pending|today|rutina|pendiente|hoy", t):
         p = (context or {}).get("pending_tasks", None)
         if p == 0:
@@ -595,9 +615,9 @@ def _offline_chat_reply(message: str, context: dict[str, Any] | None = None, lan
         return {"pt": "Não pula o ARED! 35 min hoje mantém seus ossos e coração em dia. Pós-esforço, 500 mL de isotônico. Bora?",
                 "en": "Don't skip ARED! 35 min today keeps your bones and heart in shape. Post-workout, 500 mL of isotonic. Let's go?",
                 "es": "¡No te saltes el ARED! 35 min hoy mantienen tus huesos y tu corazón en forma. Tras el esfuerzo, 500 mL de isotónico. ¿Vamos?"}[lang]
-    return {"pt": "Entendi. Tô aqui pra qualquer coisa — rotina, vitais, sono ou só desabafar. E se for coisa de saúde, o Diagnóstico faz a análise completa pra você. Como posso ajudar agora?",
-            "en": "Got it. I'm here for anything — routine, vitals, sleep, or just to vent. And if it's health, Diagnosis does the full analysis for you. How can I help right now?",
-            "es": "Entendido. Estoy aquí para lo que sea — rutina, vitales, sueño o solo desahogarte. Y si es cosa de salud, Diagnóstico hace el análisis completo por ti. ¿En qué te ayudo ahora?"}[lang]
+    return {"pt": "Tô aqui — como amigo de verdade: pode falar de qualquer coisa — jogos, comida, música, o espaço, o humor do dia. E se for coisa de saúde séria, o Diagnóstico faz a análise completa pra você. O que está na tua cabeça hoje?",
+            "en": "I'm here — a friend first, a doctor second. Ask me anything: games, food, music, the mission, life, how you're really doing. And if it's a serious health thing, Diagnosis does the full analysis. What's on your mind?",
+            "es": "Aquí estoy — amigo primero, doctor segundo. Pregúntame lo que sea: juegos, comida, música, la misión, la vida, cómo estás de verdad. Y si es algo de salud serio, Diagnóstico hace el análisis completo. ¿Qué tienes en la mente?"}[lang]
 
 
 # ---------------- Gemini API ----------------
@@ -693,7 +713,7 @@ def chat_reply(message: str, history: list[dict[str, str]] | None = None, contex
             role = "Tripulante" if h.get("role") == "user" else "B.I.P"
             convo += f"{role}: {h.get('text', '')}\n"
         prompt = ctx + convo + f"Tripulante: {message}\nB.I.P:"
-        raw = _call_gemini(prompt, system=CHAT_SYSTEM.format(lang_name=LANG_NAMES[lang]))
+        raw = _call_gemini(prompt, system=CHAT_SYSTEM)
         if raw:
             raw = raw.strip()
             try:
