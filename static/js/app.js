@@ -661,18 +661,27 @@ const checkIn = { step: null, phys: null, symptom: null, mental: null, sleep: nu
 
 function chatTimestamp() { return new Date().toLocaleTimeString(window.LOCALES[window.BIP_LANG], { hour: '2-digit', minute: '2-digit' }); }
 function renderChat() {
-  chatMessages.innerHTML = chatHistory.map(m => {
-    const cls = m.role === 'user' ? 'msg-user' : m.alert ? 'msg-alert' : 'msg-bip';
-    return `<div class="msg ${cls}">${escapeHtml(m.text)}<div class="msg-time">${m.time || ''}</div></div>`;
-  }).join('');
+  chatMessages.innerHTML = '';
+  chatHistory.forEach(m => chatMessages.appendChild(buildMsgEl(m)));
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
+function buildMsgEl(m) {
+  const cls = m.role === 'user' ? 'msg-user' : m.alert ? 'msg-alert' : 'msg-bip';
+  const el = document.createElement('div');
+  el.className = `msg ${cls}`;
+  el.innerHTML = `${escapeHtml(m.text)}<div class="msg-time">${escapeHtml(m.time || '')}</div>`;
+  return el;
+}
 function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+function appendMsg(m) {
+  chatMessages.appendChild(buildMsgEl(m));
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
 function addChatMsg(role, text, opts = {}) {
   chatHistory.push({ role, text, time: chatTimestamp(), ...(opts.alert ? { alert: true } : {}) });
   chatHistory = chatHistory.slice(-40);
   store.set('bip.chat', chatHistory);
-  renderChat();
+  appendMsg(chatHistory[chatHistory.length - 1]);
 }
 function renderChips(list) {
   chatQuick.innerHTML = list.map(c => `<button class="chip${c.cls ? ' ' + c.cls : ''}" ${c.ci ? `data-ci="${c.ci}"` : ''} ${c.qKey ? `data-q-key="${c.qKey}"` : ''}>${escapeHtml(c.text)}</button>`).join('');
@@ -793,12 +802,13 @@ async function sendChat(text) {
 function isChatOpen() { return !chatPanel.hidden; }
 function openChat() {
   chatPanel.hidden = false;
+  document.body.classList.add('chat-open');
   renderChat();
   if (!chatHistory.length) startCheckIn();
   else renderChips(DEFAULT_CHIPS);
   setTimeout(() => $('#chatInput').focus(), 80);
 }
-function closeChat() { chatPanel.hidden = true; }
+function closeChat() { chatPanel.hidden = true; document.body.classList.remove('chat-open'); }
 
 $('#bipBotBtn').addEventListener('click', () => { isChatOpen() ? closeChat() : openChat(); });
 $('#chatCloseBtn').addEventListener('click', closeChat);
