@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.DS_Store
+node_modules/
+
+.openchamber/
+screenshots/
+
+data/*.db
+*.db
