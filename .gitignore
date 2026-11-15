@@ -9,3 +9,5 @@ node_modules/
 .openchamber/
 screenshots/
 
+data/*.db
+*.db
