@@ -639,32 +639,144 @@ $('#edSendToDx').addEventListener('click', () => {
 /* ═════════ 8 · CHAT COM O B.I.P ═════════ */
 const chatPanel = $('#chatPanel');
 const chatMessages = $('#chatMessages');
+const chatQuick = $('#chatQuick');
 let chatHistory = store.get('bip.chat', []);
+
+const REDFLAG = /(chest pain|can'?t breathe|cannot breathe|shortness of breath|hardly breathing|bleeding|blood loss|faint|collapse|passed out|severe pain|suicid|self.?harm|panic attack|vision loss|can'?t see)/i;
+const PHYS = { great: ['Full power', 0], good: ['Good enough', 1], off: ['A little off', 2], rough: ['Rough', 3] };
+const SYMPTOM = { none: ['None', 0], headache: ['Headache', 1], nausea: ['Nausea', 1], dizziness: ['Dizziness', 1], fatigue: ['Fatigue', 1], other: ['Something else', 1] };
+const MENTAL = { calm: ['Calm and focused', 0], tense: ['Tense', 1], over: ['Overwhelmed', 2], low: ['Low and flat', 3] };
+const SLEEP = { great: ['Great', 0], ok: ['Okay', 1], poor: ['Poorly', 2], vpoor: ['Very poorly', 3] };
+const CI_TABLES = { phys: PHYS, symptom: SYMPTOM, mental: MENTAL, sleep: SLEEP };
+
+const DEFAULT_CHIPS = [
+  { text: 'How am I really doing?', ci: '__start__', cls: 'chip-start' },
+  { text: "Today's pending", qKey: 'chat.q_today' },
+  { text: 'I have a headache', qKey: 'chat.q_headache' },
+  { text: 'Bad sleep', qKey: 'chat.q_sleep' },
+  { text: 'Water goal', qKey: 'chat.q_water' },
+];
+
+const checkIn = { step: null, phys: null, symptom: null, mental: null, sleep: null, physScore: 0, symptomScore: 0, mentalScore: 0, sleepScore: 0 };
 
 function chatTimestamp() { return new Date().toLocaleTimeString(window.LOCALES[window.BIP_LANG], { hour: '2-digit', minute: '2-digit' }); }
 function renderChat() {
-  chatMessages.innerHTML = chatHistory.map(m => `
-    <div class="msg ${m.role === 'user' ? 'msg-user' : 'msg-bip'}">${escapeHtml(m.text)}<div class="msg-time">${m.time || ''}</div></div>`).join('');
+  chatMessages.innerHTML = chatHistory.map(m => {
+    const cls = m.role === 'user' ? 'msg-user' : m.alert ? 'msg-alert' : 'msg-bip';
+    return `<div class="msg ${cls}">${escapeHtml(m.text)}<div class="msg-time">${m.time || ''}</div></div>`;
+  }).join('');
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 function escapeHtml(s) { return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
-function addChatMsg(role, text) {
-  chatHistory.push({ role, text, time: chatTimestamp() });
+function addChatMsg(role, text, opts = {}) {
+  chatHistory.push({ role, text, time: chatTimestamp(), ...(opts.alert ? { alert: true } : {}) });
   chatHistory = chatHistory.slice(-40);
   store.set('bip.chat', chatHistory);
   renderChat();
 }
+function renderChips(list) {
+  chatQuick.innerHTML = list.map(c => `<button class="chip${c.cls ? ' ' + c.cls : ''}" ${c.ci ? `data-ci="${c.ci}"` : ''} ${c.qKey ? `data-q-key="${c.qKey}"` : ''}>${escapeHtml(c.text)}</button>`).join('');
+}
 function showTyping() {
   const el = document.createElement('div');
   el.className = 'msg msg-bip'; el.id = 'typingMsg';
-  el.innerHTML = '<span class="typing"><i></i><i></i></span>';
+  el.innerHTML = '<span class="typing"><i></i><i></i><i></i></span>';
   chatMessages.appendChild(el); chatMessages.scrollTop = chatMessages.scrollHeight;
   return el;
+}
+
+function bipSay(text, delay = 720, opts = {}) {
+  return new Promise(resolve => {
+    const typing = showTyping();
+    setTimeout(() => {
+      typing.remove();
+      addChatMsg('bip', text, opts);
+      resolve();
+    }, delay);
+  });
+}
+
+const CI_QUESTIONS = {
+  phys: 'Before anything else — how is the body treating you today? Answer honestly.',
+  symptom: 'Got it. Any physical symptoms showing up right now? Headache, nausea, dizziness, fatigue…',
+  mental: 'And the other half of the mission — how is your headspace? Calm, tense, overwhelmed, flat…',
+  sleep: 'Last one: how did you sleep last night?',
+};
+
+function chipsFor(step) {
+  return Object.entries(CI_TABLES[step]).map(([key, [label]]) => ({ text: label, ci: key }));
+}
+
+async function askCheckIn(step, delay = 720) {
+  checkIn.step = step;
+  await bipSay(CI_QUESTIONS[step], delay);
+  renderChips(chipsFor(step));
+}
+
+function startCheckIn() {
+  Object.assign(checkIn, { step: null, phys: null, symptom: null, mental: null, sleep: null, physScore: 0, symptomScore: 0, mentalScore: 0, sleepScore: 0 });
+  bipSay('Hey, Elena — good to see you. Let’s do a quick head-to-toe, body and mind.', 600)
+    .then(() => askCheckIn('phys', 750));
+}
+
+const CI_KEYWORDS = {
+  phys: [[/rough|terrible|awful|awfully|bad|ache|pain|sick|ill|exhaust|weak|fever/, 'rough'], [/off|strange|weird|not great|meh|low energy|tired|drained/, 'off'], [/great|full power|amazing|perfect|awesome|fantastic/, 'great']],
+  symptom: [[/headache|head hurts|migraine/, 'headache'], [/nause|queasy|throw ?up|threw up/, 'nausea'], [/dizz|lighthead|spinning/, 'dizziness'], [/fatigue|tired|exhausted|no energy/, 'fatigue'], [/none|nothing|no symptom|all good/, 'none']],
+  mental: [[/overwhelm|stress|swamped|too much|panic|anxious/, 'over'], [/tense|antsy|on edge|irritated/, 'tense'], [/low|flat|down|sad|depress|empty|lonely/, 'low'], [/calm|fine|good|great|focused|motivat|ok/, 'calm']],
+  sleep: [[/great|amazing|slept well|full night/, 'great'], [/ok|okay|alright|not bad/, 'ok'], [/barely|restless|poor|bad|badly|poorly/, 'poor'], [/very poorly|terrible|no sleep|insomn|didn'?t sleep|nightmare/, 'vpoor']],
+};
+
+function classify(text, step) {
+  const t = String(text).toLowerCase();
+  for (const [re, key] of (CI_KEYWORDS[step] || [])) if (re.test(t)) return key;
+  return 'other';
+}
+
+async function finishCheckIn() {
+  const { phys, symptom, mental, sleep } = checkIn;
+  const score = checkIn.physScore + checkIn.symptomScore + checkIn.mentalScore + checkIn.sleepScore;
+  const level = score <= 2
+    ? 'you look mission-ready.'
+    : score <= 6
+      ? 'you are carrying a bit more than usual — and I notice it.'
+      : 'this is heavier than “fine”, and I am taking it seriously.';
+  const recs = [];
+  if (symptom === 'Headache') recs.push('half a liter of water and 15 minutes off screens');
+  if (symptom === 'Nausea') recs.push('small sips of water and a light snack from the kit');
+  if (symptom === 'Dizziness') recs.push('sit down, hydrate, re-check your blood pressure');
+  if (symptom === 'Fatigue') recs.push('a real 20-minute rest — not “eyes open, lying down”');
+  if (sleep === 'Poorly' || sleep === 'Very poorly') recs.push('dim the cabin 30 minutes before bed and skip the late EVA sim');
+  if (mental === 'Overwhelmed' || mental === 'Low and flat') recs.push('two minutes of 4-7-8 breathing — and it is not weak to say the word at MCC');
+  if (phys === 'Rough') recs.push('skip the workout block tonight; rest is an order from your favorite bot');
+  if (!recs.length) recs.push('hydrate, move, log it — carry on being the mission');
+  checkIn.step = null;
+  await bipSay(`Here is what I am logging in your daily entry (SOL 455):\n• Body → ${phys}\n• Symptoms → ${symptom}\n• Mind → ${mental}\n• Sleep → ${sleep}`, 850);
+  await bipSay(`My honest read: ${level} Start with ${recs.join('; ')}. If it sticks around past the next meal, bring it up at the MCC window (15:10–15:45) — that is what they are there for.`, 950, score >= 7 ? { alert: true } : {});
+  renderChips(DEFAULT_CHIPS);
+}
+
+async function handleCheckIn(text, chipKey) {
+  const step = checkIn.step;
+  const table = CI_TABLES[step];
+  const key = chipKey || classify(text, step);
+  const [label, score] = (table[key] || table.other || table.none || ['Something else', 1]);
+  checkIn[step] = label;
+  checkIn[`${step}Score`] = score;
+  const order = ['phys', 'symptom', 'mental', 'sleep'];
+  const next = order[order.indexOf(step) + 1];
+  if (next) return askCheckIn(next, 800);
+  return finishCheckIn();
 }
 
 async function sendChat(text) {
   const trimmed = text.trim(); if (!trimmed) return;
   addChatMsg('user', trimmed);
+  if (REDFLAG.test(trimmed)) {
+    checkIn.step = null;
+    renderChips(DEFAULT_CHIPS);
+    return bipSay('Stop. That is a red flag, not a check-in item. Stop the activity, sit down somewhere safe, and contact Mission Control now — the 15:10–15:45 telemedicine window or the emergency channel. I am flagging this as urgent on your log. Use the kit stabilization protocol until you are through to MCC.', 900, { alert: true });
+  }
+  if (checkIn.step) return handleCheckIn(trimmed);
   const typing = showTyping();
   let reply = null;
   try {
@@ -678,19 +790,20 @@ async function sendChat(text) {
   addChatMsg('bip', reply || 'Hmm, me perdi por aqui. Repete?');
 }
 
-$('#bipBotBtn').addEventListener('click', () => {
-  const opening = chatPanel.hidden;
-  chatPanel.hidden = !chatPanel.hidden;
-  if (opening && !chatHistory.length) {
-    const late = $$('#periodsGrid .task.late').length;
-    const pendKey = late === 1 ? 'chat.greeting_pend_one' : 'chat.greeting_pend_many';
-    addChatMsg('bip', late > 0
-      ? window.t('chat.greeting_late', { n: late, pend: window.t(pendKey) })
-      : window.t('chat.greeting_fresh'));
-  }
-  if (opening) { $('#chatInput').focus(); renderChat(); }
-});
-$('#chatCloseBtn').addEventListener('click', () => { chatPanel.hidden = true; });
+function isChatOpen() { return !chatPanel.hidden; }
+function openChat() {
+  chatPanel.hidden = false;
+  renderChat();
+  if (!chatHistory.length) startCheckIn();
+  else renderChips(DEFAULT_CHIPS);
+  setTimeout(() => $('#chatInput').focus(), 80);
+}
+function closeChat() { chatPanel.hidden = true; }
+
+$('#bipBotBtn').addEventListener('click', () => { isChatOpen() ? closeChat() : openChat(); });
+$('#chatCloseBtn').addEventListener('click', closeChat);
+chatPanel.addEventListener('click', e => { if (e.target === chatPanel) closeChat(); });
+window.addEventListener('keydown', e => { if (e.key === 'Escape' && isChatOpen()) closeChat(); });
 $('#chatForm').addEventListener('submit', e => {
   e.preventDefault();
   const input = $('#chatInput');
@@ -698,8 +811,11 @@ $('#chatForm').addEventListener('submit', e => {
 });
 $('#chatQuick').addEventListener('click', e => {
   const chip = e.target.closest('.chip'); if (!chip) return;
-  sendChat(window.t(chip.dataset.qKey));
+  if (chip.dataset.ci === '__start__') { addChatMsg('user', chip.textContent.trim()); return startCheckIn(); }
+  if (chip.dataset.ci && checkIn.step) { addChatMsg('user', chip.textContent.trim()); return handleCheckIn('', chip.dataset.ci); }
+  if (chip.dataset.qKey) return sendChat(window.t(chip.dataset.qKey));
 });
+renderChips(DEFAULT_CHIPS);
 
 /* ═════════ 9 · PERSONALIZAÇÃO DO AVATAR ═════════ */
 // Variáveis CSS vivem no :root (document.documentElement): assim os gradientes
