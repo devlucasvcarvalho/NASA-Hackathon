@@ -1304,7 +1304,50 @@ async function loadDynamicContent() {
   renderChat();
 }
 
+// ═══════════ BOOT — abertura ═══════════
+function bootSequence() {
+  const screen = document.getElementById('bootScreen');
+  const bot = document.getElementById('bootBot');
+  const floatBtn = document.getElementById('bipBotBtn');
+  if (!screen || !bot || !floatBtn) return;
+  if (prefersReducedMotion) {
+    screen.style.display = 'none';
+    return;
+  }
+  floatBtn.style.visibility = 'hidden';
+  screen.classList.add('is-active');
+
+  // pop-in do B.I.P com bounce
+  bot.animate([
+    { transform: 'scale(.25) translateY(40px)', opacity: 0 },
+    { transform: 'scale(1.22) translateY(0)', opacity: 1, offset: .52 },
+    { transform: 'scale(.94)', offset: .78 },
+    { transform: 'scale(1)' },
+  ], { duration: 720, easing: 'cubic-bezier(.2,1.3,.35,1)', fill: 'forwards' });
+
+  // depois de pop + pausa, voa para o canto
+  window.setTimeout(() => {
+    const target = floatBtn.querySelector('.bip-bot-svg') || floatBtn;
+    const to = target.getBoundingClientRect();
+    const from = bot.getBoundingClientRect();
+    const dx = (to.left + to.width / 2) - (from.left + from.width / 2);
+    const dy = (to.top + to.height / 2) - (from.top + from.height / 2);
+    const scale = to.width / from.width;
+
+    screen.classList.add('is-revealing'); // funde o fundo, revelando o app
+    bot.animate([
+      { transform: 'translate(0px, 0px) scale(1) rotate(0deg)' },
+      { transform: `translate(${dx * 0.42}px, ${dy * 0.58 - 70}px) scale(${scale * 1.5}) rotate(-9deg)`, offset: .42 },
+      { transform: `translate(${dx}px, ${dy}px) scale(${scale}) rotate(0deg)` },
+    ], { duration: 700, easing: 'cubic-bezier(.3,.9,.35,1)', fill: 'forwards' }).onfinish = () => {
+      screen.style.display = 'none';
+      floatBtn.style.visibility = '';
+    };
+  }, 1050);
+}
+
 async function init() {
+  bootSequence();
   hydrateAvatars();
   buildPersonalizePanel();
   applyPersonalize();

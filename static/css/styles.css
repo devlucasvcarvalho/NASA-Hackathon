@@ -566,6 +566,19 @@ button { font-family: inherit; cursor: pointer; }
   .sleep-sheet-head { flex-direction: column; align-items: flex-start; }
 }
 
+/* ═══════════ BOOT — abertura ═══════════ */
+.boot-screen { position: fixed; inset: 0; z-index: 95; display: grid; place-items: center; visibility: hidden; opacity: 0; pointer-events: none;
+  background: radial-gradient(1100px 780px at 50% 38%, #16484a 0%, #0d2f2f 58%, #071d1d 100%);
+  transition: opacity .34s ease, visibility .34s ease; }
+.boot-screen.is-active { visibility: visible; opacity: 1; pointer-events: auto; }
+.boot-screen.is-revealing { opacity: 0; pointer-events: none; }
+.boot-inner { position: relative; display: flex; flex-direction: column; align-items: center; gap: 15px; }
+.boot-orbit { position: absolute; width: 250px; height: 250px; top: 44%; left: 50%; transform: translate(-50%, -50%); border-radius: 50%; border: 1.5px dashed rgba(143, 245, 226, .35); animation: orbitSpin 22s linear infinite; }
+.boot-orbit::after { content: ""; position: absolute; top: -5px; left: 50%; width: 11px; height: 11px; border-radius: 50%; background: #ffd166; box-shadow: 0 0 14px rgba(255, 209, 102, .95); transform: translateX(-50%); }
+.boot-bot { width: 148px; height: auto; overflow: visible; filter: drop-shadow(0 0 28px rgba(87, 230, 201, .45)) drop-shadow(0 20px 34px rgba(0, 0, 0, .55)); }
+.boot-word { font-family: 'Space Grotesk'; font-weight: 700; letter-spacing: .16em; font-size: 2.15rem; line-height: 1; color: #eafff6; text-shadow: 0 0 26px rgba(87, 230, 201, .45); }
+.boot-tag { font-size: .58rem; font-weight: 800; letter-spacing: .34em; color: rgba(210, 240, 228, .68); text-transform: uppercase; }
+
 /* ─────────── Robô B.I.P + chat ─────────── */
 .bip-bot-btn { position: fixed; right: 22px; bottom: 96px; z-index: 45; border: none; background: none; display: flex; flex-direction: column; align-items: center; gap: 0; }
 .bip-bot-svg { width: 92px; filter: drop-shadow(0 12px 20px rgba(15,62,61,.4)); animation: bipHover 3.2s ease-in-out infinite; transition: transform .2s; }

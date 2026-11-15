@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/static/css/styles.css?v=20" />
+  <link rel="stylesheet" href="/static/css/styles.css?v=22" />
   <script src="/static/js/i18n.js?v=18"></script>
 </head>
 <body>
@@ -659,6 +659,17 @@
 </main>
 
 <!-- ═══════════ ROBÔ MASCOTE ═══════════ -->
+<!-- ═══════════ BOOT (abertura do app) ═══════════ -->
+<div class="boot-screen" id="bootScreen" aria-hidden="true">
+  <div class="boot-inner">
+    <span class="boot-orbit"></span>
+    <svg class="boot-bot" id="bootBot" viewBox="0 0 96 112" aria-hidden="true"><use href="#bipBot"></use></svg>
+    <div class="boot-word">B.I.P</div>
+    <div class="boot-tag">BIOMEDICAL INTELLIGENT PARTNER</div>
+  </div>
+</div>
+
+<!-- ═══════════ ROBÔ MASCOTE ═══════════ -->
 <button class="bip-bot-btn" id="bipBotBtn" data-i18n-aria="chat.open" aria-label="Abrir conversa com o B.I.P, copiloto de saúde">
   <span class="bip-bubble" id="bipBubble" data-i18n="chat.bubble">Psst… preciso de algo?</span>
   <svg class="bip-bot-svg" viewBox="0 0 96 112" aria-hidden="true"><use href="#bipBot"></use></svg>
@@ -797,6 +808,6 @@
 </nav>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="/static/js/app.js?v=21"></script>
+<script src="/static/js/app.js?v=22"></script>
 </body>
 </html>
