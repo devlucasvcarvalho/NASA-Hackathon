@@ -15,9 +15,10 @@ from typing import Any
 
 import httpx
 
+from app import config
 from app.schemas import validate_diagnosis
 
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-3.5-flash-lite")
 GEMINI_TIMEOUT = float(os.getenv("GEMINI_TIMEOUT", "15"))  # curto: cabe no limite de funções serverless
 GEMINI_ATTEMPTS = 2
 log = logging.getLogger("bip.ai")
@@ -627,7 +628,7 @@ def _gemini_url() -> str:
 
 
 def _call_gemini(prompt_text: str, image_data_url: str | None = None, system: str = "") -> str | None:
-    key = os.getenv("GEMINI_API_KEY")
+    key = config.gemini_key()
     if not key:
         return None
     parts: list[dict[str, Any]] = [{"text": (system + "\n\n" if system else "") + prompt_text}]
@@ -684,7 +685,7 @@ def diagnose(text: str, context: dict[str, Any], image_data_url: str | None = No
         + ("\n\nA PESSOA ANEXOU UMA IMAGEM (ferida, exantema ou exame caseiro). Analise a imagem junto com o relato." if image_data_url else "")
     )
     system = DIAGNOSIS_SYSTEM.format(stock=stock, lang_name=LANG_NAMES[lang])
-    has_key = bool(os.getenv("GEMINI_API_KEY"))
+    has_key = bool(config.gemini_key())
     for attempt in range(GEMINI_ATTEMPTS if has_key else 0):
         raw = _call_gemini(prompt, image_data_url, system=system)
         parsed = _extract_json(raw) if raw else None
@@ -703,7 +704,7 @@ def diagnose(text: str, context: dict[str, Any], image_data_url: str | None = No
 
 def chat_reply(message: str, history: list[dict[str, str]] | None = None, context: dict[str, Any] | None = None, lang: str = "pt") -> str:
     lang = _norm(lang)
-    key = os.getenv("GEMINI_API_KEY")
+    key = config.gemini_key()
     if key:
         ctx = ""
         if context:

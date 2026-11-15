@@ -7,8 +7,25 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_DIR = BASE_DIR / "static"
 
 
+def _load_env_file():
+    env_file = BASE_DIR / ".env"
+    if not env_file.exists():
+        return
+    for raw in env_file.read_text(encoding="utf-8").splitlines():
+        line = raw.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, _, value = line.partition("=")
+        key, value = key.strip(), value.strip().strip('"').strip("'")
+        if key and key not in os.environ:
+            os.environ[key] = value
+
+
+_load_env_file()
+
+
 def gemini_key() -> str | None:
-    # lido na hora: HF Spaces / Vercel injetam secrets no runtime
+    # lido sempre (do .env carregado ou do ambiente do deploy)
     return os.getenv("GEMINI_API_KEY")
 
 
