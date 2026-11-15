@@ -139,9 +139,25 @@ button { font-family: inherit; cursor: pointer; }
 /* Avatar card */
 .avatar-card { display: flex; flex-direction: column; align-items: stretch; overflow: hidden; }
 .avatar-stage { position: relative; flex: 1; display: grid; place-items: center; min-height: 0; padding: 4px 0; }
-.avatar { overflow: visible; }
-.avatar-hero { height: min(46vh, 410px); width: auto; max-width: 100%; animation: avatarFloat 4.6s ease-in-out infinite; filter: drop-shadow(0 22px 26px rgba(15,62,61,.35)); }
-@keyframes avatarFloat { 0%,100% { transform: translateY(0) rotate(-.4deg); } 50% { transform: translateY(-13px) rotate(.5deg); } }
+.avatar { overflow: visible; cursor: pointer; }
+.avatar-hero { height: min(48vh, 420px); width: auto; max-width: 100%; filter: drop-shadow(0 22px 26px rgba(15,62,61,.35)); transition: filter .2s; }
+.avatar-hero:hover { filter: drop-shadow(0 26px 30px rgba(15,62,61,.42)); }
+.avatar-routine { width: 118px; flex: none; }
+.body-anim { animation: bodyBob 5.4s ease-in-out infinite; transform-box: fill-box; transform-origin: 50% 100%; }
+@keyframes bodyBob { 0%,100% { transform: translateY(0) scale(1, 1); } 50% { transform: translateY(-6px) scale(.995, 1.008); } }
+.stage-ring { animation: stageRingSpin 9s linear infinite; }
+@keyframes stageRingSpin { from { stroke-dashoffset: 0; } to { stroke-dashoffset: 96; } }
+.avatar .arm { transform-box: fill-box; transform-origin: 50% 6%; }
+.avatar.react-wave .arm-right { animation: armWave .48s ease-in-out 3; }
+@keyframes armWave { 0%,100% { transform: rotate(0); } 30% { transform: rotate(-152deg); } 65% { transform: rotate(-118deg); } }
+.avatar.react-hop .body-anim { animation: bodyHop .52s cubic-bezier(.3,1.5,.4,1) 2; }
+@keyframes bodyHop { 0%,100% { transform: translateY(0) scale(1,1); } 35% { transform: translateY(-26px) scale(.95,1.06); } 60% { transform: translateY(3px) scale(1.07,.92); } 75% { transform: translateY(0) scale(.99,1.01); } }
+.avatar.react-laugh .body-anim { animation: bodyShake .5s ease-in-out 2; }
+@keyframes bodyShake { 0%,100% { transform: translateX(0) rotate(0); } 25% { transform: translateX(-7px) rotate(-1.4deg); } 50% { transform: translateX(6px) rotate(1.2deg); } 75% { transform: translateX(-3px) rotate(-.6deg); } }
+
+/* balão de fala do avatar */
+.avatar-bubble { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); z-index: 6; background: var(--glass-strong); border: 1px solid var(--line-soft); color: var(--deep); font-size: .72rem; font-weight: 800; padding: 8px 14px; border-radius: 14px 14px 4px 14px; box-shadow: var(--shadow-sm); max-width: 240px; text-align: center; white-space: normal; animation: bubblePop .3s cubic-bezier(.3,1.6,.4,1); }
+@keyframes bubblePop { from { opacity: 0; transform: translate(-50%, 8px) scale(.7); } to { opacity: 1; transform: translate(-50%, 0) scale(1); } }
 
 /* aparência selecionável (personificação) */
 .avatar .hair, .avatar .beard, .avatar .freckles { display: none; }
@@ -155,6 +171,12 @@ button { font-family: inherit; cursor: pointer; }
 .avatar[data-beard="mustache"] .beard-mustache { display: block; }
 .avatar[data-beard="goatee"] .beard-goatee { display: block; }
 .avatar[data-freckles="on"] .freckles { display: block; }
+.avatar .outfit { display: none; }
+.avatar[data-outfit="astronaut"] .outfit-astronaut-back,
+.avatar[data-outfit="astronaut"] .outfit-astronaut-front { display: block; }
+.avatar[data-outfit="casual"] .outfit-casual { display: block; }
+.avatar[data-outfit="voo"] .outfit-voo { display: block; }
+.avatar[data-outfit="cargo"] .outfit-cargo { display: block; }
 
 /* mood visibility */
 .avatar .m { display: none; }
@@ -237,7 +259,7 @@ button { font-family: inherit; cursor: pointer; }
 /* ─────────── ROTINAS ─────────── */
 .routines-layout { display: grid; grid-template-columns: 380px 1fr; grid-template-areas: "hero periods" "ach periods"; gap: 16px; }
 .routine-hero { grid-area: hero; display: flex; align-items: center; gap: 18px; }
-.avatar-routine { width: 128px; flex: none; animation: avatarFloat 5s ease-in-out infinite; }
+
 .routine-hero-info h2 { font-family: 'Space Grotesk'; color: var(--deep); font-size: 1.35rem; }
 .routine-stats { display: flex; align-items: center; gap: 18px; margin: 12px 0; }
 .ring-wrap { position: relative; width: 84px; height: 84px; flex: none; }

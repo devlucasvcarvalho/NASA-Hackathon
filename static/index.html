@@ -30,6 +30,18 @@
       <stop offset="45%" stop-color="var(--suit-a,#1f6f6e)"/>
       <stop offset="100%" stop-color="var(--suit-b,#0e4e4d)"/>
     </linearGradient>
+    <linearGradient id="navyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b3f5e"/><stop offset="1" stop-color="#141f30"/>
+    </linearGradient>
+    <linearGradient id="terraGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cd8560"/><stop offset="1" stop-color="#a8552f"/>
+    </linearGradient>
+    <radialGradient id="stageTop" cx="50%" cy="42%" r="72%">
+      <stop offset="0%" stop-color="#fdfefd"/><stop offset="70%" stop-color="#dde5e0"/><stop offset="100%" stop-color="#c4cec8"/>
+    </radialGradient>
+    <linearGradient id="stageSide" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e9eeeb"/><stop offset=".35" stop-color="#9ba8a2"/><stop offset="1" stop-color="#5f6c67"/>
+    </linearGradient>
     <radialGradient id="clearGlass" cx="42%" cy="33%" r="78%">
       <stop offset="0%" stop-color="#ffffff" stop-opacity=".30"/>
       <stop offset="35%" stop-color="#d7efef" stop-opacity=".07"/>
@@ -50,179 +62,244 @@
       <stop offset="0" stop-color="#1d7a78"/><stop offset=".6" stop-color="#146c6b"/><stop offset="1" stop-color="#c4714b"/>
     </linearGradient>
 
-    <!-- ══════ AVATAR (corpo inteiro) — design humano ══════ -->
-    <symbol id="avatarBody" viewBox="0 0 240 260">
-      <circle cx="120" cy="128" r="112" fill="#1f6f6e" opacity=".12"/>
+    <!-- ══════ AVATAR — corpo inteiro humano sobre palco (design novo) ══════ -->
+    <symbol id="avatarBody" viewBox="0 0 240 352">
+      <!-- palco / pedestal (estático) -->
+      <ellipse cx="120" cy="332" rx="102" ry="13" fill="rgba(15,62,61,.22)"/>
+      <path d="M28 306a92 15 0 0 0 184 0l0 15a92 15 0 0 1-184 0Z" fill="url(#stageSide)"/>
+      <ellipse cx="120" cy="306" rx="92" ry="15" fill="url(#stageTop)" stroke="rgba(255,255,255,.75)" stroke-width="1.3"/>
+      <ellipse class="stage-ring" cx="120" cy="306" rx="68" ry="10.5" fill="none" stroke="rgba(20,108,107,.45)" stroke-width="1.5" stroke-dasharray="4 8"/>
+      <ellipse cx="120" cy="308.5" rx="46" ry="6" fill="rgba(15,62,61,.24)"/>
 
-      <!-- rabo de cavalo (atrás do torso) -->
-      <path class="hair hair-ponytail-back" fill="var(--hair,#3a2a1e)" d="M149 72c19 8 25 46 20 76-3 12-17 12-19-1 7-30 5-52-12-63Z"/>
+      <g class="body-anim">
+        <!-- rabo de cavalo (atrás de tudo) -->
+        <path class="hair hair-ponytail-back" fill="var(--hair,#3a2a1e)" d="M149 72c19 8 25 46 20 76-3 12-17 12-19-1 7-30 5-52-12-63Z"/>
 
-      <!-- torso / suit -->
-      <path class="suit-part" fill="url(#suitGrad)" d="M52 258c-4-38 6-66 22-80 12-10 28-14 46-14s34 4 46 14c16 14 26 42 22 80Z"/>
-      <path class="suit-part suit-shade" fill="#000" opacity=".18" d="M52 258c-4-38 6-66 22-80 6-5 13-8 20-10-8 26-10 56-9 90Z"/>
-      <ellipse class="suit-part" cx="46" cy="212" rx="22" ry="16" fill="url(#suitGradSoft)"/>
-      <ellipse class="suit-part" cx="194" cy="212" rx="22" ry="16" fill="url(#suitGradSoft)"/>
-      <rect x="88" y="198" width="64" height="34" rx="9" fill="#0b2d2d" stroke="rgba(255,255,255,.28)" stroke-width="1.4"/>
-      <circle cx="101" cy="214" r="3.4" fill="#57e6c9"/>
-      <circle cx="114" cy="214" r="3.4" fill="#ffd166"/>
-      <circle cx="127" cy="214" r="3.4" fill="#ff8a5c"/>
-      <rect x="92" y="222" width="56" height="3.6" rx="1.8" fill="#39f5d2" opacity=".55"/>
-      <rect x="150" y="176" width="26" height="16" rx="3" fill="#e8dcc8" transform="rotate(-4 163 184)"/>
-      <text x="163" y="187.6" font-size="7" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="700" fill="#7a3b21" transform="rotate(-4 163 184)">ARES-7</text>
+        <!-- ══════════ OUTFIT: ASTRONAUTA ══════════ -->
+        <g class="outfit outfit-astronaut-back">
+          <rect x="82" y="152" width="76" height="78" rx="13" fill="#cfd8d6" stroke="rgba(15,62,61,.4)" stroke-width="1.5"/>
+          <rect x="92" y="163" width="12" height="54" rx="6" fill="#aebcb9"/>
+          <rect x="136" y="163" width="12" height="54" rx="6" fill="#aebcb9"/>
+          <circle cx="98" cy="171" r="2.4" fill="#57e6c9"/><circle cx="142" cy="171" r="2.4" fill="#ffd166"/>
+          <path fill="url(#suitGrad)" d="M90 226c-2 22-2 44 0 60l23 0c1-22 1-40 1-60Z"/>
+          <path fill="url(#suitGrad)" d="M126 226c0 20 0 38 1 60l23 0c2-16 2-38 0-60Z"/>
+          <path fill="#e8ecea" d="M85 280h28q0 21-13 21t-15-21Z"/>
+          <path fill="#e8ecea" d="M127 280h28q0 21-13 21t-15-21Z"/>
+          <rect x="85" y="292" width="28" height="6" rx="3" fill="#20302f"/>
+          <rect x="127" y="292" width="28" height="6" rx="3" fill="#20302f"/>
+          <path fill="url(#suitGrad)" d="M77 158C70 176 68 206 76 224c13 8 27 10 44 10s31-2 44-10c8-18 6-48-1-66-26-9-60-9-86 0Z"/>
+          <path d="M120 156v68" stroke="rgba(255,255,255,.32)" stroke-width="2.2" stroke-dasharray="4 5"/>
+          <rect x="97" y="193" width="46" height="24" rx="8" fill="#0b2d2d" stroke="rgba(255,255,255,.3)" stroke-width="1.3"/>
+          <circle cx="107" cy="204" r="2.9" fill="#57e6c9"/><circle cx="118.5" cy="204" r="2.9" fill="#ffd166"/><circle cx="130" cy="204" r="2.9" fill="#ff8a5c"/>
+          <rect x="101" y="211" width="38" height="2.4" rx="1.2" fill="#39f5d2" opacity=".55"/>
+          <rect x="146" y="172" width="24" height="14" rx="3" fill="#e8dcc8" transform="rotate(-4 158 179)"/>
+          <text x="158" y="182.2" font-size="6.4" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="700" fill="#7a3b21" transform="rotate(-4 158 179)">ARES-7</text>
+          <g class="arm arm-left"><path fill="url(#suitGradSoft)" d="M78 158C64 166 58 197 56 222c0 6.5 5 10.5 12 10.5l16-2C86.5 207 87.5 181 92 158Z"/><circle cx="68.5" cy="232" r="8.4" fill="url(#skinGrad)"/></g>
+          <g class="arm arm-right"><path fill="url(#suitGradSoft)" d="M162 158c14 8 20 39 22 64 0 6.5-5 10.5-12 10.5l-16-2C153.5 207 152.5 181 148 158Z"/><circle cx="171.5" cy="232" r="8.4" fill="url(#skinGrad)"/></g>
+        </g>
 
-      <!-- colar do capacete -->
-      <rect x="70" y="140" width="100" height="26" rx="13" fill="url(#suitGradSoft)" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+        <!-- ══════════ OUTFIT: CASUAL (hoodie) ══════════ -->
+        <g class="outfit outfit-casual">
+          <path fill="#c9b18c" d="M90 228c-2 20-2 40 0 56l22 0c1-20 1-36 1-56Z"/>
+          <path fill="#c9b18c" d="M127 228c0 20 0 36 1 56l22 0c2-16 2-36 0-56Z"/>
+          <path fill="#f2f2ef" d="M85 280h29q0 21-14.5 21T85 280Z"/>
+          <path fill="#f2f2ef" d="M126 280h29q0 21-14.5 21T126 280Z"/>
+          <rect x="85" y="292" width="29" height="5" fill="#9a9a94"/><rect x="126" y="292" width="29" height="5" fill="#9a9a94"/>
+          <path fill="#49697f" d="M77 158C70 178 68 208 76 226c13 8 27 10 44 10s31-2 44-10c8-18 6-48-1-68-26-9-60-9-86 0Z"/>
+          <rect x="100" y="200" width="40" height="17" rx="7.5" fill="#3c5873" stroke="rgba(255,255,255,.14)"/>
+          <path d="M111 156v10M129 156v10" stroke="#dfe7ee" stroke-width="2.3" stroke-linecap="round"/>
+          <path d="M83 214c24 7 50 7 74 0" stroke="#3c5873" stroke-width="5" fill="none"/>
+          <g class="arm arm-left"><path fill="#49697f" d="M78 158C64 166 58 197 56 222c0 6.5 5 10.5 12 10.5l16-2C86.5 207 87.5 181 92 158Z"/><rect x="57" y="212" width="27" height="9" rx="4.5" fill="#3c5873"/><circle cx="68.5" cy="232" r="8.4" fill="url(#skinGrad)"/></g>
+          <g class="arm arm-right"><path fill="#49697f" d="M162 158c14 8 20 39 22 64 0 6.5-5 10.5-12 10.5l-16-2C153.5 207 152.5 181 148 158Z"/><rect x="156" y="212" width="27" height="9" rx="4.5" fill="#3c5873"/><circle cx="171.5" cy="232" r="8.4" fill="url(#skinGrad)"/></g>
+        </g>
 
-      <!-- pescoço -->
-      <rect x="105" y="120" width="30" height="24" rx="7" fill="url(#skinGrad)"/>
-      <path d="M105 124q15 10 30 0v-7h-30Z" fill="#000" opacity=".16"/>
+        <!-- ══════════ OUTFIT: VOO (jumpsuit de operações) ══════════ -->
+        <g class="outfit outfit-voo">
+          <path fill="#22385a" d="M90 228c-2 20-2 40 0 56l22 0c1-20 1-36 1-56Z"/>
+          <path fill="#22385a" d="M127 228c0 20 0 36 1 56l22 0c2-16 2-36 0-56Z"/>
+          <path fill="#101a29" d="M85 280h29q0 21-14.5 21T85 280Z"/>
+          <path fill="#101a29" d="M126 280h29q0 21-14.5 21T126 280Z"/>
+          <rect x="85" y="292" width="29" height="5" fill="#57e6c9" opacity=".45"/><rect x="126" y="292" width="29" height="5" fill="#57e6c9" opacity=".45"/>
+          <path fill="url(#navyGrad)" d="M77 158C70 176 68 208 76 226c13 8 27 10 44 10s31-2 44-10c8-18 6-50-1-68-26-9-60-9-86 0Z"/>
+          <path d="M120 156v68" stroke="rgba(255,255,255,.22)" stroke-width="2"/>
+          <path d="M154 158 96 224" stroke="#57e6c9" stroke-width="6" opacity=".55"/>
+          <rect x="76" y="154" width="18" height="8" rx="3" fill="#2b3f5e" stroke="#57e6c9" stroke-width=".8" opacity=".9"/>
+          <rect x="146" y="154" width="18" height="8" rx="3" fill="#2b3f5e" stroke="#57e6c9" stroke-width=".8" opacity=".9"/>
+          <rect x="97" y="192" width="46" height="22" rx="7" fill="#101a29" stroke="rgba(87,230,201,.35)"/>
+          <circle cx="108" cy="203" r="2.7" fill="#57e6c9"/><circle cx="120" cy="203" r="2.7" fill="#ffd166"/><circle cx="132" cy="203" r="2.7" fill="#ff8a5c"/>
+          <g class="arm arm-left"><path fill="url(#navyGrad)" d="M78 158C64 166 58 197 56 222c0 6.5 5 10.5 12 10.5l16-2C86.5 207 87.5 181 92 158Z"/><rect x="57" y="213" width="27" height="8" rx="4" fill="none" stroke="#57e6c9" stroke-width="1.2" opacity=".5"/><circle cx="68.5" cy="232" r="8.4" fill="url(#skinGrad)"/></g>
+          <g class="arm arm-right"><path fill="url(#navyGrad)" d="M162 158c14 8 20 39 22 64 0 6.5-5 10.5-12 10.5l-16-2C153.5 207 152.5 181 148 158Z"/><rect x="156" y="213" width="27" height="8" rx="4" fill="none" stroke="#57e6c9" stroke-width="1.2" opacity=".5"/><circle cx="171.5" cy="232" r="8.4" fill="url(#skinGrad)"/></g>
+        </g>
 
-      <!-- orelhas -->
-      <ellipse cx="83.5" cy="98" rx="6.6" ry="10.6" fill="url(#skinGrad)"/>
-      <ellipse cx="156.5" cy="98" rx="6.6" ry="10.6" fill="url(#skinGrad)"/>
-      <path d="M81 96q3.5 3.4 0 7.4M159 96q-3.5 3.4 0 7.4" stroke="rgba(23,17,15,.28)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <!-- ══════════ OUTFIT: CARGO (utilitário terracota) ══════════ -->
+        <g class="outfit outfit-cargo">
+          <path fill="#b8a06a" d="M90 228c-2 20-2 40 0 56l22 0c1-20 1-36 1-56Z"/>
+          <path fill="#b8a06a" d="M127 228c0 20 0 36 1 56l22 0c2-16 2-36 0-56Z"/>
+          <rect x="97" y="244" width="13" height="8" rx="1.5" fill="#a8895a"/><rect x="130" y="244" width="13" height="8" rx="1.5" fill="#a8895a"/>
+          <path fill="#6b4a2a" d="M85 280h29q0 21-14.5 21T85 280Z"/>
+          <path fill="#6b4a2a" d="M126 280h29q0 21-14.5 21T126 280Z"/>
+          <rect x="85" y="292" width="29" height="5" fill="#3a2412"/><rect x="126" y="292" width="29" height="5" fill="#3a2412"/>
+          <path fill="url(#terraGrad)" d="M77 158C70 178 68 208 76 226c13 8 27 10 44 10s31-2 44-10c8-18 6-48-1-68-26-9-60-9-86 0Z"/>
+          <path fill="#a8552f" d="M104 149l16 10 16-10-3-6-13 7-13-7Z"/>
+          <circle cx="120" cy="172" r="1.7" fill="#5f3013"/><circle cx="120" cy="188" r="1.7" fill="#5f3013"/><circle cx="120" cy="204" r="1.7" fill="#5f3013"/>
+          <rect x="89" y="186" width="14" height="10" rx="2" fill="#b3642f" stroke="#7c3d1f"/><rect x="137" y="186" width="14" height="10" rx="2" fill="#b3642f" stroke="#7c3d1f"/>
+          <g class="arm arm-left"><path fill="url(#terraGrad)" d="M78 158C64 166 58 197 56 222c0 6.5 5 10.5 12 10.5l16-2C86.5 207 87.5 181 92 158Z"/><path d="M56 214h27v9c-9 3-18 3-27 0Z" fill="#e8dcc8" opacity=".85"/><circle cx="68.5" cy="232" r="8.4" fill="url(#skinGrad)"/></g>
+          <g class="arm arm-right"><path fill="url(#terraGrad)" d="M162 158c14 8 20 39 22 64 0 6.5-5 10.5-12 10.5l-16-2C153.5 207 152.5 181 148 158Z"/><path d="M157 214h27v9c-9 3-18 3-27 0Z" fill="#e8dcc8" opacity=".85"/><circle cx="171.5" cy="232" r="8.4" fill="url(#skinGrad)"/></g>
+        </g>
 
-      <!-- rosto (formato humano com mandíbula) -->
-      <path class="face" fill="url(#skinGrad)" d="M85 96C85 70 100 57 120 57c20 0 35 13 35 39 0 16-4 30-14 40-10 10-32 10-42 0-10-10-14-24-14-40Z"/>
+        <!-- pescoço -->
+        <rect x="107" y="122" width="26" height="26" rx="7" fill="url(#skinGrad)"/>
+        <path d="M107 124q13 10 26 0v-6.5h-26Z" fill="#000" opacity=".15"/>
 
-      <!-- ═══ PELOS FACIAIS (atrás da boca) ═══ -->
-      <g class="beard beard-beard" fill="var(--hair,#3a2a1e)">
-        <path d="M95.5 122c1.5 20 12.5 29 24.5 29s23-9 24.5-29c-7.5 13.5-16 18.5-24.5 18.5S103 135.5 95.5 122Z"/>
-        <path d="M104.5 116.5c6-4.2 12.5-3.4 15.5.9 3-4.3 9.5-5.1 15.5-.9-3 6.5-12 8.4-15.5 5.6-3.5 2.8-12.5 1-15.5-5.6Z"/>
-      </g>
-      <path class="beard beard-mustache" fill="var(--hair,#3a2a1e)" d="M104.5 117c6-4.4 12.5-3.6 15.5 1 3-4.6 9.5-5.4 15.5-1-3 7-12 9-15.5 6.2-3.5 2.8-12.5 .8-15.5-6.2Z"/>
-      <g class="beard beard-goatee" fill="var(--hair,#3a2a1e)">
-        <path d="M110 133.5c3.5 9.5 16.5 9.5 20 0-5.5 6-14.5 6-20 0Z"/>
-        <path d="M107.5 118.5c5.4-3.4 10.6-2.8 12.5 1 1.9-3.8 7.1-4.4 12.5-1-2.4 5-9.6 6.4-12.5 4.6-2.9 1.8-10 .4-12.5-5.4Z"/>
-      </g>
+        <!-- orelhas -->
+        <ellipse cx="83.5" cy="98" rx="6.6" ry="10.6" fill="url(#skinGrad)"/>
+        <ellipse cx="156.5" cy="98" rx="6.6" ry="10.6" fill="url(#skinGrad)"/>
+        <path d="M81 96q3.5 3.4 0 7.4M159 96q-3.5 3.4 0 7.4" stroke="rgba(23,17,15,.28)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
 
-      <!-- ══ MOOD: calm ══ -->
-      <g class="m eyes-calm">
-        <path d="M93.5 96q9-6.9 18 0q-9 6.9-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
-        <path d="M128.5 96q9-6.9 18 0q-9 6.9-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
-        <circle cx="102.5" cy="96" r="4.9" fill="var(--iris,#4a3423)"/><circle cx="137.5" cy="96" r="4.9" fill="var(--iris,#4a3423)"/>
-        <circle cx="102.5" cy="96" r="2.3" fill="#17110f"/><circle cx="137.5" cy="96" r="2.3" fill="#17110f"/>
-        <circle cx="101" cy="94.3" r="1.15" fill="#fff"/><circle cx="136" cy="94.3" r="1.15" fill="#fff"/>
-        <path d="M93.5 93.6q9-6.8 18 0M128.5 93.6q9-6.8 18 0" stroke="#2a211b" stroke-width="2.1" fill="none" stroke-linecap="round"/>
-      </g>
-      <g class="m brows-calm" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
-        <path d="M94.5 82.5q8-3.4 15 0"/><path d="M130.5 82.5q8-3.4 15 0"/>
-      </g>
-      <path class="m mouth-calm" fill="#a8563f" opacity=".94" d="M106.5 122.5q13.5 6.6 27 0q-3.2 5.6-13.5 5.6q-10.3 0-13.5-5.6Z"/>
+        <!-- rosto -->
+        <path class="face" fill="url(#skinGrad)" d="M85 96C85 70 100 57 120 57c20 0 35 13 35 39 0 16-4 30-14 40-10 10-32 10-42 0-10-10-14-24-14-40Z"/>
 
-      <!-- ══ MOOD: happy ══ -->
-      <g class="m eyes-happy" stroke="#2a211b" stroke-width="2.8" fill="none" stroke-linecap="round">
-        <path d="M93.5 96.5q9-8.4 18 0"/><path d="M128.5 96.5q9-8.4 18 0"/>
-      </g>
-      <g class="m brows-happy" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
-        <path d="M94.5 80.8q8-3.8 15 0"/><path d="M130.5 80.8q8-3.8 15 0"/>
-      </g>
-      <g class="m mouth-happy">
-        <path d="M104.5 121q15.5 8.8 31 0q-2.2 12.6-15.5 12.6q-13.3 0-15.5-12.6Z" fill="#452a21"/>
-        <path d="M107.4 122.4q12.6 6.1 25.2 0q-1 4.8-12.6 4.8q-11.6 0-12.6-4.8Z" fill="#f3e9dc"/>
-        <ellipse cx="120" cy="130.8" rx="7.6" ry="3" fill="#b3654f"/>
-      </g>
+        <!-- PELOS FACIAIS -->
+        <g class="beard beard-beard" fill="var(--hair,#3a2a1e)">
+          <path d="M95.5 122c1.5 20 12.5 29 24.5 29s23-9 24.5-29c-7.5 13.5-16 18.5-24.5 18.5S103 135.5 95.5 122Z"/>
+          <path d="M104.5 116.5c6-4.2 12.5-3.4 15.5.9 3-4.3 9.5-5.1 15.5-.9-3 6.5-12 8.4-15.5 5.6-3.5 2.8-12.5 1-15.5-5.6Z"/>
+        </g>
+        <path class="beard beard-mustache" fill="var(--hair,#3a2a1e)" d="M104.5 117c6-4.4 12.5-3.6 15.5 1 3-4.6 9.5-5.4 15.5-1-3 7-12 9-15.5 6.2-3.5 2.8-12.5 .8-15.5-6.2Z"/>
+        <g class="beard beard-goatee" fill="var(--hair,#3a2a1e)">
+          <path d="M110 133.5c3.5 9.5 16.5 9.5 20 0-5.5 6-14.5 6-20 0Z"/>
+          <path d="M107.5 118.5c5.4-3.4 10.6-2.8 12.5 1 1.9-3.8 7.1-4.4 12.5-1-2.4 5-9.6 6.4-12.5 4.6-2.9 1.8-10 .4-12.5-5.4Z"/>
+        </g>
 
-      <!-- ══ MOOD: sad ══ -->
-      <g class="m eyes-sad">
-        <path d="M93.5 96q9-5.4 18 0q-9 6.6-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
-        <path d="M128.5 96q9-5.4 18 0q-9 6.6-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
-        <circle cx="102.5" cy="97.4" r="4.6" fill="var(--iris,#4a3423)"/><circle cx="137.5" cy="97.4" r="4.6" fill="var(--iris,#4a3423)"/>
-        <circle cx="102.5" cy="97.4" r="2.1" fill="#17110f"/><circle cx="137.5" cy="97.4" r="2.1" fill="#17110f"/>
-        <path d="M93.5 92.6h18M128.5 92.6h18" stroke="#2a211b" stroke-width="2.2" stroke-linecap="round"/>
-      </g>
-      <g class="m brows-sad" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
-        <path d="M94.5 84.4l15-3.8"/><path d="M145.5 84.4l-15-3.8"/>
-      </g>
-      <path class="m mouth-sad" d="M106.5 128q13.5-5.8 27 0" stroke="#a8563f" stroke-width="2.7" fill="none" stroke-linecap="round"/>
+        <!-- ══ MOOD: calm ══ -->
+        <g class="m eyes-calm">
+          <path d="M93.5 96q9-6.9 18 0q-9 6.9-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
+          <path d="M128.5 96q9-6.9 18 0q-9 6.9-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
+          <circle cx="102.5" cy="96" r="4.9" fill="var(--iris,#4a3423)"/><circle cx="137.5" cy="96" r="4.9" fill="var(--iris,#4a3423)"/>
+          <circle cx="102.5" cy="96" r="2.3" fill="#17110f"/><circle cx="137.5" cy="96" r="2.3" fill="#17110f"/>
+          <circle cx="101" cy="94.3" r="1.15" fill="#fff"/><circle cx="136" cy="94.3" r="1.15" fill="#fff"/>
+          <path d="M93.5 93.6q9-6.8 18 0M128.5 93.6q9-6.8 18 0" stroke="#2a211b" stroke-width="2.1" fill="none" stroke-linecap="round"/>
+        </g>
+        <g class="m brows-calm" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
+          <path d="M94.5 82.5q8-3.4 15 0"/><path d="M130.5 82.5q8-3.4 15 0"/>
+        </g>
+        <path class="m mouth-calm" fill="#a8563f" opacity=".94" d="M106.5 122.5q13.5 6.6 27 0q-3.2 5.6-13.5 5.6q-10.3 0-13.5-5.6Z"/>
 
-      <!-- ══ MOOD: worried (medo / mal) ══ -->
-      <g class="m eyes-worried">
-        <path d="M93.5 96q9-7.3 18 0q-9 7-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
-        <path d="M128.5 96q9-7.3 18 0q-9 7-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
-        <circle cx="102.5" cy="96.6" r="5.2" fill="var(--iris,#4a3423)"/><circle cx="137.5" cy="96.6" r="5.2" fill="var(--iris,#4a3423)"/>
-        <circle cx="102.5" cy="96.6" r="2.4" fill="#17110f"/><circle cx="137.5" cy="96.6" r="2.4" fill="#17110f"/>
-        <circle cx="101" cy="94.7" r="1.1" fill="#fff"/><circle cx="136" cy="94.7" r="1.1" fill="#fff"/>
-        <path d="M93.5 92.4q9-6 18-1.6M128.5 92.4q9-6 18-1.6M128.5 90.8q9-4.4 18 0M93.5 90.8q9-4.4 18 0" stroke="#2a211b" stroke-width="2" fill="none" stroke-linecap="round" opacity=".9"/>
-      </g>
-      <g class="m brows-worried" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
-        <path d="M94.5 78.6q8.2 1.4 14.5 5.8"/><path d="M145.5 78.6q-8.2 1.4-14.5 5.8"/>
-      </g>
-      <path class="m mouth-worried" d="M105 124.5q7.5-3.5 15 0t15 0" stroke="#a8563f" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-      <path class="m sweat-worried" d="M158.5 72q3.6 6 0 8.8q-3.6-2.8 0-8.8Z" fill="#bfe6ff" stroke="#8ec9e8" stroke-width=".8" opacity=".97"/>
+        <!-- ══ MOOD: happy ══ -->
+        <g class="m eyes-happy" stroke="#2a211b" stroke-width="2.8" fill="none" stroke-linecap="round">
+          <path d="M93.5 96.5q9-8.4 18 0"/><path d="M128.5 96.5q9-8.4 18 0"/>
+        </g>
+        <g class="m brows-happy" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
+          <path d="M94.5 80.8q8-3.8 15 0"/><path d="M130.5 80.8q8-3.8 15 0"/>
+        </g>
+        <g class="m mouth-happy">
+          <path d="M104.5 121q15.5 8.8 31 0q-2.2 12.6-15.5 12.6q-13.3 0-15.5-12.6Z" fill="#452a21"/>
+          <path d="M107.4 122.4q12.6 6.1 25.2 0q-1 4.8-12.6 4.8q-11.6 0-12.6-4.8Z" fill="#f3e9dc"/>
+          <ellipse cx="120" cy="130.8" rx="7.6" ry="3" fill="#b3654f"/>
+        </g>
 
-      <!-- ══ MOOD: crying ══ -->
-      <g class="m eyes-cry" stroke="#2a211b" stroke-width="2.7" fill="none" stroke-linecap="round">
-        <path d="M93.5 92.5q9 8.6 18 0"/><path d="M128.5 92.5q9 8.6 18 0"/>
-      </g>
-      <g class="m brows-cry" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
-        <path d="M94.5 78.5q8.4 2.6 15 5.6"/><path d="M145.5 78.5q-8.4 2.6-15 5.6"/>
-      </g>
-      <ellipse class="m mouth-cry" cx="120" cy="126.5" rx="6.6" ry="7.8" fill="#452a21" stroke="#33231d" stroke-width="1.8"/>
-      <path class="m tear-cry tear-left" d="M98.5 103q2.7 9.6 0 13.8q-2.7-4.2 0-13.8Z" fill="#9fd8ff" stroke="#7fc4ea" stroke-width=".6"/>
-      <path class="m tear-cry tear-right" d="M141.5 103q2.7 9.6 0 13.8q-2.7-4.2 0-13.8Z" fill="#9fd8ff" stroke="#7fc4ea" stroke-width=".6"/>
+        <!-- ══ MOOD: sad ══ -->
+        <g class="m eyes-sad">
+          <path d="M93.5 96q9-5.4 18 0q-9 6.6-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
+          <path d="M128.5 96q9-5.4 18 0q-9 6.6-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
+          <circle cx="102.5" cy="97.4" r="4.6" fill="var(--iris,#4a3423)"/><circle cx="137.5" cy="97.4" r="4.6" fill="var(--iris,#4a3423)"/>
+          <circle cx="102.5" cy="97.4" r="2.1" fill="#17110f"/><circle cx="137.5" cy="97.4" r="2.1" fill="#17110f"/>
+          <path d="M93.5 92.6h18M128.5 92.6h18" stroke="#2a211b" stroke-width="2.2" stroke-linecap="round"/>
+        </g>
+        <g class="m brows-sad" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
+          <path d="M94.5 84.4l15-3.8"/><path d="M145.5 84.4l-15-3.8"/>
+        </g>
+        <path class="m mouth-sad" d="M106.5 128q13.5-5.8 27 0" stroke="#a8563f" stroke-width="2.7" fill="none" stroke-linecap="round"/>
 
-      <!-- ══ MOOD: sick ══ -->
-      <g class="m eyes-sick" stroke="#2a211b" stroke-width="2.7" fill="none" stroke-linecap="round">
-        <path d="M93.5 96.5h18"/><path d="M128.5 96.5h18"/>
-      </g>
-      <g class="m brows-sick" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
-        <path d="M94.5 84.5q8-2 15 1.4"/><path d="M145.5 84.5q-8-2-15 1.4"/>
-      </g>
-      <path class="m mouth-sick" d="M106 127q6.8 2.8 13.5 0t13.5 0" stroke="#a8563f" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+        <!-- ══ MOOD: worried ══ -->
+        <g class="m eyes-worried">
+          <path d="M93.5 96q9-7.3 18 0q-9 7-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
+          <path d="M128.5 96q9-7.3 18 0q-9 7-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
+          <circle cx="102.5" cy="96.6" r="5.2" fill="var(--iris,#4a3423)"/><circle cx="137.5" cy="96.6" r="5.2" fill="var(--iris,#4a3423)"/>
+          <circle cx="102.5" cy="96.6" r="2.4" fill="#17110f"/><circle cx="137.5" cy="96.6" r="2.4" fill="#17110f"/>
+          <circle cx="101" cy="94.7" r="1.1" fill="#fff"/><circle cx="136" cy="94.7" r="1.1" fill="#fff"/>
+          <path d="M93.5 92.4q9-6 18-1.6M128.5 92.4q9-6 18-1.6" stroke="#2a211b" stroke-width="2" fill="none" stroke-linecap="round" opacity=".9"/>
+        </g>
+        <g class="m brows-worried" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
+          <path d="M94.5 78.6q8.2 1.4 14.5 5.8"/><path d="M145.5 78.6q-8.2 1.4-14.5 5.8"/>
+        </g>
+        <path class="m mouth-worried" d="M105 124.5q7.5-3.5 15 0t15 0" stroke="#a8563f" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+        <path class="m sweat-worried" d="M158.5 72q3.6 6 0 8.8q-3.6-2.8 0-8.8Z" fill="#bfe6ff" stroke="#8ec9e8" stroke-width=".8" opacity=".97"/>
 
-      <!-- nariz -->
-      <path d="M118.4 97q2.7 7.4-1 10.6" stroke="rgba(23,17,15,.24)" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <ellipse cx="114.2" cy="110.2" rx="1.6" ry="1.05" fill="rgba(23,17,15,.5)"/>
-      <ellipse cx="125.8" cy="110.2" rx="1.6" ry="1.05" fill="rgba(23,17,15,.5)"/>
-      <path d="M112.3 113q7.7 3.7 15.4 0" stroke="rgba(23,17,15,.16)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- ══ MOOD: crying ══ -->
+        <g class="m eyes-cry" stroke="#2a211b" stroke-width="2.7" fill="none" stroke-linecap="round">
+          <path d="M93.5 92.5q9 8.6 18 0"/><path d="M128.5 92.5q9 8.6 18 0"/>
+        </g>
+        <g class="m brows-cry" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
+          <path d="M94.5 78.5q8.4 2.6 15 5.6"/><path d="M145.5 78.5q-8.4 2.6-15 5.6"/>
+        </g>
+        <ellipse class="m mouth-cry" cx="120" cy="126.5" rx="6.6" ry="7.8" fill="#452a21" stroke="#33231d" stroke-width="1.8"/>
+        <path class="m tear-cry tear-left" d="M98.5 103q2.7 9.6 0 13.8q-2.7-4.2 0-13.8Z" fill="#9fd8ff" stroke="#7fc4ea" stroke-width=".6"/>
+        <path class="m tear-cry tear-right" d="M141.5 103q2.7 9.6 0 13.8q-2.7-4.2 0-13.8Z" fill="#9fd8ff" stroke="#7fc4ea" stroke-width=".6"/>
 
-      <!-- blush -->
-      <ellipse cx="96.5" cy="113" rx="5.2" ry="3" fill="#e87f5f" opacity=".45"/>
-      <ellipse cx="143.5" cy="113" rx="5.2" ry="3" fill="#e87f5f" opacity=".45"/>
+        <!-- ══ MOOD: sick ══ -->
+        <g class="m eyes-sick" stroke="#2a211b" stroke-width="2.7" fill="none" stroke-linecap="round">
+          <path d="M93.5 96.5h18"/><path d="M128.5 96.5h18"/>
+        </g>
+        <g class="m brows-sick" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
+          <path d="M94.5 84.5q8-2 15 1.4"/><path d="M145.5 84.5q-8-2-15 1.4"/>
+        </g>
+        <path class="m mouth-sick" d="M106 127q6.8 2.8 13.5 0t13.5 0" stroke="#a8563f" stroke-width="2.4" fill="none" stroke-linecap="round"/>
 
-      <!-- sardas -->
-      <g class="freckles" fill="rgba(88,52,28,.62)">
-        <circle cx="97" cy="108.5" r=".95"/><circle cx="102.5" cy="107" r=".85"/><circle cx="100" cy="111.5" r=".85"/><circle cx="107" cy="109.5" r=".8"/>
-        <circle cx="143" cy="108.5" r=".95"/><circle cx="137.5" cy="107" r=".85"/><circle cx="140" cy="111.5" r=".85"/><circle cx="133" cy="109.5" r=".8"/>
-      </g>
+        <!-- nariz -->
+        <path d="M118.4 97q2.7 7.4-1 10.6" stroke="rgba(23,17,15,.24)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="114.2" cy="110.2" rx="1.6" ry="1.05" fill="rgba(23,17,15,.5)"/>
+        <ellipse cx="125.8" cy="110.2" rx="1.6" ry="1.05" fill="rgba(23,17,15,.5)"/>
+        <path d="M112.3 113q7.7 3.7 15.4 0" stroke="rgba(23,17,15,.16)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
 
-      <!-- ═══ ESTILOS DE CABELO ═══ -->
-      <path class="hair hair-crop" fill="var(--hair,#3a2a1e)" d="M87 79C85 55 100 46 120 46c20 0 35 9 33 33-8-15-20-22-33-22s-25 7-33 22Z"/>
-      <g class="hair hair-sweep" fill="var(--hair,#3a2a1e)">
-        <path d="M85 79C83 53 105 44 128 46.5c20 2.2 27 14 26 34-5-18.5-20.5-26-43.5-24.5-12.5 1.2-21 9.5-25.5 23Z"/>
-        <path d="M95 57c11-7 28-8.5 41-4.5-12-2.8-25-1.4-37 6.4Z" opacity=".38" fill="#ffffff"/>
-        <path d="M148 48.5q12-3.5 15-14q-13 1-20 11.5Z"/>
-      </g>
-      <g class="hair hair-curly" fill="var(--hair,#3a2a1e)">
-        <path d="M87 79C85 55 100 46 120 46c20 0 35 9 33 33-8-15-20-22-33-22s-25 7-33 22Z" opacity=".4"/>
-        <circle cx="93" cy="56" r="9"/><circle cx="107" cy="49" r="9.5"/><circle cx="122" cy="46.5" r="9.5"/><circle cx="137" cy="49" r="9"/><circle cx="151" cy="56" r="9"/>
-        <circle cx="86" cy="66" r="7"/><circle cx="158" cy="66" r="7"/><circle cx="114.5" cy="45" r="8"/><circle cx="131" cy="44" r="8"/>
-      </g>
-      <g class="hair hair-ponytail" fill="var(--hair,#3a2a1e)">
-        <path d="M87 79C85 55 100 46 120 46c20 0 35 9 33 33-8-15-20-22-33-22s-25 7-33 22Z"/>
-        <circle cx="157" cy="59" r="3.6" fill="#c4714b"/>
-      </g>
-      <g class="hair hair-bob" fill="var(--hair,#3a2a1e)">
-        <path d="M83 86C79 48 103 40 120 40s41 8 37 46c-6 8-10 22-11 42-6-2-9-14-9-28 6-12 2-32-17-38-19-5-38 6-37 24 0 14-3 26-9 28-1-20-5-36-11-48Z"/>
-      </g>
-      <g class="hair hair-bun" fill="var(--hair,#3a2a1e)">
-        <path d="M87 79C85 55 100 46 120 46c20 0 35 9 33 33-8-15-20-22-33-22s-25 7-33 22Z"/>
-        <circle cx="120" cy="40" r="10.5"/>
-        <path d="M111 41q9-5 18 0" stroke="rgba(0,0,0,.25)" stroke-width="1.6" fill="none"/>
-      </g>
+        <!-- blush -->
+        <ellipse cx="96.5" cy="113" rx="5.2" ry="3" fill="#e87f5f" opacity=".45"/>
+        <ellipse cx="143.5" cy="113" rx="5.2" ry="3" fill="#e87f5f" opacity=".45"/>
 
-      <!-- capacete (vidro claro por cima de tudo) -->
-      <circle cx="120" cy="90" r="57" fill="url(#clearGlass)"/>
-      <circle cx="120" cy="90" r="57" fill="none" stroke="var(--suit-a,#1f6f6e)" stroke-width="6.5"/>
-      <circle cx="120" cy="90" r="57" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
-      <path d="M74 62q20-26 54-27" stroke="#ffffff" stroke-width="6.5" fill="none" stroke-linecap="round" opacity=".6"/>
-      <path d="M72.5 93q1.8-9.4 6.4-16.5" stroke="#ffffff" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".5"/>
-      <circle cx="64.5" cy="66" r="1.7" fill="rgba(0,0,0,.3)"/><circle cx="175.5" cy="66" r="1.7" fill="rgba(0,0,0,.3)"/><circle cx="60.5" cy="117" r="1.7" fill="rgba(0,0,0,.3)"/><circle cx="179.5" cy="117" r="1.7" fill="rgba(0,0,0,.3)"/>
-      <path d="M169 42l2.3 5.7 5.7 2.3-5.7 2.3-2.3 5.7-2.3-5.7-5.7-2.3 5.7-2.3Z" fill="#fff" opacity=".9"/>
-      <circle class="comms-light" cx="120" cy="31.5" r="4.2" fill="#57e6c9"/>
+        <!-- sardas -->
+        <g class="freckles" fill="rgba(88,52,28,.62)">
+          <circle cx="97" cy="108.5" r=".95"/><circle cx="102.5" cy="107" r=".85"/><circle cx="100" cy="111.5" r=".85"/><circle cx="107" cy="109.5" r=".8"/>
+          <circle cx="143" cy="108.5" r=".95"/><circle cx="137.5" cy="107" r=".85"/><circle cx="140" cy="111.5" r=".85"/><circle cx="133" cy="109.5" r=".8"/>
+        </g>
+
+        <!-- ═══ ESTILOS DE CABELO ═══ -->
+        <path class="hair hair-crop" fill="var(--hair,#3a2a1e)" d="M87 79C85 55 100 46 120 46c20 0 35 9 33 33-8-15-20-22-33-22s-25 7-33 22Z"/>
+        <g class="hair hair-sweep" fill="var(--hair,#3a2a1e)">
+          <path d="M85 79C83 53 105 44 128 46.5c20 2.2 27 14 26 34-5-18.5-20.5-26-43.5-24.5-12.5 1.2-21 9.5-25.5 23Z"/>
+          <path d="M95 57c11-7 28-8.5 41-4.5-12-2.8-25-1.4-37 6.4Z" opacity=".38" fill="#ffffff"/>
+          <path d="M148 48.5q12-3.5 15-14q-13 1-20 11.5Z"/>
+        </g>
+        <g class="hair hair-curly" fill="var(--hair,#3a2a1e)">
+          <path d="M87 79C85 55 100 46 120 46c20 0 35 9 33 33-8-15-20-22-33-22s-25 7-33 22Z" opacity=".4"/>
+          <circle cx="93" cy="56" r="9"/><circle cx="107" cy="49" r="9.5"/><circle cx="122" cy="46.5" r="9.5"/><circle cx="137" cy="49" r="9"/><circle cx="151" cy="56" r="9"/>
+          <circle cx="86" cy="66" r="7"/><circle cx="158" cy="66" r="7"/><circle cx="114.5" cy="45" r="8"/><circle cx="131" cy="44" r="8"/>
+        </g>
+        <g class="hair hair-ponytail" fill="var(--hair,#3a2a1e)">
+          <path d="M87 79C85 55 100 46 120 46c20 0 35 9 33 33-8-15-20-22-33-22s-25 7-33 22Z"/>
+          <circle cx="157" cy="59" r="3.6" fill="#c4714b"/>
+        </g>
+        <g class="hair hair-bob" fill="var(--hair,#3a2a1e)">
+          <path d="M83 84C79 46 103 38 120 38s41 8 37 46c-6 8-10 22-11 42-6-2-9-14-9-28 6-12 2-32-17-38-19-5-38 6-37 24 0 14-3 26-9 28-1-20-5-36-11-48Z"/>
+        </g>
+        <g class="hair hair-bun" fill="var(--hair,#3a2a1e)">
+          <path d="M87 79C85 55 100 46 120 46c20 0 35 9 33 33-8-15-20-22-33-22s-25 7-33 22Z"/>
+          <circle cx="120" cy="40" r="10.5"/>
+          <path d="M111 39q9-5 18 0" stroke="rgba(0,0,0,.25)" stroke-width="1.6" fill="none"/>
+        </g>
+
+        <!-- ══════════ ASTRONAUTA — capacete (acima do rosto) ══════════ -->
+        <g class="outfit outfit-astronaut-front">
+          <rect x="70" y="140" width="100" height="26" rx="13" fill="url(#suitGradSoft)" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+          <circle cx="120" cy="90" r="57" fill="url(#clearGlass)"/>
+          <circle cx="120" cy="90" r="57" fill="none" stroke="var(--suit-a,#1f6f6e)" stroke-width="6.5"/>
+          <circle cx="120" cy="90" r="57" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+          <path d="M74 62q20-26 54-27" stroke="#ffffff" stroke-width="6.5" fill="none" stroke-linecap="round" opacity=".6"/>
+          <path d="M72.5 93q1.8-9.4 6.4-16.5" stroke="#ffffff" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".5"/>
+          <circle cx="64.5" cy="66" r="1.7" fill="rgba(0,0,0,.3)"/><circle cx="175.5" cy="66" r="1.7" fill="rgba(0,0,0,.3)"/><circle cx="60.5" cy="117" r="1.7" fill="rgba(0,0,0,.3)"/><circle cx="179.5" cy="117" r="1.7" fill="rgba(0,0,0,.3)"/>
+          <path d="M169 42l2.3 5.7 5.7 2.3-5.7 2.3-2.3 5.7-2.3-5.7-5.7-2.3 5.7-2.3Z" fill="#fff" opacity=".9"/>
+          <circle class="comms-light" cx="120" cy="31.5" r="4.2" fill="#57e6c9"/>
+        </g>
+      </g>
     </symbol>
-
     <!-- ══════ Bip — robozinho mascote ══════ -->
     <symbol id="bipBot" viewBox="0 0 96 104">
       <line x1="48" y1="6" x2="48" y2="17" stroke="#175f5e" stroke-width="3" stroke-linecap="round"/>
@@ -296,11 +373,12 @@
         </div>
 
         <div class="avatar-stage">
-          <svg class="avatar avatar-hero" data-mood="calm" data-hair="sweep" data-beard="none" data-freckles="off" viewBox="0 0 240 260" role="img" aria-label="Avatar da tripulante"></svg>
+          <svg class="avatar avatar-hero" data-mood="calm" data-hair="sweep" data-beard="none" data-freckles="off" data-outfit="astronaut" viewBox="0 0 240 352" role="button" tabindex="0" aria-label="Avatar da tripulante — toque para brincar"></svg>
+          <div class="avatar-bubble" id="avatarBubble" role="status" aria-live="polite" hidden></div>
 
           <div class="personalize-panel glass-deep" id="personalizePanel" hidden>
             <p class="panel-title">Faça o avatar a sua cara</p>
-            <div class="opt-group"><span>Traje</span><div class="swatches" id="suitSwatches"></div></div>
+            <div class="opt-group"><span>Roupa</span><div class="pillset" id="outfitPicker"></div></div>
             <div class="opt-group"><span>Tom de pele</span><div class="swatches" id="skinSwatches"></div></div>
             <div class="opt-group"><span>Corte de cabelo</span><div class="pillset" id="hairStyles"></div></div>
             <div class="opt-group"><span>Cor do cabelo</span><div class="swatches" id="hairColors"></div></div>
@@ -360,7 +438,7 @@
   <section class="screen" id="screen-rotina" aria-label="Rotinas diárias">
     <div class="routines-layout">
       <div class="card glass routine-hero">
-        <svg class="avatar avatar-routine" data-mood="calm" data-hair="sweep" data-beard="none" data-freckles="off" viewBox="0 0 240 260" aria-hidden="true"></svg>
+        <svg class="avatar avatar-routine" data-mood="calm" data-hair="sweep" data-beard="none" data-freckles="off" data-outfit="astronaut" viewBox="0 0 240 352" role="button" tabindex="0" aria-label="Avatar da tripulante — toque para brincar"></svg>
         <div class="routine-hero-info">
           <h2>Rotinas diárias</h2>
           <p class="muted" id="routineDate">—</p>

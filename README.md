@@ -88,7 +88,7 @@ static/
 ```
 
 - **Sem banco de dados**: estado do usuário (rotinas do dia, histórico, conquistas, conversas, diagnósticos) em `localStorage`; vitais simulados server-side com deriva suave.
-- **Avatar/Bip**: SVG vetorial animado (respiração, piscar, lágrimas, antena, olhos que olham ao redor).
+- **Avatar/Bip**: SVG vetorial animado (corpo inteiro sobre **palco**, respiração, piscar, lágrimas). O avatar é **interativo ao toque** (acenar, pular, rir, balão de fala) e **customizável** (roupa: astronauta/casual/voo/cargo · pele · cabelo · pelos faciais · olhos · sardas).
 
 ## Créditos / próximos passos
 

@@ -355,7 +355,8 @@ function updateRoutinesUI() {
 
   // humor do avatar
   const mood = pct === 100 ? 'happy' : (late > 0 && done === 0 ? 'cry' : (late > 0 ? 'worried' : 'calm'));
-  $$('.avatar').forEach(a => a.setAttribute('data-mood', mood));
+  currentMood = mood;
+  $$('.avatar').forEach(a => { if (!a.classList.contains('react-wave') && !a.classList.contains('react-hop') && !a.classList.contains('react-laugh')) a.setAttribute('data-mood', mood); });
   const moodText = {
     happy: 'Humor: radiante — tudo certo por aqui ✨',
     calm: 'Humor: em equilíbrio · mantenha o ritmo',
@@ -695,26 +696,23 @@ $('#chatQuick').addEventListener('click', e => {
 /* ═════════ 9 · PERSONALIZAÇÃO DO AVATAR ═════════ */
 // Variáveis CSS vivem no :root (document.documentElement): assim os gradientes
 // do <symbol> compartilhado enxergam a cor escolhida em TODAS as instâncias.
-const suitOptions = [{ a: '#1f6f6e', b: '#0e4e4d', n: 'Verde Aurora' }, { a: '#c4714b', b: '#8a4a28', n: 'Terracota Ares' }, { a: '#e8dcc8', b: '#b9a887', n: 'Areia Lunar' }, { a: '#5f4a9e', b: '#37285e', n: 'Violeta Cósmica' }, { a: '#2c4a3e', b: '#142a21', n: 'Esmeralda' }];
+const outfitOptions = [{ id: 'astronaut', n: 'Astronauta' }, { id: 'casual', n: 'Casual' }, { id: 'voo', n: 'Voo' }, { id: 'cargo', n: 'Cargo' }];
 const skinOptions = [{ a: '#f6d3b3', b: '#ddb08a', n: 'Clara' }, { a: '#f2c4a0', b: '#d9a074', n: 'Médio-clara' }, { a: '#d9a97b', b: '#b87f52', n: 'Média' }, { a: '#c98e5a', b: '#a06a3d', n: 'Bronzeada' }, { a: '#8a5a33', b: '#5f3a1e', n: 'Escura' }, { a: '#5f3d24', b: '#3a2412', n: 'Profunda' }];
 const hairStyleOptions = [{ id: 'bald', n: 'Calvo' }, { id: 'crop', n: 'Crop' }, { id: 'sweep', n: 'Topete' }, { id: 'curly', n: 'Cacheado' }, { id: 'ponytail', n: 'Rabo de cavalo' }, { id: 'bob', n: 'Bob' }, { id: 'bun', n: 'Coque' }];
 const hairColorOptions = [{ c: '#1d1712', n: 'Preto' }, { c: '#3a2a1e', n: 'Castanho escuro' }, { c: '#6b4a2a', n: 'Castanho' }, { c: '#a8552f', n: 'Ruivo' }, { c: '#d9b36a', n: 'Loiro' }, { c: '#c9c9c9', n: 'Grisalho' }, { c: '#7a3fa0', n: 'Violeta fantasia' }];
 const facialHairOptions = [{ id: 'none', n: 'Nenhum' }, { id: 'beard', n: 'Barba' }, { id: 'mustache', n: 'Bigode' }, { id: 'goatee', n: 'Cavanhaque' }];
 const eyeColorOptions = [{ c: '#4a3423', n: 'Castanho' }, { c: '#6b4a2a', n: 'Avelã' }, { c: '#2e7d5b', n: 'Verde' }, { c: '#3f7fa6', n: 'Azul' }, { c: '#6b6b6b', n: 'Cinza' }];
 const personalizeKey = 'bip.personalize';
-const PERSONALIZE_DEFAULTS = { suit: 'Verde Aurora', skin: 'Médio-clara', hairStyle: 'sweep', hair: 'Castanho escuro', beard: 'none', eyes: 'Castanho', freckles: false };
+const PERSONALIZE_DEFAULTS = { outfit: 'astronaut', skin: 'Médio-clara', hairStyle: 'sweep', hair: 'Castanho escuro', beard: 'none', eyes: 'Castanho', freckles: false };
 
 function getPersonalize() { return { ...PERSONALIZE_DEFAULTS, ...store.get(personalizeKey, {}) }; }
 
 function applyPersonalize() {
   const p = getPersonalize();
   const root = document.documentElement;
-  const suit = suitOptions.find(s => s.n === p.suit) || suitOptions[0];
   const skin = skinOptions.find(s => s.n === p.skin) || skinOptions[1];
   const hair = hairColorOptions.find(s => s.n === p.hair) || hairColorOptions[1];
   const eyes = eyeColorOptions.find(s => s.n === p.eyes) || eyeColorOptions[0];
-  root.style.setProperty('--suit-a', suit.a);
-  root.style.setProperty('--suit-b', suit.b);
   root.style.setProperty('--skin-a', skin.a);
   root.style.setProperty('--skin-b', skin.b);
   root.style.setProperty('--hair', hair.c);
@@ -723,15 +721,16 @@ function applyPersonalize() {
     a.setAttribute('data-hair', p.hairStyle);
     a.setAttribute('data-beard', p.beard);
     a.setAttribute('data-freckles', p.freckles ? 'on' : 'off');
+    a.setAttribute('data-outfit', p.outfit || 'astronaut');
   });
   const mark = (container, key, value) =>
-    $$(`${container} [data-key="${key}"]`).forEach(el => el.setAttribute('aria-pressed', String((el.dataset.n || el.dataset.id) === value)));
-  mark('#suitSwatches', 'suit', suit.n);
+    $$(`${container} [data-key]`).forEach(el => el.setAttribute('aria-pressed', String((el.dataset.n || el.dataset.id) === value)));
   mark('#skinSwatches', 'skin', skin.n);
   mark('#hairColors', 'hair', hair.n);
   mark('#eyeColors', 'eyes', eyes.n);
   mark('#hairStyles', 'hairStyle', p.hairStyle);
   mark('#facialHair', 'beard', p.beard);
+  mark('#outfitPicker', 'outfit', p.outfit || 'astronaut');
   const ft = $('#frecklesToggle');
   if (ft) ft.checked = !!p.freckles;
 }
@@ -742,21 +741,21 @@ function buildPersonalizePanel() {
       `<button class="swatch" style="background:${o.a ? `linear-gradient(150deg, ${o.a}, ${o.b})` : o.c}" data-key="${key}" data-n="${o.n}" aria-pressed="false" aria-label="${o.n}" title="${o.n}"></button>`
     ).join('');
   };
-  mkSwatch(suitOptions, '#suitSwatches', 'suit');
   mkSwatch(skinOptions, '#skinSwatches', 'skin');
   mkSwatch(hairColorOptions, '#hairColors', 'hair');
   mkSwatch(eyeColorOptions, '#eyeColors', 'eyes');
+  $('#outfitPicker').innerHTML = outfitOptions.map(o => `<button class="pill" data-key="outfit" data-id="${o.id}" aria-pressed="false">${o.n}</button>`).join('');
   $('#hairStyles').innerHTML = hairStyleOptions.map(o => `<button class="pill" data-key="hairStyle" data-id="${o.id}" aria-pressed="false">${o.n}</button>`).join('');
   $('#facialHair').innerHTML = facialHairOptions.map(o => `<button class="pill" data-key="beard" data-id="${o.id}" aria-pressed="false">${o.n}</button>`).join('');
 
-  $$('#suitSwatches .swatch, #skinSwatches .swatch, #hairColors .swatch, #eyeColors .swatch').forEach(sw =>
+  $$('#skinSwatches .swatch, #hairColors .swatch, #eyeColors .swatch').forEach(sw =>
     sw.addEventListener('click', () => {
       const p = getPersonalize();
       p[sw.dataset.key] = sw.dataset.n;
       store.set(personalizeKey, p);
       applyPersonalize();
     }));
-  $$('#hairStyles .pill, #facialHair .pill').forEach(pi =>
+  $$('#hairStyles .pill, #facialHair .pill, #outfitPicker .pill').forEach(pi =>
     pi.addEventListener('click', () => {
       const p = getPersonalize();
       p[pi.dataset.key] = pi.dataset.id;
@@ -780,12 +779,51 @@ $('#personalizeReset').addEventListener('click', () => { store.del(personalizeKe
 /* ═════════ 10 · INIT ═════════ */
 // O <symbol>#avatarBody serve de template; clonamos o conteúdo para dentro de
 // cada <svg class="avatar"> para que os atributos data-* controlem
-// cabelo/barba/sardas/humor via CSS (com <use> os seletores não alcançavam os clones).
+// cabelo/barba/sardas/humor/roupa via CSS (com <use> os seletores não alcançavam os clones).
 function hydrateAvatars() {
   const tpl = document.getElementById('avatarBody');
   if (!tpl) return;
   const html = tpl.innerHTML;
   $$('.avatar').forEach(a => { a.innerHTML = html; });
+}
+
+/* ═════════ 10.5 · Reações ao toque (avatar interativo) ═════════ */
+let currentMood = 'calm';
+const reactionCycle = [
+  { cls: 'react-wave', text: 'Oi, tripulante!' },
+  { cls: 'react-hop', text: 'Houston, está tudo certo por aqui!' },
+  { cls: 'react-laugh', text: 'Haha! Gostei dessa!' },
+  { cls: 'react-wave', text: 'Um alô da Estação Aurora!' },
+  { cls: 'react-hop', text: 'Eureca! Bora conferir as rotinas?' },
+];
+let reactionIdx = 0;
+function bindAvatarReactions() {
+  const bubble = $('#avatarBubble');
+  let bubbleTimer = null;
+  const trigger = (svg) => {
+    const reaction = reactionCycle[reactionIdx % reactionCycle.length];
+    reactionIdx++;
+    ['react-wave', 'react-hop', 'react-laugh'].forEach(c => $$('.avatar').forEach(a => a.classList.remove(c)));
+    void svg.getBoundingClientRect(); // reflow: reinicia a animação
+    svg.classList.add(reaction.cls);
+    $$('.avatar').forEach(a => a.setAttribute('data-mood', 'happy'));
+    ding(1318);
+    if (bubble) {
+      bubble.textContent = reaction.text;
+      bubble.hidden = false;
+      clearTimeout(bubbleTimer);
+    }
+    bubbleTimer = setTimeout(() => {
+      if (bubble) bubble.hidden = true;
+      $$('.avatar').forEach(a => { a.setAttribute('data-mood', currentMood); a.classList.remove('react-wave', 'react-hop', 'react-laugh'); });
+    }, 2400);
+  };
+  $$('.avatar').forEach(svg => {
+    svg.addEventListener('click', () => trigger(svg));
+    svg.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); trigger(svg); }
+    });
+  });
 }
 
 async function init() {
@@ -809,6 +847,7 @@ async function init() {
   updateRoutinesUI();
   evaluateAchievements(true);
   await loadExams();
+  bindAvatarReactions();
 
   $('#dxHistoryCount').textContent = String((store.get('bip.diagnoses', []) || []).length);
   renderChat();
