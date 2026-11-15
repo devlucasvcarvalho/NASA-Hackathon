@@ -15,7 +15,14 @@ from app.routers import ai_routes, content, health, vitals
 
 @asynccontextmanager
 async def lifespan(_: FastAPI):
-    db.init_db()
+    if db.init_db():
+        try:
+            from app.services import history
+
+            with db.SessionLocal() as s:
+                history.ensure_history(s)
+        except Exception as e:  # pragma: no cover
+            print(f"[history] backfill falhou: {e}")
     yield
 
 

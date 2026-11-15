@@ -1,12 +1,12 @@
 """Tabelas do estado do usuário.
 
-Vitais e sono NÃO são gravados: o simulador será determinístico (seed + timestamp),
-então o histórico é recalculado sob demanda.
+Vitais e sono SÃO gravados (histórico do paciente). O simulador é determinístico
+(seed + timestamp), então o backfill e o catch-up preguiçoso são reproduzíveis.
 """
 
 from datetime import datetime, timezone
 
-from sqlalchemy import JSON, Boolean, DateTime, Float, Integer, String, Text
+from sqlalchemy import JSON, BigInteger, Boolean, DateTime, Float, Integer, String, Text
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db import Base
@@ -14,6 +14,34 @@ from app.db import Base
 
 def _now() -> datetime:
     return datetime.now(timezone.utc)
+
+
+class VitalSample(Base):
+    """Histórico das métricas do paciente: 1 amostra a cada STEP segundos (epoch UTC)."""
+
+    __tablename__ = "vitals"
+    ts: Mapped[int] = mapped_column(BigInteger, primary_key=True, autoincrement=False)
+    heart_rate: Mapped[float] = mapped_column(Float)
+    spo2: Mapped[float] = mapped_column(Float)
+    hydration: Mapped[float] = mapped_column(Float)
+    bp_sys: Mapped[float] = mapped_column(Float)
+    bp_dia: Mapped[float] = mapped_column(Float)
+    temperature: Mapped[float] = mapped_column(Float)
+    hrv: Mapped[float] = mapped_column(Float)
+    radiation_rate: Mapped[float] = mapped_column(Float)
+
+
+class SleepNight(Base):
+    """Uma noite de sono; `day` é a data em que a pessoa acorda (YYYY-MM-DD)."""
+
+    __tablename__ = "sleep"
+    day: Mapped[str] = mapped_column(String(10), primary_key=True)
+    hours: Mapped[float] = mapped_column(Float)
+    latency_min: Mapped[int] = mapped_column(Integer)
+    awakenings: Mapped[int] = mapped_column(Integer)
+    deep_pct: Mapped[float] = mapped_column(Float)
+    rem_pct: Mapped[float] = mapped_column(Float)
+    night_hr: Mapped[float] = mapped_column(Float)
 
 
 class RoutineLog(Base):
