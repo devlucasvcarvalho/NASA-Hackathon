@@ -17,7 +17,7 @@ def test_false_alarm_rate_is_low():
     with TestClient(app):
         with db.SessionLocal() as s:
             now = time.time()
-            ts_list = list(s.scalars(select(VitalSample.ts).where(VitalSample.ts > now - 3 * 86400).order_by(VitalSample.ts)))[::4]
+            ts_list = list(s.scalars(select(VitalSample.ts).where(VitalSample.ts > now - 3 * 86400).order_by(VitalSample.ts)))
             flagged = 0
             for ts in ts_list:
                 r = anomaly.evaluate(s, now=ts + 1)
@@ -26,7 +26,7 @@ def test_false_alarm_rate_is_low():
                     flagged += 1
             rate = flagged / len(ts_list)
             print(f"false alert rate: {rate:.3%} over {len(ts_list)} samples")
-            assert rate < 0.03
+            assert rate < 0.02
 
 
 def test_scenarios_raise_risk():
@@ -40,7 +40,7 @@ def test_scenarios_raise_risk():
                 assert r["score"] > base["score"], name
             inf = risk.compute(s, now, scenario="infection")
             assert inf["anomaly"]["multivariate"]["level"] != "normal"
-            assert any("Temperatura" in f["name"] for f in inf["factors"])
+            assert any("Temperature" in f["name"] for f in inf["factors"])
 
 
 def test_endpoints():

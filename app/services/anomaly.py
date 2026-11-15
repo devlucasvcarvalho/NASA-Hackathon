@@ -1,8 +1,8 @@
 """Detecção de anomalia nos vitais do paciente.
 
 Duas camadas, ambas calculadas contra o PRÓPRIO histórico do tripulante:
-1. Univariada: z-score robusto (mediana/MAD) vs. baseline da mesma hora do dia
-   (respeita o ritmo circadiano) + limites clínicos de `ranges.py`.
+1. Univariada: z-score robusto (mediana/MAD) vs. baseline do mesmo horário do dia, em
+   slots de 15 min (respeita o ritmo circadiano e eventos curtos, como o exercício das 07:30) + limites clínicos de `ranges.py`.
 2. Multivariada: distância de Mahalanobis dos resíduos (captura correlação, ex.: FC alta
    com HRV baixa e temperatura alta ao mesmo tempo). Só numpy, leve para serverless.
 """
@@ -19,9 +19,14 @@ from app.services.ranges import METRICS, RANGES, status_for
 
 STEP = simulator.STEP
 Z_WATCH, Z_ALERT = 3.5, 5.0          # z robusto por métrica
-D2_WATCH, D2_ALERT = 20.0, 30.0      # Mahalanobis² (8 graus de liberdade: p≈0,01 / p≈0,0002)
+D2_WATCH, D2_ALERT = 20.0, 30.0      # pisos do Mahalanobis² (qui-quadrado, 8 g.l.); o corte real é calibrado no baseline
 _ORDER = {"normal": 0, "vigilancia": 1, "alerta": 2}
+SLOTS = 86400 // STEP  # 96 slots de 15 min por dia
 _cache: dict = {}
+
+
+def _slot(ts: float) -> int:
+    return int((ts % 86400) // STEP)
 
 
 def _worse(a: str, b: str) -> str:
@@ -36,18 +41,27 @@ def _build_baseline(db: Session, now: float) -> dict:
     if len(rows) < 24 * 4 * 3:
         return {}
     arr = np.array(rows, dtype=float)
-    hours = ((arr[:, 0] // 3600) % 24).astype(int)
+    slots = ((arr[:, 0] % 86400) // STEP).astype(int)
     X = arr[:, 1:]
-    med = np.zeros((24, len(METRICS)))
-    scale = np.zeros((24, len(METRICS)))
-    for h in range(24):
-        sel = X[hours == h]
+    med = np.zeros((SLOTS, len(METRICS)))
+    scale = np.zeros((SLOTS, len(METRICS)))
+    for h in range(SLOTS):
+        sel = X[slots == h]
+        if len(sel) == 0:  # slot sem amostras: usa o conjunto todo
+            sel = X
         med[h] = np.median(sel, axis=0)
         mad = np.median(np.abs(sel - med[h]), axis=0) * 1.4826
         scale[h] = np.maximum(mad, np.maximum(0.01 * np.abs(med[h]), 1e-3))
-    R = (X - med[hours]) / scale[hours]
+    R = (X - med[slots]) / scale[slots]
     cov = np.cov(R.T) + 1e-3 * np.eye(len(METRICS))
-    return {"med": med, "scale": scale, "cinv": np.linalg.pinv(cov), "n": len(rows)}
+    cinv = np.linalg.pinv(cov)
+    # Cortes de d² calibrados na distribuição EMPÍRICA do baseline: as caudas reais são mais pesadas que
+    # o qui-quadrado teórico (MAD por slot vem de poucas amostras). Alerta = 1,25 × p99,9 (margem do projeto,
+    # pois o p99,9 medido no treino subestima a cauda fora da amostra); nunca abaixo dos pisos D2_*.
+    d2_train = np.einsum("ij,jk,ik->i", R, cinv, R)
+    p99, p999 = np.percentile(d2_train, [99, 99.9])
+    return {"med": med, "scale": scale, "cinv": cinv, "n": len(rows),
+            "d2_watch": float(max(D2_WATCH, p99)), "d2_alert": float(max(D2_ALERT, 1.25 * p999))}
 
 
 def _baseline(db: Session, now: float) -> dict:
@@ -65,14 +79,15 @@ def _sample_at(db: Session, ts: int) -> dict | None:
 def evaluate_sample(db: Session, sample: dict, now: float) -> dict:
     """Avalia um conjunto de métricas no instante `now`."""
     base = _baseline(db, now)
-    hour = int((now // 3600) % 24)
+    hour = _slot(now)
+    exercising = simulator.is_exercise(now)
     metrics = {}
     r_vec = None
     if base:
         r_vec = (np.array([sample[m] for m in METRICS]) - base["med"][hour]) / base["scale"][hour]
     for i, m in enumerate(METRICS):
         v = sample[m]
-        clinical = status_for(m, v)
+        clinical = status_for(m, v, exercising)
         z = float(r_vec[i]) if r_vec is not None else 0.0
         stat = "alerta" if abs(z) >= Z_ALERT else "vigilancia" if abs(z) >= Z_WATCH else "normal"
         metrics[m] = {
@@ -92,7 +107,9 @@ def evaluate_sample(db: Session, sample: dict, now: float) -> dict:
         order = np.argsort(-contrib)[:3]
         multi = {
             "d2": round(d2, 2),
-            "level": "alerta" if d2 >= D2_ALERT else "vigilancia" if d2 >= D2_WATCH else "normal",
+            "level": "alerta" if d2 >= base["d2_alert"] else "vigilancia" if d2 >= base["d2_watch"] else "normal",
+            "watch_at": round(base["d2_watch"], 1),
+            "alert_at": round(base["d2_alert"], 1),
             "drivers": [METRICS[j] for j in order if contrib[j] > 1.0],
         }
     return {"metrics": metrics, "multivariate": multi, "baseline_n": base.get("n", 0) if base else 0}

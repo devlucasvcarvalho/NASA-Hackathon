@@ -12,6 +12,15 @@ def gemini_key() -> str | None:
     return os.getenv("GEMINI_API_KEY")
 
 
+MAX_TEXT_CHARS = 4000
+MAX_CHAT_CHARS = 2000
+
+
+def max_image_bytes() -> int:
+    """Tamanho máximo da imagem do diagnóstico (decodificada). Padrão 5 MB; MAX_IMAGE_MB ajusta."""
+    return int(float(os.getenv("MAX_IMAGE_MB", "5")) * 1024 * 1024)
+
+
 def database_url() -> str:
     """DATABASE_URL (Postgres/Neon em produção). Sem ela: SQLite local.
 

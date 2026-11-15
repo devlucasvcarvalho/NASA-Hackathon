@@ -1,5 +1,5 @@
-<!doctype html>
-<html lang="pt-BR">
+﻿<!doctype html>
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -7,14 +7,16 @@
   <title>B.I.P · Biomedical Intelligent Partner</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/static/css/styles.css" />
+  <link rel="stylesheet" href="/static/css/styles.css?v=14" />
+  <script src="/static/js/i18n.js?v=14"></script>
 </head>
 <body>
 
-<!-- ═══════════ SVG DEFS (Avatar do astronauta + Bip) ═══════════ -->
+<!-- ═══════════ SVG DEFS (Avatar do astronauta + B.I.P) ═══════════ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <radialGradient id="skinGrad" cx="42%" cy="38%" r="75%">
@@ -29,6 +31,18 @@
       <stop offset="0%" stop-color="var(--suit-b,#0e4e4d)"/>
       <stop offset="45%" stop-color="var(--suit-a,#1f6f6e)"/>
       <stop offset="100%" stop-color="var(--suit-b,#0e4e4d)"/>
+    </linearGradient>
+    <linearGradient id="navyGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b3f5e"/><stop offset="1" stop-color="#141f30"/>
+    </linearGradient>
+    <linearGradient id="terraGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#cd8560"/><stop offset="1" stop-color="#a8552f"/>
+    </linearGradient>
+    <radialGradient id="stageTop" cx="50%" cy="42%" r="72%">
+      <stop offset="0%" stop-color="#fdfefd"/><stop offset="70%" stop-color="#dde5e0"/><stop offset="100%" stop-color="#c4cec8"/>
+    </radialGradient>
+    <linearGradient id="stageSide" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e9eeeb"/><stop offset=".35" stop-color="#9ba8a2"/><stop offset="1" stop-color="#5f6c67"/>
     </linearGradient>
     <radialGradient id="clearGlass" cx="42%" cy="33%" r="78%">
       <stop offset="0%" stop-color="#ffffff" stop-opacity=".30"/>
@@ -50,183 +64,248 @@
       <stop offset="0" stop-color="#1d7a78"/><stop offset=".6" stop-color="#146c6b"/><stop offset="1" stop-color="#c4714b"/>
     </linearGradient>
 
-    <!-- ══════ AVATAR (corpo inteiro) — design humano ══════ -->
-    <symbol id="avatarBody" viewBox="0 0 240 260">
-      <circle cx="120" cy="128" r="112" fill="#1f6f6e" opacity=".12"/>
+    <!-- ══════ AVATAR — corpo inteiro humano sobre palco (design novo) ══════ -->
+    <symbol id="avatarBody" viewBox="0 0 240 352">
+      <!-- palco / pedestal (estático) -->
+      <ellipse cx="120" cy="332" rx="102" ry="13" fill="rgba(15,62,61,.22)"/>
+      <path d="M28 306a92 15 0 0 0 184 0l0 15a92 15 0 0 1-184 0Z" fill="url(#stageSide)"/>
+      <ellipse cx="120" cy="306" rx="92" ry="15" fill="url(#stageTop)" stroke="rgba(255,255,255,.75)" stroke-width="1.3"/>
+      <ellipse class="stage-ring" cx="120" cy="306" rx="68" ry="10.5" fill="none" stroke="rgba(20,108,107,.45)" stroke-width="1.5" stroke-dasharray="4 8"/>
+      <ellipse cx="120" cy="308.5" rx="46" ry="6" fill="rgba(15,62,61,.24)"/>
 
-      <!-- rabo de cavalo (atrás do torso) -->
-      <path class="hair hair-ponytail-back" fill="var(--hair,#3a2a1e)" d="M149 72c19 8 25 46 20 76-3 12-17 12-19-1 7-30 5-52-12-63Z"/>
+      <g class="body-anim">
+        <!-- rabo de cavalo (atrás de tudo) -->
+        <path class="hair hair-ponytail-back" fill="var(--hair,#3a2a1e)" d="M149 72c19 8 25 46 20 76-3 12-17 12-19-1 7-30 5-52-12-63Z"/>
 
-      <!-- torso / suit -->
-      <path class="suit-part" fill="url(#suitGrad)" d="M52 258c-4-38 6-66 22-80 12-10 28-14 46-14s34 4 46 14c16 14 26 42 22 80Z"/>
-      <path class="suit-part suit-shade" fill="#000" opacity=".18" d="M52 258c-4-38 6-66 22-80 6-5 13-8 20-10-8 26-10 56-9 90Z"/>
-      <ellipse class="suit-part" cx="46" cy="212" rx="22" ry="16" fill="url(#suitGradSoft)"/>
-      <ellipse class="suit-part" cx="194" cy="212" rx="22" ry="16" fill="url(#suitGradSoft)"/>
-      <rect x="88" y="198" width="64" height="34" rx="9" fill="#0b2d2d" stroke="rgba(255,255,255,.28)" stroke-width="1.4"/>
-      <circle cx="101" cy="214" r="3.4" fill="#57e6c9"/>
-      <circle cx="114" cy="214" r="3.4" fill="#ffd166"/>
-      <circle cx="127" cy="214" r="3.4" fill="#ff8a5c"/>
-      <rect x="92" y="222" width="56" height="3.6" rx="1.8" fill="#39f5d2" opacity=".55"/>
-      <rect x="150" y="176" width="26" height="16" rx="3" fill="#e8dcc8" transform="rotate(-4 163 184)"/>
-      <text x="163" y="187.6" font-size="7" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="700" fill="#7a3b21" transform="rotate(-4 163 184)">ARES-7</text>
+        <!-- ══════════ OUTFIT: ASTRONAUTA ══════════ -->
+        <g class="outfit outfit-astronaut-back">
+          <rect x="82" y="152" width="76" height="78" rx="13" fill="#cfd8d6" stroke="rgba(15,62,61,.4)" stroke-width="1.5"/>
+          <rect x="92" y="163" width="12" height="54" rx="6" fill="#aebcb9"/>
+          <rect x="136" y="163" width="12" height="54" rx="6" fill="#aebcb9"/>
+          <circle cx="98" cy="171" r="2.4" fill="#57e6c9"/><circle cx="142" cy="171" r="2.4" fill="#ffd166"/>
+          <path fill="url(#suitGrad)" d="M90 226c-2 22-2 44 0 60l23 0c1-22 1-40 1-60Z"/>
+          <path fill="url(#suitGrad)" d="M126 226c0 20 0 38 1 60l23 0c2-16 2-38 0-60Z"/>
+          <path fill="#e8ecea" d="M85 280h28q0 21-13 21t-15-21Z"/>
+          <path fill="#e8ecea" d="M127 280h28q0 21-13 21t-15-21Z"/>
+          <rect x="85" y="292" width="28" height="6" rx="3" fill="#20302f"/>
+          <rect x="127" y="292" width="28" height="6" rx="3" fill="#20302f"/>
+          <path fill="url(#suitGrad)" d="M77 158C70 176 68 206 76 224c13 8 27 10 44 10s31-2 44-10c8-18 6-48-1-66-26-9-60-9-86 0Z"/>
+          <path d="M120 156v68" stroke="rgba(255,255,255,.32)" stroke-width="2.2" stroke-dasharray="4 5"/>
+          <rect x="97" y="193" width="46" height="24" rx="8" fill="#0b2d2d" stroke="rgba(255,255,255,.3)" stroke-width="1.3"/>
+          <circle cx="107" cy="204" r="2.9" fill="#57e6c9"/><circle cx="118.5" cy="204" r="2.9" fill="#ffd166"/><circle cx="130" cy="204" r="2.9" fill="#ff8a5c"/>
+          <rect x="101" y="211" width="38" height="2.4" rx="1.2" fill="#39f5d2" opacity=".55"/>
+          <rect x="146" y="172" width="24" height="14" rx="3" fill="#e8dcc8" transform="rotate(-4 158 179)"/>
+          <text x="158" y="182.2" font-size="6.4" text-anchor="middle" font-family="'Space Grotesk',sans-serif" font-weight="700" fill="#7a3b21" transform="rotate(-4 158 179)">ARES-7</text>
+          <g class="arm arm-left"><path fill="url(#suitGradSoft)" d="M78 158C64 166 58 197 56 222c0 6.5 5 10.5 12 10.5l16-2C86.5 207 87.5 181 92 158Z"/><circle cx="68.5" cy="232" r="8.4" fill="url(#skinGrad)"/></g>
+          <g class="arm arm-right"><path fill="url(#suitGradSoft)" d="M162 158c14 8 20 39 22 64 0 6.5-5 10.5-12 10.5l-16-2C153.5 207 152.5 181 148 158Z"/><circle cx="171.5" cy="232" r="8.4" fill="url(#skinGrad)"/></g>
+        </g>
 
-      <!-- colar do capacete -->
-      <rect x="70" y="140" width="100" height="26" rx="13" fill="url(#suitGradSoft)" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+        <!-- ══════════ OUTFIT: CASUAL (hoodie) ══════════ -->
+        <g class="outfit outfit-casual">
+          <path fill="#c9b18c" d="M90 228c-2 20-2 40 0 56l22 0c1-20 1-36 1-56Z"/>
+          <path fill="#c9b18c" d="M127 228c0 20 0 36 1 56l22 0c2-16 2-36 0-56Z"/>
+          <path fill="#f2f2ef" d="M85 280h29q0 21-14.5 21T85 280Z"/>
+          <path fill="#f2f2ef" d="M126 280h29q0 21-14.5 21T126 280Z"/>
+          <rect x="85" y="292" width="29" height="5" fill="#9a9a94"/><rect x="126" y="292" width="29" height="5" fill="#9a9a94"/>
+          <path fill="#49697f" d="M77 158C70 178 68 208 76 226c13 8 27 10 44 10s31-2 44-10c8-18 6-48-1-68-26-9-60-9-86 0Z"/>
+          <rect x="100" y="200" width="40" height="17" rx="7.5" fill="#3c5873" stroke="rgba(255,255,255,.14)"/>
+          <path d="M111 156v10M129 156v10" stroke="#dfe7ee" stroke-width="2.3" stroke-linecap="round"/>
+          <path d="M83 214c24 7 50 7 74 0" stroke="#3c5873" stroke-width="5" fill="none"/>
+          <g class="arm arm-left"><path fill="#49697f" d="M78 158C64 166 58 197 56 222c0 6.5 5 10.5 12 10.5l16-2C86.5 207 87.5 181 92 158Z"/><rect x="57" y="212" width="27" height="9" rx="4.5" fill="#3c5873"/><circle cx="68.5" cy="232" r="8.4" fill="url(#skinGrad)"/></g>
+          <g class="arm arm-right"><path fill="#49697f" d="M162 158c14 8 20 39 22 64 0 6.5-5 10.5-12 10.5l-16-2C153.5 207 152.5 181 148 158Z"/><rect x="156" y="212" width="27" height="9" rx="4.5" fill="#3c5873"/><circle cx="171.5" cy="232" r="8.4" fill="url(#skinGrad)"/></g>
+        </g>
 
-      <!-- pescoço -->
-      <rect x="105" y="120" width="30" height="24" rx="7" fill="url(#skinGrad)"/>
-      <path d="M105 124q15 10 30 0v-7h-30Z" fill="#000" opacity=".16"/>
+        <!-- ══════════ OUTFIT: VOO (jumpsuit de operações) ══════════ -->
+        <g class="outfit outfit-voo">
+          <path fill="#22385a" d="M90 228c-2 20-2 40 0 56l22 0c1-20 1-36 1-56Z"/>
+          <path fill="#22385a" d="M127 228c0 20 0 36 1 56l22 0c2-16 2-36 0-56Z"/>
+          <path fill="#101a29" d="M85 280h29q0 21-14.5 21T85 280Z"/>
+          <path fill="#101a29" d="M126 280h29q0 21-14.5 21T126 280Z"/>
+          <rect x="85" y="292" width="29" height="5" fill="#57e6c9" opacity=".45"/><rect x="126" y="292" width="29" height="5" fill="#57e6c9" opacity=".45"/>
+          <path fill="url(#navyGrad)" d="M77 158C70 176 68 208 76 226c13 8 27 10 44 10s31-2 44-10c8-18 6-50-1-68-26-9-60-9-86 0Z"/>
+          <path d="M120 156v68" stroke="rgba(255,255,255,.22)" stroke-width="2"/>
+          <path d="M154 158 96 224" stroke="#57e6c9" stroke-width="6" opacity=".55"/>
+          <rect x="76" y="154" width="18" height="8" rx="3" fill="#2b3f5e" stroke="#57e6c9" stroke-width=".8" opacity=".9"/>
+          <rect x="146" y="154" width="18" height="8" rx="3" fill="#2b3f5e" stroke="#57e6c9" stroke-width=".8" opacity=".9"/>
+          <rect x="97" y="192" width="46" height="22" rx="7" fill="#101a29" stroke="rgba(87,230,201,.35)"/>
+          <circle cx="108" cy="203" r="2.7" fill="#57e6c9"/><circle cx="120" cy="203" r="2.7" fill="#ffd166"/><circle cx="132" cy="203" r="2.7" fill="#ff8a5c"/>
+          <g class="arm arm-left"><path fill="url(#navyGrad)" d="M78 158C64 166 58 197 56 222c0 6.5 5 10.5 12 10.5l16-2C86.5 207 87.5 181 92 158Z"/><rect x="57" y="213" width="27" height="8" rx="4" fill="none" stroke="#57e6c9" stroke-width="1.2" opacity=".5"/><circle cx="68.5" cy="232" r="8.4" fill="url(#skinGrad)"/></g>
+          <g class="arm arm-right"><path fill="url(#navyGrad)" d="M162 158c14 8 20 39 22 64 0 6.5-5 10.5-12 10.5l-16-2C153.5 207 152.5 181 148 158Z"/><rect x="156" y="213" width="27" height="8" rx="4" fill="none" stroke="#57e6c9" stroke-width="1.2" opacity=".5"/><circle cx="171.5" cy="232" r="8.4" fill="url(#skinGrad)"/></g>
+        </g>
 
-      <!-- orelhas -->
-      <ellipse cx="83.5" cy="98" rx="6.6" ry="10.6" fill="url(#skinGrad)"/>
-      <ellipse cx="156.5" cy="98" rx="6.6" ry="10.6" fill="url(#skinGrad)"/>
-      <path d="M81 96q3.5 3.4 0 7.4M159 96q-3.5 3.4 0 7.4" stroke="rgba(23,17,15,.28)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <!-- ══════════ OUTFIT: CARGO (utilitário terracota) ══════════ -->
+        <g class="outfit outfit-cargo">
+          <path fill="#b8a06a" d="M90 228c-2 20-2 40 0 56l22 0c1-20 1-36 1-56Z"/>
+          <path fill="#b8a06a" d="M127 228c0 20 0 36 1 56l22 0c2-16 2-36 0-56Z"/>
+          <rect x="97" y="244" width="13" height="8" rx="1.5" fill="#a8895a"/><rect x="130" y="244" width="13" height="8" rx="1.5" fill="#a8895a"/>
+          <path fill="#6b4a2a" d="M85 280h29q0 21-14.5 21T85 280Z"/>
+          <path fill="#6b4a2a" d="M126 280h29q0 21-14.5 21T126 280Z"/>
+          <rect x="85" y="292" width="29" height="5" fill="#3a2412"/><rect x="126" y="292" width="29" height="5" fill="#3a2412"/>
+          <path fill="url(#terraGrad)" d="M77 158C70 178 68 208 76 226c13 8 27 10 44 10s31-2 44-10c8-18 6-48-1-68-26-9-60-9-86 0Z"/>
+          <path fill="#a8552f" d="M104 149l16 10 16-10-3-6-13 7-13-7Z"/>
+          <circle cx="120" cy="172" r="1.7" fill="#5f3013"/><circle cx="120" cy="188" r="1.7" fill="#5f3013"/><circle cx="120" cy="204" r="1.7" fill="#5f3013"/>
+          <rect x="89" y="186" width="14" height="10" rx="2" fill="#b3642f" stroke="#7c3d1f"/><rect x="137" y="186" width="14" height="10" rx="2" fill="#b3642f" stroke="#7c3d1f"/>
+          <g class="arm arm-left"><path fill="url(#terraGrad)" d="M78 158C64 166 58 197 56 222c0 6.5 5 10.5 12 10.5l16-2C86.5 207 87.5 181 92 158Z"/><path d="M56 214h27v9c-9 3-18 3-27 0Z" fill="#e8dcc8" opacity=".85"/><circle cx="68.5" cy="232" r="8.4" fill="url(#skinGrad)"/></g>
+          <g class="arm arm-right"><path fill="url(#terraGrad)" d="M162 158c14 8 20 39 22 64 0 6.5-5 10.5-12 10.5l-16-2C153.5 207 152.5 181 148 158Z"/><path d="M157 214h27v9c-9 3-18 3-27 0Z" fill="#e8dcc8" opacity=".85"/><circle cx="171.5" cy="232" r="8.4" fill="url(#skinGrad)"/></g>
+        </g>
 
-      <!-- rosto (formato humano com mandíbula) -->
-      <path class="face" fill="url(#skinGrad)" d="M85 96C85 70 100 57 120 57c20 0 35 13 35 39 0 16-4 30-14 40-10 10-32 10-42 0-10-10-14-24-14-40Z"/>
+        <!-- pescoço -->
+        <rect x="107" y="122" width="26" height="26" rx="7" fill="url(#skinGrad)"/>
+        <path d="M107 124q13 10 26 0v-6.5h-26Z" fill="#000" opacity=".15"/>
 
-      <!-- ═══ PELOS FACIAIS (atrás da boca) ═══ -->
-      <g class="beard beard-beard" fill="var(--hair,#3a2a1e)">
-        <path d="M95.5 122c1.5 20 12.5 29 24.5 29s23-9 24.5-29c-7.5 13.5-16 18.5-24.5 18.5S103 135.5 95.5 122Z"/>
-        <path d="M104.5 116.5c6-4.2 12.5-3.4 15.5.9 3-4.3 9.5-5.1 15.5-.9-3 6.5-12 8.4-15.5 5.6-3.5 2.8-12.5 1-15.5-5.6Z"/>
-      </g>
-      <path class="beard beard-mustache" fill="var(--hair,#3a2a1e)" d="M104.5 117c6-4.4 12.5-3.6 15.5 1 3-4.6 9.5-5.4 15.5-1-3 7-12 9-15.5 6.2-3.5 2.8-12.5 .8-15.5-6.2Z"/>
-      <g class="beard beard-goatee" fill="var(--hair,#3a2a1e)">
-        <path d="M110 133.5c3.5 9.5 16.5 9.5 20 0-5.5 6-14.5 6-20 0Z"/>
-        <path d="M107.5 118.5c5.4-3.4 10.6-2.8 12.5 1 1.9-3.8 7.1-4.4 12.5-1-2.4 5-9.6 6.4-12.5 4.6-2.9 1.8-10 .4-12.5-5.4Z"/>
-      </g>
+        <!-- orelhas -->
+        <ellipse cx="83.5" cy="98" rx="6.6" ry="10.6" fill="url(#skinGrad)"/>
+        <ellipse cx="156.5" cy="98" rx="6.6" ry="10.6" fill="url(#skinGrad)"/>
+        <path d="M81 96q3.5 3.4 0 7.4M159 96q-3.5 3.4 0 7.4" stroke="rgba(23,17,15,.28)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
 
-      <!-- ══ MOOD: calm ══ -->
-      <g class="m eyes-calm">
-        <path d="M93.5 96q9-6.9 18 0q-9 6.9-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
-        <path d="M128.5 96q9-6.9 18 0q-9 6.9-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
-        <circle cx="102.5" cy="96" r="4.9" fill="var(--iris,#4a3423)"/><circle cx="137.5" cy="96" r="4.9" fill="var(--iris,#4a3423)"/>
-        <circle cx="102.5" cy="96" r="2.3" fill="#17110f"/><circle cx="137.5" cy="96" r="2.3" fill="#17110f"/>
-        <circle cx="101" cy="94.3" r="1.15" fill="#fff"/><circle cx="136" cy="94.3" r="1.15" fill="#fff"/>
-        <path d="M93.5 93.6q9-6.8 18 0M128.5 93.6q9-6.8 18 0" stroke="#2a211b" stroke-width="2.1" fill="none" stroke-linecap="round"/>
-      </g>
-      <g class="m brows-calm" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
-        <path d="M94.5 82.5q8-3.4 15 0"/><path d="M130.5 82.5q8-3.4 15 0"/>
-      </g>
-      <path class="m mouth-calm" fill="#a8563f" opacity=".94" d="M106.5 122.5q13.5 6.6 27 0q-3.2 5.6-13.5 5.6q-10.3 0-13.5-5.6Z"/>
+        <!-- rosto -->
+        <path class="face" fill="url(#skinGrad)" d="M85 96C85 70 100 57 120 57c20 0 35 13 35 39 0 16-4 30-14 40-10 10-32 10-42 0-10-10-14-24-14-40Z"/>
 
-      <!-- ══ MOOD: happy ══ -->
-      <g class="m eyes-happy" stroke="#2a211b" stroke-width="2.8" fill="none" stroke-linecap="round">
-        <path d="M93.5 96.5q9-8.4 18 0"/><path d="M128.5 96.5q9-8.4 18 0"/>
-      </g>
-      <g class="m brows-happy" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
-        <path d="M94.5 80.8q8-3.8 15 0"/><path d="M130.5 80.8q8-3.8 15 0"/>
-      </g>
-      <g class="m mouth-happy">
-        <path d="M104.5 121q15.5 8.8 31 0q-2.2 12.6-15.5 12.6q-13.3 0-15.5-12.6Z" fill="#452a21"/>
-        <path d="M107.4 122.4q12.6 6.1 25.2 0q-1 4.8-12.6 4.8q-11.6 0-12.6-4.8Z" fill="#f3e9dc"/>
-        <ellipse cx="120" cy="130.8" rx="7.6" ry="3" fill="#b3654f"/>
-      </g>
+        <!-- PELOS FACIAIS -->
+        <g class="beard beard-beard" fill="var(--hair,#3a2a1e)">
+          <path d="M95.5 122c1.5 20 12.5 29 24.5 29s23-9 24.5-29c-7.5 13.5-16 18.5-24.5 18.5S103 135.5 95.5 122Z"/>
+          <path d="M104.5 116.5c6-4.2 12.5-3.4 15.5.9 3-4.3 9.5-5.1 15.5-.9-3 6.5-12 8.4-15.5 5.6-3.5 2.8-12.5 1-15.5-5.6Z"/>
+        </g>
+        <path class="beard beard-mustache" fill="var(--hair,#3a2a1e)" d="M104.5 117c6-4.4 12.5-3.6 15.5 1 3-4.6 9.5-5.4 15.5-1-3 7-12 9-15.5 6.2-3.5 2.8-12.5 .8-15.5-6.2Z"/>
+        <g class="beard beard-goatee" fill="var(--hair,#3a2a1e)">
+          <path d="M110 133.5c3.5 9.5 16.5 9.5 20 0-5.5 6-14.5 6-20 0Z"/>
+          <path d="M107.5 118.5c5.4-3.4 10.6-2.8 12.5 1 1.9-3.8 7.1-4.4 12.5-1-2.4 5-9.6 6.4-12.5 4.6-2.9 1.8-10 .4-12.5-5.4Z"/>
+        </g>
 
-      <!-- ══ MOOD: sad ══ -->
-      <g class="m eyes-sad">
-        <path d="M93.5 96q9-5.4 18 0q-9 6.6-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
-        <path d="M128.5 96q9-5.4 18 0q-9 6.6-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
-        <circle cx="102.5" cy="97.4" r="4.6" fill="var(--iris,#4a3423)"/><circle cx="137.5" cy="97.4" r="4.6" fill="var(--iris,#4a3423)"/>
-        <circle cx="102.5" cy="97.4" r="2.1" fill="#17110f"/><circle cx="137.5" cy="97.4" r="2.1" fill="#17110f"/>
-        <path d="M93.5 92.6h18M128.5 92.6h18" stroke="#2a211b" stroke-width="2.2" stroke-linecap="round"/>
-      </g>
-      <g class="m brows-sad" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
-        <path d="M94.5 84.4l15-3.8"/><path d="M145.5 84.4l-15-3.8"/>
-      </g>
-      <path class="m mouth-sad" d="M106.5 128q13.5-5.8 27 0" stroke="#a8563f" stroke-width="2.7" fill="none" stroke-linecap="round"/>
+        <!-- ══ MOOD: calm ══ -->
+        <g class="m eyes-calm">
+          <path d="M93.5 96q9-6.9 18 0q-9 6.9-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
+          <path d="M128.5 96q9-6.9 18 0q-9 6.9-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
+          <circle cx="102.5" cy="96" r="4.9" fill="var(--iris,#4a3423)"/><circle cx="137.5" cy="96" r="4.9" fill="var(--iris,#4a3423)"/>
+          <circle cx="102.5" cy="96" r="2.3" fill="#17110f"/><circle cx="137.5" cy="96" r="2.3" fill="#17110f"/>
+          <circle cx="101" cy="94.3" r="1.15" fill="#fff"/><circle cx="136" cy="94.3" r="1.15" fill="#fff"/>
+          <path d="M93.5 93.6q9-6.8 18 0M128.5 93.6q9-6.8 18 0" stroke="#2a211b" stroke-width="2.1" fill="none" stroke-linecap="round"/>
+        </g>
+        <g class="m brows-calm" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
+          <path d="M94.5 82.5q8-3.4 15 0"/><path d="M130.5 82.5q8-3.4 15 0"/>
+        </g>
+        <path class="m mouth-calm" fill="#a8563f" opacity=".94" d="M106.5 122.5q13.5 6.6 27 0q-3.2 5.6-13.5 5.6q-10.3 0-13.5-5.6Z"/>
 
-      <!-- ══ MOOD: worried (medo / mal) ══ -->
-      <g class="m eyes-worried">
-        <path d="M93.5 96q9-7.3 18 0q-9 7-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
-        <path d="M128.5 96q9-7.3 18 0q-9 7-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
-        <circle cx="102.5" cy="96.6" r="5.2" fill="var(--iris,#4a3423)"/><circle cx="137.5" cy="96.6" r="5.2" fill="var(--iris,#4a3423)"/>
-        <circle cx="102.5" cy="96.6" r="2.4" fill="#17110f"/><circle cx="137.5" cy="96.6" r="2.4" fill="#17110f"/>
-        <circle cx="101" cy="94.7" r="1.1" fill="#fff"/><circle cx="136" cy="94.7" r="1.1" fill="#fff"/>
-        <path d="M93.5 92.4q9-6 18-1.6M128.5 92.4q9-6 18-1.6M128.5 90.8q9-4.4 18 0M93.5 90.8q9-4.4 18 0" stroke="#2a211b" stroke-width="2" fill="none" stroke-linecap="round" opacity=".9"/>
-      </g>
-      <g class="m brows-worried" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
-        <path d="M94.5 78.6q8.2 1.4 14.5 5.8"/><path d="M145.5 78.6q-8.2 1.4-14.5 5.8"/>
-      </g>
-      <path class="m mouth-worried" d="M105 124.5q7.5-3.5 15 0t15 0" stroke="#a8563f" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-      <path class="m sweat-worried" d="M158.5 72q3.6 6 0 8.8q-3.6-2.8 0-8.8Z" fill="#bfe6ff" stroke="#8ec9e8" stroke-width=".8" opacity=".97"/>
+        <!-- ══ MOOD: happy ══ -->
+        <g class="m eyes-happy" stroke="#2a211b" stroke-width="2.8" fill="none" stroke-linecap="round">
+          <path d="M93.5 96.5q9-8.4 18 0"/><path d="M128.5 96.5q9-8.4 18 0"/>
+        </g>
+        <g class="m brows-happy" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
+          <path d="M94.5 80.8q8-3.8 15 0"/><path d="M130.5 80.8q8-3.8 15 0"/>
+        </g>
+        <g class="m mouth-happy">
+          <path d="M104.5 121q15.5 8.8 31 0q-2.2 12.6-15.5 12.6q-13.3 0-15.5-12.6Z" fill="#452a21"/>
+          <path d="M107.4 122.4q12.6 6.1 25.2 0q-1 4.8-12.6 4.8q-11.6 0-12.6-4.8Z" fill="#f3e9dc"/>
+          <ellipse cx="120" cy="130.8" rx="7.6" ry="3" fill="#b3654f"/>
+        </g>
 
-      <!-- ══ MOOD: crying ══ -->
-      <g class="m eyes-cry" stroke="#2a211b" stroke-width="2.7" fill="none" stroke-linecap="round">
-        <path d="M93.5 92.5q9 8.6 18 0"/><path d="M128.5 92.5q9 8.6 18 0"/>
-      </g>
-      <g class="m brows-cry" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
-        <path d="M94.5 78.5q8.4 2.6 15 5.6"/><path d="M145.5 78.5q-8.4 2.6-15 5.6"/>
-      </g>
-      <ellipse class="m mouth-cry" cx="120" cy="126.5" rx="6.6" ry="7.8" fill="#452a21" stroke="#33231d" stroke-width="1.8"/>
-      <path class="m tear-cry tear-left" d="M98.5 103q2.7 9.6 0 13.8q-2.7-4.2 0-13.8Z" fill="#9fd8ff" stroke="#7fc4ea" stroke-width=".6"/>
-      <path class="m tear-cry tear-right" d="M141.5 103q2.7 9.6 0 13.8q-2.7-4.2 0-13.8Z" fill="#9fd8ff" stroke="#7fc4ea" stroke-width=".6"/>
+        <!-- ══ MOOD: sad ══ -->
+        <g class="m eyes-sad">
+          <path d="M93.5 96q9-5.4 18 0q-9 6.6-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
+          <path d="M128.5 96q9-5.4 18 0q-9 6.6-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
+          <circle cx="102.5" cy="97.4" r="4.6" fill="var(--iris,#4a3423)"/><circle cx="137.5" cy="97.4" r="4.6" fill="var(--iris,#4a3423)"/>
+          <circle cx="102.5" cy="97.4" r="2.1" fill="#17110f"/><circle cx="137.5" cy="97.4" r="2.1" fill="#17110f"/>
+          <path d="M93.5 92.6h18M128.5 92.6h18" stroke="#2a211b" stroke-width="2.2" stroke-linecap="round"/>
+        </g>
+        <g class="m brows-sad" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
+          <path d="M94.5 84.4l15-3.8"/><path d="M145.5 84.4l-15-3.8"/>
+        </g>
+        <path class="m mouth-sad" d="M106.5 128q13.5-5.8 27 0" stroke="#a8563f" stroke-width="2.7" fill="none" stroke-linecap="round"/>
 
-      <!-- ══ MOOD: sick ══ -->
-      <g class="m eyes-sick" stroke="#2a211b" stroke-width="2.7" fill="none" stroke-linecap="round">
-        <path d="M93.5 96.5h18"/><path d="M128.5 96.5h18"/>
-      </g>
-      <g class="m brows-sick" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
-        <path d="M94.5 84.5q8-2 15 1.4"/><path d="M145.5 84.5q-8-2-15 1.4"/>
-      </g>
-      <path class="m mouth-sick" d="M106 127q6.8 2.8 13.5 0t13.5 0" stroke="#a8563f" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+        <!-- ══ MOOD: worried ══ -->
+        <g class="m eyes-worried">
+          <path d="M93.5 96q9-7.3 18 0q-9 7-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
+          <path d="M128.5 96q9-7.3 18 0q-9 7-18 0Z" fill="#f7f4ec" stroke="rgba(23,20,18,.3)"/>
+          <circle cx="102.5" cy="96.6" r="5.2" fill="var(--iris,#4a3423)"/><circle cx="137.5" cy="96.6" r="5.2" fill="var(--iris,#4a3423)"/>
+          <circle cx="102.5" cy="96.6" r="2.4" fill="#17110f"/><circle cx="137.5" cy="96.6" r="2.4" fill="#17110f"/>
+          <circle cx="101" cy="94.7" r="1.1" fill="#fff"/><circle cx="136" cy="94.7" r="1.1" fill="#fff"/>
+          <path d="M93.5 92.4q9-6 18-1.6M128.5 92.4q9-6 18-1.6" stroke="#2a211b" stroke-width="2" fill="none" stroke-linecap="round" opacity=".9"/>
+        </g>
+        <g class="m brows-worried" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
+          <path d="M94.5 78.6q8.2 1.4 14.5 5.8"/><path d="M145.5 78.6q-8.2 1.4-14.5 5.8"/>
+        </g>
+        <path class="m mouth-worried" d="M105 124.5q7.5-3.5 15 0t15 0" stroke="#a8563f" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+        <path class="m sweat-worried" d="M158.5 72q3.6 6 0 8.8q-3.6-2.8 0-8.8Z" fill="#bfe6ff" stroke="#8ec9e8" stroke-width=".8" opacity=".97"/>
 
-      <!-- nariz -->
-      <path d="M118.4 97q2.7 7.4-1 10.6" stroke="rgba(23,17,15,.24)" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <ellipse cx="114.2" cy="110.2" rx="1.6" ry="1.05" fill="rgba(23,17,15,.5)"/>
-      <ellipse cx="125.8" cy="110.2" rx="1.6" ry="1.05" fill="rgba(23,17,15,.5)"/>
-      <path d="M112.3 113q7.7 3.7 15.4 0" stroke="rgba(23,17,15,.16)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+        <!-- ══ MOOD: crying ══ -->
+        <g class="m eyes-cry" stroke="#2a211b" stroke-width="2.7" fill="none" stroke-linecap="round">
+          <path d="M93.5 92.5q9 8.6 18 0"/><path d="M128.5 92.5q9 8.6 18 0"/>
+        </g>
+        <g class="m brows-cry" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
+          <path d="M94.5 78.5q8.4 2.6 15 5.6"/><path d="M145.5 78.5q-8.4 2.6-15 5.6"/>
+        </g>
+        <ellipse class="m mouth-cry" cx="120" cy="126.5" rx="6.6" ry="7.8" fill="#452a21" stroke="#33231d" stroke-width="1.8"/>
+        <path class="m tear-cry tear-left" d="M98.5 103q2.7 9.6 0 13.8q-2.7-4.2 0-13.8Z" fill="#9fd8ff" stroke="#7fc4ea" stroke-width=".6"/>
+        <path class="m tear-cry tear-right" d="M141.5 103q2.7 9.6 0 13.8q-2.7-4.2 0-13.8Z" fill="#9fd8ff" stroke="#7fc4ea" stroke-width=".6"/>
 
-      <!-- blush -->
-      <ellipse cx="96.5" cy="113" rx="5.2" ry="3" fill="#e87f5f" opacity=".45"/>
-      <ellipse cx="143.5" cy="113" rx="5.2" ry="3" fill="#e87f5f" opacity=".45"/>
+        <!-- ══ MOOD: sick ══ -->
+        <g class="m eyes-sick" stroke="#2a211b" stroke-width="2.7" fill="none" stroke-linecap="round">
+          <path d="M93.5 96.5h18"/><path d="M128.5 96.5h18"/>
+        </g>
+        <g class="m brows-sick" stroke="var(--hair,#3a2a1e)" stroke-width="3.1" stroke-linecap="round" fill="none">
+          <path d="M94.5 84.5q8-2 15 1.4"/><path d="M145.5 84.5q-8-2-15 1.4"/>
+        </g>
+        <path class="m mouth-sick" d="M106 127q6.8 2.8 13.5 0t13.5 0" stroke="#a8563f" stroke-width="2.4" fill="none" stroke-linecap="round"/>
 
-      <!-- sardas -->
-      <g class="freckles" fill="rgba(88,52,28,.62)">
-        <circle cx="97" cy="108.5" r=".95"/><circle cx="102.5" cy="107" r=".85"/><circle cx="100" cy="111.5" r=".85"/><circle cx="107" cy="109.5" r=".8"/>
-        <circle cx="143" cy="108.5" r=".95"/><circle cx="137.5" cy="107" r=".85"/><circle cx="140" cy="111.5" r=".85"/><circle cx="133" cy="109.5" r=".8"/>
-      </g>
+        <!-- nariz -->
+        <path d="M118.4 97q2.7 7.4-1 10.6" stroke="rgba(23,17,15,.24)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <ellipse cx="114.2" cy="110.2" rx="1.6" ry="1.05" fill="rgba(23,17,15,.5)"/>
+        <ellipse cx="125.8" cy="110.2" rx="1.6" ry="1.05" fill="rgba(23,17,15,.5)"/>
+        <path d="M112.3 113q7.7 3.7 15.4 0" stroke="rgba(23,17,15,.16)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
 
-      <!-- ═══ ESTILOS DE CABELO ═══ -->
-      <path class="hair hair-crop" fill="var(--hair,#3a2a1e)" d="M87 79C85 55 100 46 120 46c20 0 35 9 33 33-8-15-20-22-33-22s-25 7-33 22Z"/>
-      <g class="hair hair-sweep" fill="var(--hair,#3a2a1e)">
-        <path d="M85 79C83 53 105 44 128 46.5c20 2.2 27 14 26 34-5-18.5-20.5-26-43.5-24.5-12.5 1.2-21 9.5-25.5 23Z"/>
-        <path d="M95 57c11-7 28-8.5 41-4.5-12-2.8-25-1.4-37 6.4Z" opacity=".38" fill="#ffffff"/>
-        <path d="M148 48.5q12-3.5 15-14q-13 1-20 11.5Z"/>
-      </g>
-      <g class="hair hair-curly" fill="var(--hair,#3a2a1e)">
-        <path d="M87 79C85 55 100 46 120 46c20 0 35 9 33 33-8-15-20-22-33-22s-25 7-33 22Z" opacity=".4"/>
-        <circle cx="93" cy="56" r="9"/><circle cx="107" cy="49" r="9.5"/><circle cx="122" cy="46.5" r="9.5"/><circle cx="137" cy="49" r="9"/><circle cx="151" cy="56" r="9"/>
-        <circle cx="86" cy="66" r="7"/><circle cx="158" cy="66" r="7"/><circle cx="114.5" cy="45" r="8"/><circle cx="131" cy="44" r="8"/>
-      </g>
-      <g class="hair hair-ponytail" fill="var(--hair,#3a2a1e)">
-        <path d="M87 79C85 55 100 46 120 46c20 0 35 9 33 33-8-15-20-22-33-22s-25 7-33 22Z"/>
-        <circle cx="157" cy="59" r="3.6" fill="#c4714b"/>
-      </g>
-      <g class="hair hair-bob" fill="var(--hair,#3a2a1e)">
-        <path d="M83 86C79 48 103 40 120 40s41 8 37 46c-6 8-10 22-11 42-6-2-9-14-9-28 6-12 2-32-17-38-19-5-38 6-37 24 0 14-3 26-9 28-1-20-5-36-11-48Z"/>
-      </g>
-      <g class="hair hair-bun" fill="var(--hair,#3a2a1e)">
-        <path d="M87 79C85 55 100 46 120 46c20 0 35 9 33 33-8-15-20-22-33-22s-25 7-33 22Z"/>
-        <circle cx="120" cy="40" r="10.5"/>
-        <path d="M111 41q9-5 18 0" stroke="rgba(0,0,0,.25)" stroke-width="1.6" fill="none"/>
-      </g>
+        <!-- blush -->
+        <ellipse cx="96.5" cy="113" rx="5.2" ry="3" fill="#e87f5f" opacity=".45"/>
+        <ellipse cx="143.5" cy="113" rx="5.2" ry="3" fill="#e87f5f" opacity=".45"/>
 
-      <!-- capacete (vidro claro por cima de tudo) -->
-      <circle cx="120" cy="90" r="57" fill="url(#clearGlass)"/>
-      <circle cx="120" cy="90" r="57" fill="none" stroke="var(--suit-a,#1f6f6e)" stroke-width="6.5"/>
-      <circle cx="120" cy="90" r="57" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
-      <path d="M74 62q20-26 54-27" stroke="#ffffff" stroke-width="6.5" fill="none" stroke-linecap="round" opacity=".6"/>
-      <path d="M72.5 93q1.8-9.4 6.4-16.5" stroke="#ffffff" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".5"/>
-      <circle cx="64.5" cy="66" r="1.7" fill="rgba(0,0,0,.3)"/><circle cx="175.5" cy="66" r="1.7" fill="rgba(0,0,0,.3)"/><circle cx="60.5" cy="117" r="1.7" fill="rgba(0,0,0,.3)"/><circle cx="179.5" cy="117" r="1.7" fill="rgba(0,0,0,.3)"/>
-      <path d="M169 42l2.3 5.7 5.7 2.3-5.7 2.3-2.3 5.7-2.3-5.7-5.7-2.3 5.7-2.3Z" fill="#fff" opacity=".9"/>
-      <circle class="comms-light" cx="120" cy="31.5" r="4.2" fill="#57e6c9"/>
+        <!-- sardas -->
+        <g class="freckles" fill="rgba(88,52,28,.62)">
+          <circle cx="97" cy="108.5" r=".95"/><circle cx="102.5" cy="107" r=".85"/><circle cx="100" cy="111.5" r=".85"/><circle cx="107" cy="109.5" r=".8"/>
+          <circle cx="143" cy="108.5" r=".95"/><circle cx="137.5" cy="107" r=".85"/><circle cx="140" cy="111.5" r=".85"/><circle cx="133" cy="109.5" r=".8"/>
+        </g>
+
+        <!-- ═══ ESTILOS DE CABELO ═══ -->
+        <path class="hair hair-crop" fill="var(--hair,#3a2a1e)" d="M87 79C85 55 100 46 120 46c20 0 35 9 33 33-8-15-20-22-33-22s-25 7-33 22Z"/>
+        <g class="hair hair-sweep" fill="var(--hair,#3a2a1e)">
+          <path d="M85 79C83 53 105 44 128 46.5c20 2.2 27 14 26 34-5-18.5-20.5-26-43.5-24.5-12.5 1.2-21 9.5-25.5 23Z"/>
+          <path d="M95 57c11-7 28-8.5 41-4.5-12-2.8-25-1.4-37 6.4Z" opacity=".38" fill="#ffffff"/>
+          <path d="M148 48.5q12-3.5 15-14q-13 1-20 11.5Z"/>
+        </g>
+        <g class="hair hair-curly" fill="var(--hair,#3a2a1e)">
+          <path d="M87 79C85 55 100 46 120 46c20 0 35 9 33 33-8-15-20-22-33-22s-25 7-33 22Z" opacity=".4"/>
+          <circle cx="93" cy="56" r="9"/><circle cx="107" cy="49" r="9.5"/><circle cx="122" cy="46.5" r="9.5"/><circle cx="137" cy="49" r="9"/><circle cx="151" cy="56" r="9"/>
+          <circle cx="86" cy="66" r="7"/><circle cx="158" cy="66" r="7"/><circle cx="114.5" cy="45" r="8"/><circle cx="131" cy="44" r="8"/>
+        </g>
+        <g class="hair hair-ponytail" fill="var(--hair,#3a2a1e)">
+          <path d="M87 79C85 55 100 46 120 46c20 0 35 9 33 33-8-15-20-22-33-22s-25 7-33 22Z"/>
+          <circle cx="157" cy="59" r="3.6" fill="#c4714b"/>
+        </g>
+        <g class="hair hair-bob" fill="var(--hair,#3a2a1e)">
+          <path d="M83 84C79 46 103 38 120 38s41 8 37 46c-6 8-10 22-11 42-6-2-9-14-9-28 6-12 2-32-17-38-19-5-38 6-37 24 0 14-3 26-9 28-1-20-5-36-11-48Z"/>
+        </g>
+        <g class="hair hair-bun" fill="var(--hair,#3a2a1e)">
+          <path d="M87 79C85 55 100 46 120 46c20 0 35 9 33 33-8-15-20-22-33-22s-25 7-33 22Z"/>
+          <circle cx="120" cy="40" r="10.5"/>
+          <path d="M111 39q9-5 18 0" stroke="rgba(0,0,0,.25)" stroke-width="1.6" fill="none"/>
+        </g>
+
+        <!-- ══════════ ASTRONAUTA — capacete (acima do rosto) ══════════ -->
+        <g class="outfit outfit-astronaut-front">
+          <rect x="70" y="140" width="100" height="26" rx="13" fill="url(#suitGradSoft)" stroke="rgba(255,255,255,.22)" stroke-width="1.4"/>
+          <circle cx="120" cy="90" r="57" fill="url(#clearGlass)"/>
+          <circle cx="120" cy="90" r="57" fill="none" stroke="var(--suit-a,#1f6f6e)" stroke-width="6.5"/>
+          <circle cx="120" cy="90" r="57" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="1.5"/>
+          <path d="M74 62q20-26 54-27" stroke="#ffffff" stroke-width="6.5" fill="none" stroke-linecap="round" opacity=".6"/>
+          <path d="M72.5 93q1.8-9.4 6.4-16.5" stroke="#ffffff" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".5"/>
+          <circle cx="64.5" cy="66" r="1.7" fill="rgba(0,0,0,.3)"/><circle cx="175.5" cy="66" r="1.7" fill="rgba(0,0,0,.3)"/><circle cx="60.5" cy="117" r="1.7" fill="rgba(0,0,0,.3)"/><circle cx="179.5" cy="117" r="1.7" fill="rgba(0,0,0,.3)"/>
+          <path d="M169 42l2.3 5.7 5.7 2.3-5.7 2.3-2.3 5.7-2.3-5.7-5.7-2.3 5.7-2.3Z" fill="#fff" opacity=".9"/>
+          <circle class="comms-light" cx="120" cy="31.5" r="4.2" fill="#57e6c9"/>
+        </g>
+      </g>
     </symbol>
-
-    <!-- ══════ Bip — robozinho mascote ══════ -->
-    <symbol id="bipBot" viewBox="0 0 96 104">
-      <line x1="48" y1="6" x2="48" y2="17" stroke="#175f5e" stroke-width="3" stroke-linecap="round"/>
-      <circle class="bip-antenna" cx="48" cy="6.5" r="4.6" fill="#ffd166"/>
+    <!-- ══════ B.I.P — robô mascote ══════ -->
+    <symbol id="bipBot" viewBox="0 0 96 112">
+      <line x1="48" y1="4.5" x2="48" y2="16" stroke="#175f5e" stroke-width="3" stroke-linecap="round"/>
+      <circle class="bip-antenna" cx="48" cy="5" r="4.6" fill="#ffd166"/>
       <!-- ears -->
       <rect x="6" y="40" width="9" height="16" rx="4.5" fill="url(#bipBody)" stroke="rgba(255,255,255,.35)" stroke-width="1"/>
       <rect x="81" y="40" width="9" height="16" rx="4.5" fill="url(#bipBody)" stroke="rgba(255,255,255,.35)" stroke-width="1"/>
@@ -244,6 +323,23 @@
       <path d="M33 68h30l-4.5 24a8 8 0 0 1-8 7h-5a8 8 0 0 1-8-7Z" fill="url(#bipBody)" stroke="rgba(255,255,255,.35)" stroke-width="1.4"/>
       <circle class="bip-chest" cx="48" cy="80" r="4.4" fill="#ff8a5c"/>
       <circle cx="48" cy="80" r="7.4" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.2"/>
+      <!-- braços robóticos + mãozinhas (repouso; acena ocasionalmente) -->
+      <g class="bip-arm bip-arm-l">
+        <circle cx="33" cy="71" r="4.4" fill="#103c3c" stroke="rgba(255,255,255,.4)" stroke-width="1.1"/>
+        <rect x="29.4" y="70.5" width="7.6" height="13" rx="3.5" transform="rotate(21 33 77)" fill="url(#bipBody)" stroke="rgba(255,255,255,.32)" stroke-width="1"/>
+        <circle cx="28.2" cy="84.5" r="3" fill="#0d3f3f" stroke="rgba(255,255,255,.4)" stroke-width="1"/>
+        <rect x="24.8" y="84" width="7.2" height="12" rx="3.2" transform="rotate(-12 28.4 90)" fill="url(#bipBody)" stroke="rgba(255,255,255,.32)" stroke-width="1"/>
+        <circle cx="27.6" cy="97.5" r="2.2" fill="#103c3c" stroke="rgba(255,255,255,.3)" stroke-width=".8"/>
+        <path d="M24.6 100.5 21.8 106M27.6 101.5v6M30.6 100.5l2.8 5.5" stroke="#8ff5e2" stroke-width="1.7" stroke-linecap="round" opacity=".9"/>
+      </g>
+      <g class="bip-arm bip-arm-r">
+        <circle cx="63" cy="71" r="4.4" fill="#103c3c" stroke="rgba(255,255,255,.4)" stroke-width="1.1"/>
+        <rect x="59.4" y="70.5" width="7.6" height="13" rx="3.5" transform="rotate(-21 63 77)" fill="url(#bipBody)" stroke="rgba(255,255,255,.32)" stroke-width="1"/>
+        <circle cx="67.8" cy="84.5" r="3" fill="#0d3f3f" stroke="rgba(255,255,255,.4)" stroke-width="1"/>
+        <rect x="64.4" y="84" width="7.2" height="12" rx="3.2" transform="rotate(12 68 90)" fill="url(#bipBody)" stroke="rgba(255,255,255,.32)" stroke-width="1"/>
+        <circle cx="68.4" cy="97.5" r="2.2" fill="#103c3c" stroke="rgba(255,255,255,.3)" stroke-width=".8"/>
+        <path d="M65.4 100.5l-2.8 5.5M68.4 101.5v6M71.4 100.5l2.8 5.5" stroke="#8ff5e2" stroke-width="1.7" stroke-linecap="round" opacity=".9"/>
+      </g>
     </symbol>
   </defs>
 </svg>
@@ -259,16 +355,22 @@
 <header class="topbar">
   <div class="brand">
     <span class="brand-mark" aria-hidden="true">
-      <svg viewBox="0 0 40 40" width="34" height="34">
-        <circle cx="20" cy="20" r="17.5" fill="#0f3e3d"/>
-        <path d="M20 32a12 12 0 0 0 12-12" fill="none" stroke="#c4714b" stroke-width="3" stroke-linecap="round"/>
-        <circle cx="20" cy="18" r="6.2" fill="#c4714b"/>
-        <circle cx="20" cy="18" r="2.4" fill="#f4e9de"/>
+      <svg viewBox="0 0 64 64" width="34" height="34">
+        <rect width="64" height="64" rx="14" fill="#0f3e3d"/>
+        <line x1="32" y1="10" x2="32" y2="18" stroke="#1b6a69" stroke-width="3.4" stroke-linecap="round"/>
+        <circle cx="32" cy="8.6" r="3.6" fill="#ffd166"/>
+        <rect x="10.5" y="30" width="6" height="12" rx="3" fill="#175f5e" stroke="rgba(255,255,255,.35)"/>
+        <rect x="47.5" y="30" width="6" height="12" rx="3" fill="#175f5e" stroke="rgba(255,255,255,.35)"/>
+        <rect x="15" y="18" width="34" height="29" rx="10.5" fill="#175f5e" stroke="rgba(255,255,255,.4)" stroke-width="1.4"/>
+        <path d="M21 23.5q6-3.4 13-3.4" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity=".55" fill="none"/>
+        <rect x="22.5" y="28" width="6.6" height="9.6" rx="3.3" fill="#8ff5e2"/>
+        <rect x="34.9" y="28" width="6.6" height="9.6" rx="3.3" fill="#8ff5e2"/>
+        <path d="M25.5 42q6.5 4.4 13 0" stroke="#8ff5e2" stroke-width="2" fill="none" stroke-linecap="round"/>
       </svg>
     </span>
     <span class="brand-text">B.I.P<small>Biomedical Intelligent Partner</small></span>
   </div>
-  <div class="met-chip" title="Mission Elapsed Time — desde o lançamento (11/jun/2026)">
+  <div class="met-chip" title="Mission Elapsed Time — since launch (June 11, 2026)" data-i18n-title="met.title">
     <span class="met-dot"></span>MET <span id="metClock" class="mono">000:00:00:00</span>
   </div>
   <div class="crew-chip" title="Tripulante monitorada">
@@ -286,43 +388,44 @@
       <div class="card glass avatar-card">
         <div class="card-head">
           <div>
-            <h1 class="h-greet" id="greetName">Bom dia, Elena</h1>
-            <p class="muted small" id="moodLine">Humor estável · em equilíbrio com a missão</p>
+            <h1 class="h-greet" id="greetName" data-i18n="home.greet_default">Bom dia, Elena</h1>
+            <p class="muted small" id="moodLine" data-i18n="home.mood_calm">Humor: em equilíbrio · mantenha o ritmo</p>
           </div>
           <button class="btn btn-ghost" id="personalizeBtn" aria-expanded="false" aria-controls="personalizePanel">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
-            Personalizar
+            <span data-i18n="home.personalize">Personalizar</span>
           </button>
         </div>
 
         <div class="avatar-stage">
-          <svg class="avatar avatar-hero" data-mood="calm" data-hair="sweep" data-beard="none" data-freckles="off" viewBox="0 0 240 260" role="img" aria-label="Avatar da tripulante"></svg>
+          <svg class="avatar avatar-hero" data-mood="calm" data-hair="sweep" data-beard="none" data-freckles="off" data-outfit="astronaut" viewBox="0 0 240 352" role="button" tabindex="0" data-i18n-aria="avatar.aria" aria-label="Avatar da tripulante — toque para brincar"></svg>
+          <div class="avatar-bubble" id="avatarBubble" role="status" aria-live="polite" hidden></div>
 
           <div class="personalize-panel glass-deep" id="personalizePanel" hidden>
-            <p class="panel-title">Faça o avatar a sua cara</p>
-            <div class="opt-group"><span>Traje</span><div class="swatches" id="suitSwatches"></div></div>
-            <div class="opt-group"><span>Tom de pele</span><div class="swatches" id="skinSwatches"></div></div>
-            <div class="opt-group"><span>Corte de cabelo</span><div class="pillset" id="hairStyles"></div></div>
-            <div class="opt-group"><span>Cor do cabelo</span><div class="swatches" id="hairColors"></div></div>
-            <div class="opt-group"><span>Pelos faciais</span><div class="pillset" id="facialHair"></div></div>
-            <div class="opt-group"><span>Cor dos olhos</span><div class="swatches" id="eyeColors"></div></div>
-            <div class="opt-group"><span>Sardas</span>
-              <label class="mini-switch"><input type="checkbox" id="frecklesToggle"><span class="ms-track"><span class="ms-thumb"></span></span>mostrar sardas</label>
+            <p class="panel-title" data-i18n="panel.title">Faça o avatar a sua cara</p>
+            <div class="opt-group"><span data-i18n="panel.outfit">Roupa</span><div class="pillset" id="outfitPicker"></div></div>
+            <div class="opt-group"><span data-i18n="panel.skin">Tom de pele</span><div class="swatches" id="skinSwatches"></div></div>
+            <div class="opt-group"><span data-i18n="panel.hairstyle">Corte de cabelo</span><div class="pillset" id="hairStyles"></div></div>
+            <div class="opt-group"><span data-i18n="panel.haircolor">Cor do cabelo</span><div class="swatches" id="hairColors"></div></div>
+            <div class="opt-group"><span data-i18n="panel.beard">Pelos faciais</span><div class="pillset" id="facialHair"></div></div>
+            <div class="opt-group"><span data-i18n="panel.eyes">Cor dos olhos</span><div class="swatches" id="eyeColors"></div></div>
+            <div class="opt-group"><span data-i18n="panel.freckles">Sardas</span>
+              <label class="mini-switch"><input type="checkbox" id="frecklesToggle"><span class="ms-track"><span class="ms-thumb"></span></span><span data-i18n="panel.show_freckles">mostrar sardas</span></label>
             </div>
-            <button class="btn btn-soft" id="personalizeReset">Restaurar padrão</button>
+            <button class="btn btn-soft" id="personalizeReset" data-i18n="panel.reset">Restaurar padrão</button>
           </div>
         </div>
 
         <div class="avatar-foot">
-          <span class="live-dot"></span> Smart-Tex conectado · transmissão contínua de biosinais
+          <span class="live-dot"></span> <span data-i18n="home.foot">Smart-Tex conectado · transmissão contínua de biosinais</span>
         </div>
       </div>
 
       <div class="dash-col">
         <div class="dash-head">
           <div class="dash-title-wrap">
-            <h1 class="dash-title">Dashboard da missão</h1>
-            <p class="muted small">Expedition AURORA-7 · Elena Ricci · sinais contínuos via Smart-Tex</p>
+            <h1 class="dash-title" data-i18n="dash.title">Dashboard da missão</h1>
+            <p class="muted small" data-i18n="dash.subtitle">Expedition AURORA-7 · Elena Ricci · sinais contínuos via Smart-Tex</p>
           </div>
           <!-- relógio: detalhe compacto no canto superior direito -->
           <div class="clock-pill" id="clockPill" title="Hora local da missão">
@@ -330,11 +433,11 @@
             <span class="clock-pill-text">
               <span class="clock-time mono" id="clockTime">--:--</span>
               <span class="clock-sub"><span id="clockDate">—</span>
-                <select class="clock-tz" id="tzSelect" aria-label="Escolher fuso">
+                <select class="clock-tz" id="tzSelect" aria-label="Escolher fuso" data-i18n-aria="dash.tz_label">
                   <option value="houston">Houston · MCC</option>
                   <option value="utc">Greenwich · UTC</option>
                   <option value="tokyo">Tóquio · UTC+9</option>
-                  <option value="mars">Base Ares · Sol médio</option>
+                  <option value="mars" data-i18n="clock.mars">Base Ares · Sol médio</option>
                 </select>
               </span>
             </span>
@@ -346,11 +449,11 @@
 
         <!-- faixa de resumo da missão -->
         <div class="dash-strip glass-soft">
-          <div class="strip-item"><span class="strip-num mono" id="stripMet">000:00</span><span class="strip-lbl">MET · dias</span></div>
+          <div class="strip-item"><span class="strip-num mono" id="stripMet">000:00</span><span class="strip-lbl" data-i18n="strip.met_label">MET · DIAS</span></div>
           <span class="strip-sep"></span>
-          <div class="strip-item"><span class="strip-num mono" id="stripRemaining">400</span><span class="strip-lbl">dias restantes</span></div>
+          <div class="strip-item"><span class="strip-num mono" id="stripRemaining">400</span><span class="strip-lbl" data-i18n="strip.remaining_label">DIAS RESTANTES</span></div>
           <span class="strip-sep"></span>
-          <div class="strip-item"><span class="strip-num mono" id="stripMoon">—</span><span class="strip-lbl" id="stripMoonName">Lua</span></div>
+          <div class="strip-item"><span class="strip-num mono" id="stripMoon">—</span><span class="strip-lbl" id="stripMoonName">LUA</span></div>
         </div>
       </div>
     </div>
@@ -360,12 +463,12 @@
   <section class="screen" id="screen-rotina" aria-label="Rotinas diárias">
     <div class="routines-layout">
       <div class="card glass routine-hero">
-        <svg class="avatar avatar-routine" data-mood="calm" data-hair="sweep" data-beard="none" data-freckles="off" viewBox="0 0 240 260" aria-hidden="true"></svg>
+        <svg class="avatar avatar-routine" data-mood="calm" data-hair="sweep" data-beard="none" data-freckles="off" data-outfit="astronaut" viewBox="0 0 240 352" role="button" tabindex="0" data-i18n-aria="avatar.aria" aria-label="Avatar da tripulante — toque para brincar"></svg>
         <div class="routine-hero-info">
-          <h2>Rotinas diárias</h2>
+          <h2 data-i18n="rotina.title">Rotinas diárias</h2>
           <p class="muted" id="routineDate">—</p>
           <div class="routine-stats">
-            <div class="ring-wrap" title="Conclusão do dia">
+            <div class="ring-wrap" title="Conclusão do dia" data-i18n-title="rotina.ring_title">
               <svg class="progress-ring" viewBox="0 0 84 84" width="84" height="84">
                 <circle class="ring-bg" cx="42" cy="42" r="34"/>
                 <circle class="ring-fg" id="dayRing" cx="42" cy="42" r="34"/>
@@ -373,12 +476,12 @@
               <span class="ring-label mono" id="dayRingLabel">0%</span>
             </div>
             <div class="routine-kpis">
-              <div class="kpi"><span class="kpi-num mono" id="kpiDone">0/16</span><span class="kpi-lbl">tarefas hoje</span></div>
-              <div class="kpi"><span class="kpi-num mono" id="kpiStreak">0</span><span class="kpi-lbl">dias de sequência</span></div>
-              <div class="kpi kpi-warn"><span class="kpi-num mono" id="kpiPending">0</span><span class="kpi-lbl">pendências agora</span></div>
+              <div class="kpi"><span class="kpi-num mono" id="kpiDone">0/16</span><span class="kpi-lbl" data-i18n="rotina.tasks">tarefas hoje</span></div>
+              <div class="kpi"><span class="kpi-num mono" id="kpiStreak">0</span><span class="kpi-lbl" data-i18n="rotina.streak">dias de sequência</span></div>
+              <div class="kpi kpi-warn"><span class="kpi-num mono" id="kpiPending">0</span><span class="kpi-lbl" data-i18n="rotina.pending">pendências agora</span></div>
             </div>
           </div>
-          <div class="mood-callout" id="moodCallout">Seu avatar reage ao seu ritmo — complete as rotinas para vê-lo sorrir.</div>
+          <div class="mood-callout" id="moodCallout" data-i18n="rotina.callout_calm">Seu avatar reage ao seu ritmo — complete as rotinas para vê-lo sorrir.</div>
         </div>
       </div>
 
@@ -386,7 +489,7 @@
 
       <div class="card glass achievements-card">
         <div class="card-head">
-          <div><h3>Conquistas de missão</h3><p class="muted small">Marque as rotinas no tempo certo e desbloqueie medalhas de constância</p></div>
+          <div><h3 data-i18n="rotina.achieve_title">Conquistas de missão</h3><p class="muted small" data-i18n="rotina.achieve_sub">Marque as rotinas no tempo certo e desbloqueie medalhas de constância</p></div>
         </div>
         <div class="achievements-rail" id="achievementsRail"></div>
       </div>
@@ -400,17 +503,17 @@
     <div class="dx-view" id="dxFormView">
       <div class="dx-grid">
         <div class="card glass dx-main">
-          <h2 class="dx-title">Diga o que está sentindo</h2>
-          <p class="muted">Texto, imagem (ferida, exantema, exame caseiro) ou os dois. O Bip cruza tudo: sinais vitais, exames recentes, sua rotina, sono e conversas — e devolve hipóteses + plano de bordo.</p>
+          <h2 class="dx-title" data-i18n="dx.title">Diga o que está sentindo</h2>
+          <p class="muted" data-i18n="dx.subtitle">Texto, imagem (ferida, exantema, exame caseiro) ou os dois. O B.I.P cruza tudo: sinais vitais, exames recentes, sua rotina, sono e conversas — e devolve hipóteses + plano de bordo.</p>
 
-          <textarea id="dxText" class="dx-textarea" rows="4" maxlength="2000" placeholder="Ex.: Dor de cabeça opressiva desde ontem à tarde, piora à noite. Dormi mal, muita tarefa de EVA planejada…"></textarea>
+          <textarea id="dxText" class="dx-textarea" rows="4" maxlength="2000" data-i18n-ph="dx.placeholder" placeholder="Ex.: Dor de cabeça opressiva desde ontem à tarde, piora à noite. Dormi mal, muita tarefa de EVA planejada…"></textarea>
 
           <div class="dx-chips" id="dxSuggestChips">
-            <button class="chip" data-fill="Dor de cabeça opressiva desde ontem à tarde. Piora à noite e com esforço.">Cefaleia opressiva</button>
-            <button class="chip" data-fill="Náusea e enjoo fortes ao acordar, sem vômito. Começou há 2 dias.">Náusea ao acordar</button>
-            <button class="chip" data-fill="Acordei tonto, a visão embaçou por alguns segundos ao levantar da cama.">Tontura ao levantar</button>
-            <button class="chip" data-fill="Desde o contato com o MCC não consigo desligar: mente acelerada, sono ruim há 4 noites.">Mente acelerada / sono ruim</button>
-            <button class="chip" data-fill="Coceira e manchas vermelhas nas mãos desde ontem, após manusear o filtro de ar.">Manchas na pele</button>
+            <button class="chip" data-fill-key="dx.s1t" data-i18n="dx.s1">Cefaleia opressiva</button>
+            <button class="chip" data-fill-key="dx.s2t" data-i18n="dx.s2">Náusea ao acordar</button>
+            <button class="chip" data-fill-key="dx.s3t" data-i18n="dx.s3">Tontura ao levantar</button>
+            <button class="chip" data-fill-key="dx.s4t" data-i18n="dx.s4">Mente acelerada / sono ruim</button>
+            <button class="chip" data-fill-key="dx.s5t" data-i18n="dx.s5">Manchas na pele</button>
           </div>
 
           <div class="dx-attach-row">
@@ -419,7 +522,7 @@
               <span class="dz-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="8.5" cy="10" r="1.6"/><path d="M21 15l-4.5-4.5L9 18"/></svg>
               </span>
-              <span class="dz-text"><strong>Anexar imagem</strong><small>arraste ou clique · feridas, manchas, exames</small></span>
+              <span class="dz-text"><strong data-i18n="dx.attach_strong">Anexar imagem</strong><small data-i18n="dx.attach_small">arraste ou clique · feridas, manchas, exames</small></span>
             </label>
             <div class="dx-preview" id="dxPreview" hidden>
               <img id="dxPreviewImg" alt="Imagem anexada para análise" />
@@ -432,22 +535,22 @@
           <div class="dx-actions">
             <button class="btn btn-primary btn-big" id="dxAnalyzeBtn">
               <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a4 4 0 0 0-4 4v1a4 4 0 0 0 8 0V7a4 4 0 0 0-4-4Z"/><path d="M4 13a8 8 0 0 0 16 0"/><path d="M12 21v-4"/></svg>
-              Analisar sintomas
+              <span data-i18n="dx.analyze">Analisar sintomas</span>
             </button>
             <button class="btn btn-ghost" id="dxHistoryBtn">
               <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3.2 2"/></svg>
-              Resultados anteriores <span class="count-pill mono" id="dxHistoryCount">0</span>
+              <span data-i18n="dx.history">Resultados anteriores</span> <span class="count-pill mono" id="dxHistoryCount">0</span>
             </button>
           </div>
         </div>
 
         <aside class="card glass dx-side">
-          <h3>Kit médico de bordo</h3>
-          <p class="muted small">Inventário real da missão Aurora-7 — o diagnóstico só prescreve o que existe a bordo.</p>
+          <h3 data-i18n="dx.kit_title">Kit médico de bordo</h3>
+          <p class="muted small" data-i18n="dx.kit_sub">Inventário real da missão Aurora-7 — o diagnóstico só prescreve o que existe a bordo.</p>
           <ul class="stock-list" id="stockList"></ul>
           <div class="stock-note">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9.2"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
-            <span>Casos graves seguem protocolo espacial: estabilização + <strong>aborto da missão e retorno à Terra</strong>. Telemedicina com o MCC todos os dias, 15:10–15:45.</span>
+            <span><span data-i18n="dx.kit_note">Casos graves seguem protocolo espacial: estabilização + </span><strong data-i18n="dx.kit_note_b">aborto da missão e retorno à Terra</strong><span data-i18n="dx.kit_note_end">. Telemedicina com o MCC todos os dias, 15:10–15:45.</span></span>
           </div>
         </aside>
       </div>
@@ -456,16 +559,16 @@
     <!-- carregando / escaneando -->
     <div class="dx-view dx-loading" id="dxLoadingView" hidden>
       <div class="scan-wrap">
-        <svg class="bip-scan" viewBox="0 0 96 104" aria-hidden="true"><use href="#bipBot"></use></svg>
+        <svg class="bip-scan" viewBox="0 0 96 112" aria-hidden="true"><use href="#bipBot"></use></svg>
         <div class="scan-ring"></div>
       </div>
-      <h2>Um instante, estou analisando…</h2>
+      <h2 data-i18n="dx.loading_title">Um instante, estou analisando…</h2>
       <ul class="scan-steps" id="scanSteps">
-        <li data-step="0">Coletando sinais vitais em tempo real…</li>
-        <li data-step="1">Cruzando hemograma, dosimetria e exames…</li>
-        <li data-step="2">Consultando inventário do kit médico de bordo…</li>
-        <li data-step="3">Verificando conversas com o copiloto (fator psicológico)…</li>
-        <li data-step="4">Montando hipóteses e plano de conduta…</li>
+        <li data-step="0" data-i18n="dx.step0">Coletando sinais vitais em tempo real…</li>
+        <li data-step="1" data-i18n="dx.step1">Cruzando hemograma, dosimetria e exames…</li>
+        <li data-step="2" data-i18n="dx.step2">Consultando inventário do kit médico de bordo…</li>
+        <li data-step="3" data-i18n="dx.step3">Verificando conversas com o copiloto (fator psicológico)…</li>
+        <li data-step="4" data-i18n="dx.step4">Montando hipóteses e plano de conduta…</li>
       </ul>
     </div>
 
@@ -483,32 +586,32 @@
             <h2 id="dxResultTitle">—</h2>
             <p class="muted" id="dxSummary">—</p>
 
-            <h4 class="block-title">Possíveis causas</h4>
+            <h4 class="block-title" data-i18n="dx.causes_title">Possíveis causas</h4>
             <div class="causes" id="dxCauses"></div>
 
-            <h4 class="block-title">Dados que o Bip usou</h4>
+            <h4 class="block-title" data-i18n="dx.factors_title">Dados que o B.I.P usou</h4>
             <div class="factor-chips" id="dxFactors"></div>
           </div>
         </div>
 
         <div class="dx-col">
           <div class="card glass rx-card">
-            <h3 class="rx-title">Receituário de bordo <span class="rx-badge mono">ON-BOARD RX</span></h3>
+            <h3 class="rx-title"><span data-i18n="dx.rx_title">Receituário de bordo</span> <span class="rx-badge mono">ON-BOARD RX</span></h3>
             <div class="rx-list" id="dxPrescription"></div>
 
-            <h4 class="block-title">Conduta passo a passo</h4>
+            <h4 class="block-title" data-i18n="dx.steps_title">Conduta passo a passo</h4>
             <ol class="rx-procedures" id="dxProcedures"></ol>
 
-            <h4 class="block-title">Monitoramento</h4>
+            <h4 class="block-title" data-i18n="dx.monitoring_title">Monitoramento</h4>
             <p class="rx-monitoring" id="dxMonitoring">—</p>
 
-            <h4 class="block-title">Red flags — quando escalar para o MCC</h4>
+            <h4 class="block-title" data-i18n="dx.flags_title">Red flags — quando escalar para o MCC</h4>
             <ul class="red-flags" id="dxRedFlags"></ul>
 
             <p class="rx-disclaimer" id="dxDisclaimer">Apoio à decisão — a palavra final é do médico de voo do MCC.</p>
             <div class="rx-actions">
-              <button class="btn btn-primary" id="dxNewConsultBtn">Nova consulta</button>
-              <button class="btn btn-ghost" id="dxBackHistoryBtn">Ver resultados anteriores</button>
+              <button class="btn btn-primary" id="dxNewConsultBtn" data-i18n="dx.new">Nova consulta</button>
+              <button class="btn btn-ghost" id="dxBackHistoryBtn" data-i18n="dx.see_history">Ver resultados anteriores</button>
             </div>
           </div>
         </div>
@@ -518,8 +621,8 @@
     <!-- histórico -->
     <div class="dx-view" id="dxHistoryView" hidden>
       <div class="history-head">
-        <h2>Resultados anteriores</h2>
-        <button class="btn btn-ghost" id="dxHistoryBackBtn">← Voltar</button>
+        <h2 data-i18n="dx.history_title">Resultados anteriores</h2>
+        <button class="btn btn-ghost" id="dxHistoryBackBtn" data-i18n="dx.history_back">← Voltar</button>
       </div>
       <div class="history-list" id="dxHistoryList"></div>
     </div>
@@ -529,9 +632,9 @@
   <section class="screen" id="screen-exames" aria-label="Exames">
     <div class="exams-wrap">
       <div class="exams-head">
-        <div><h2>Exames</h2><p class="muted">Dossiê completo de exames realizados em outros equipamentos da missão</p></div>
+        <div><h2 data-i18n="exams.title">Exames</h2><p class="muted" data-i18n="exams.sub">Dossiê completo de exames realizados em outros equipamentos da missão</p></div>
         <div class="exams-controls">
-          <input type="search" class="exam-search" id="examSearch" placeholder="Buscar exame, resultado…" aria-label="Buscar exame" />
+          <input type="search" class="exam-search" id="examSearch" data-i18n-ph="exams.search" placeholder="Buscar exame, resultado…" aria-label="Buscar exame" data-i18n-aria="exams.search" />
         </div>
       </div>
       <div class="exam-filters" id="examFilters"></div>
@@ -545,10 +648,10 @@
         <h2 id="edTitle">—</h2>
         <span class="status-badge" id="edStatus">Concluído</span>
         <p class="muted ed-summary" id="edSummary">—</p>
-        <div class="ed-table-wrap"><table class="ed-table" id="edTable"><thead><tr><th>Parâmetro</th><th>Resultado</th><th>Ref.</th><th>Flag</th></tr></thead><tbody></tbody></table></div>
+        <div class="ed-table-wrap"><table class="ed-table" id="edTable"><thead><tr><th data-i18n="exams.tbl_param">Parâmetro</th><th data-i18n="exams.tbl_result">Resultado</th><th data-i18n="exams.tbl_ref">Ref.</th><th data-i18n="exams.tbl_flag">Flag</th></tr></thead><tbody></tbody></table></div>
         <button class="btn btn-primary" id="edSendToDx">
           <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
-          Enviar para o diagnóstico
+          <span data-i18n="exams.send">Enviar para o diagnóstico</span>
         </button>
       </div>
     </aside>
@@ -556,28 +659,28 @@
 </main>
 
 <!-- ═══════════ ROBÔ MASCOTE ═══════════ -->
-<button class="bip-bot-btn" id="bipBotBtn" aria-label="Abrir conversa com o Bip, copiloto de saúde">
-  <span class="bip-bubble" id="bipBubble">Psst… preciso de algo?</span>
-  <svg class="bip-bot-svg" viewBox="0 0 96 104" aria-hidden="true"><use href="#bipBot"></use></svg>
+<button class="bip-bot-btn" id="bipBotBtn" data-i18n-aria="chat.open" aria-label="Abrir conversa com o B.I.P, copiloto de saúde">
+  <span class="bip-bubble" id="bipBubble" data-i18n="chat.bubble">Psst… preciso de algo?</span>
+  <svg class="bip-bot-svg" viewBox="0 0 96 112" aria-hidden="true"><use href="#bipBot"></use></svg>
 </button>
 
 <!-- ═══════════ CHAT ═══════════ -->
-<aside class="chat-panel glass-deep" id="chatPanel" hidden aria-modal="false" aria-label="Conversar com o Bip">
+<aside class="chat-panel glass-deep" id="chatPanel" hidden aria-modal="false" data-i18n-aria="chat.title_aria" aria-label="Conversar com o B.I.P">
   <header class="chat-head">
-    <span class="chat-avatar"><svg viewBox="0 0 96 104" aria-hidden="true"><use href="#bipBot"></use></svg></span>
-    <span class="chat-meta"><strong>Bip</strong><small><span class="online-dot"></span>online · copiloto da missão Aurora-7</small></span>
-    <button class="chat-close" id="chatCloseBtn" aria-label="Fechar chat">×</button>
+    <span class="chat-avatar"><svg viewBox="0 0 96 112" aria-hidden="true"><use href="#bipBot"></use></svg></span>
+    <span class="chat-meta"><strong>B.I.P</strong><small><span class="online-dot"></span><span data-i18n="chat.sub">online · copiloto da missão Aurora-7</span></small></span>
+    <button class="chat-close" id="chatCloseBtn" data-i18n-aria="chat.close" aria-label="Fechar chat">×</button>
   </header>
   <div class="chat-messages" id="chatMessages" aria-live="polite"></div>
   <div class="chat-quick" id="chatQuick">
-    <button class="chip" data-q="Quais rotinas estão pendentes hoje?">Pendências de hoje</button>
-    <button class="chip" data-q="Estou com dor de cabeça desde ontem.">Estou com dor de cabeça</button>
-    <button class="chip" data-q="Não consigo dormir direito há 4 dias.">Sono ruim</button>
-    <button class="chip" data-q="Quanto posso beber de água hoje?">Meta de água</button>
+    <button class="chip" data-q-key="chat.q_today" data-i18n="chat.q1">Pendências de hoje</button>
+    <button class="chip" data-q-key="chat.q_headache" data-i18n="chat.q2">Estou com dor de cabeça</button>
+    <button class="chip" data-q-key="chat.q_sleep" data-i18n="chat.q3">Sono ruim</button>
+    <button class="chip" data-q-key="chat.q_water" data-i18n="chat.q4">Meta de água</button>
   </div>
   <form class="chat-input-row" id="chatForm" autocomplete="off">
-    <input class="chat-input" id="chatInput" type="text" placeholder="Escreva para o Bip…" maxlength="500" aria-label="Mensagem para o Bip" />
-    <button class="chat-send" type="submit" aria-label="Enviar mensagem">
+    <input class="chat-input" id="chatInput" type="text" data-i18n-ph="chat.input" placeholder="Escreva para o B.I.P…" maxlength="500" data-i18n-aria="chat.input" aria-label="Mensagem para o B.I.P" />
+    <button class="chat-send" type="submit" data-i18n-aria="chat.send" aria-label="Enviar mensagem">
       <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
     </button>
   </form>
@@ -586,27 +689,27 @@
 <!-- ═══════════ DOCK (navbar inferior estilo macOS) ═══════════ -->
 <nav class="dock-wrap" aria-label="Navegação principal">
   <div class="dock" id="dock">
-    <button class="dock-btn is-active" data-screen="screen-home" aria-label="Início">
+    <button class="dock-btn is-active" data-screen="screen-home" data-i18n-aria="dock.home" aria-label="Início">
       <span class="dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.2 12 3l9 8.2"/><path d="M5.4 9.8V21h13.2V9.8"/><path d="M9.5 21v-6h5v6"/></svg></span>
-      <span class="dock-label">Início</span>
+      <span class="dock-label" data-i18n="dock.home">Início</span>
     </button>
-    <button class="dock-btn" data-screen="screen-rotina" aria-label="Rotinas diárias">
+    <button class="dock-btn" data-screen="screen-rotina" data-i18n-aria="dock.routine" aria-label="Rotinas diárias">
       <span class="dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4.5" width="16" height="17" rx="3.4"/><path d="M9 12.2l2.1 2.1 4-4.6"/><path d="M9 8h6"/></svg></span>
       <span class="dock-badge" id="dockBadge" hidden>0</span>
-      <span class="dock-label">Rotinas</span>
+      <span class="dock-label" data-i18n="dock.routine">Rotinas</span>
     </button>
-    <button class="dock-btn" data-screen="screen-diagnostico" aria-label="Diagnóstico">
+    <button class="dock-btn" data-screen="screen-diagnostico" data-i18n-aria="dock.diagnosis" aria-label="Diagnóstico">
       <span class="dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.8-4.6-9.3-9.3C1.4 8.9 3.5 6 6.9 6c2.2 0 3.9 1.2 5.1 3.1C13.2 7.2 14.9 6 17.1 6c3.4 0 5.5 2.9 4.2 5.7C18.8 16.4 12 21 12 21Z"/><path d="M4 13h4l1.6-3 2 4.4L14 9l1.6 3H20"/></svg></span>
-      <span class="dock-label">Diagnóstico</span>
+      <span class="dock-label" data-i18n="dock.diagnosis">Diagnóstico</span>
     </button>
-    <button class="dock-btn" data-screen="screen-exames" aria-label="Exames">
+    <button class="dock-btn" data-screen="screen-exames" data-i18n-aria="dock.exams" aria-label="Exames">
       <span class="dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 3h5"/><path d="M10.5 3v5.2L5.7 15a3.4 3.4 0 0 0 3.2 4.4h6.2a3.4 3.4 0 0 0 3.2-4.4l-4.8-6.8V3"/><path d="M7.8 13h8.4"/></svg></span>
-      <span class="dock-label">Exames</span>
+      <span class="dock-label" data-i18n="dock.exams">Exames</span>
     </button>
   </div>
 </nav>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="/static/js/app.js"></script>
+<script src="/static/js/app.js?v=14"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@ Vitais e sono SÃO gravados (histórico do paciente). O simulador é determinís
 
 from datetime import datetime, timezone
 
-from sqlalchemy import JSON, BigInteger, Boolean, DateTime, Float, Integer, String, Text
+from sqlalchemy import JSON, BigInteger, Boolean, DateTime, Float, Integer, String, Text, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column
 
 from app.db import Base
@@ -46,6 +46,7 @@ class SleepNight(Base):
 
 class RoutineLog(Base):
     __tablename__ = "routine_log"
+    __table_args__ = (UniqueConstraint("day", "task_id", name="uq_routine_day_task"),)
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     day: Mapped[str] = mapped_column(String(10), index=True)  # YYYY-MM-DD
     task_id: Mapped[str] = mapped_column(String(16))
@@ -85,6 +86,24 @@ class StockMove(Base):
     item: Mapped[str] = mapped_column(String(120), index=True)
     delta: Mapped[float] = mapped_column(Float)
     reason: Mapped[str] = mapped_column(String(200), default="")
+
+
+class SpaceWeatherCache(Base):
+    """Cache da resposta (já reduzida) da NASA DONKI; compartilhado entre instâncias e protege a cota da API."""
+
+    __tablename__ = "space_weather_cache"
+    key: Mapped[str] = mapped_column(String(20), primary_key=True)
+    payload: Mapped[dict] = mapped_column(JSON)
+    fetched_at: Mapped[float] = mapped_column(Float, default=0.0)    # último sucesso (epoch)
+    attempted_at: Mapped[float] = mapped_column(Float, default=0.0)  # última tentativa (epoch)
+
+
+class AppState(Base):
+    """Chave/valor simples (ex.: cenário de demo ativo), compartilhado entre instâncias serverless."""
+
+    __tablename__ = "app_state"
+    key: Mapped[str] = mapped_column(String(40), primary_key=True)
+    value: Mapped[str] = mapped_column(String(200), default="")
 
 
 class AchievementUnlocked(Base):

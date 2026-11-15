@@ -13,6 +13,14 @@ from datetime import datetime, timezone
 from app import config, data
 
 STEP = 900  # segundos entre amostras (15 min)
+EXERCISE_WINDOW = (7.5, 8.1)  # hora UTC do exercício diário (rotina: "Exercício resistido — 35 min")
+
+
+def is_exercise(ts: float) -> bool:
+    from datetime import datetime as _dt, timezone as _tz
+
+    d = _dt.fromtimestamp(ts, tz=_tz.utc)
+    return EXERCISE_WINDOW[0] <= d.hour + d.minute / 60 < EXERCISE_WINDOW[1]
 SEED = 7
 
 
@@ -35,7 +43,7 @@ def vital_sample(ts: int) -> dict:
     day_shift = day_rng.uniform(-1.5, 1.5)  # variação dia a dia
 
     asleep = h >= 22.5 or h < 6.5
-    exercising = 7.5 <= h < 8.1
+    exercising = EXERCISE_WINDOW[0] <= h < EXERCISE_WINDOW[1]
     circ = math.sin(2 * math.pi * (h - 9) / 24)
 
     hr = 68 + 5 * circ + day_shift + r.gauss(0, 1.6)

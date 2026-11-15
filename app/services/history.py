@@ -79,7 +79,7 @@ def _at(db: Session, ts: int):
     return db.scalar(select(VitalSample).where(VitalSample.ts <= ts).order_by(VitalSample.ts.desc()).limit(1))
 
 
-def latest_metrics(db: Session, now: float | None = None) -> dict:
+def latest_metrics(db: Session, now: float | None = None, scenario: str | None = None) -> dict:
     """Valor atual, status e delta vs. mesmo horário de ontem, por métrica."""
     now = time.time() if now is None else now
     end = int(now // STEP) * STEP
@@ -88,8 +88,9 @@ def latest_metrics(db: Session, now: float | None = None) -> dict:
     out = {}
     if cur is None:
         return out
+    shifted = simulator.apply_scenario({m: getattr(cur, m) for m in METRICS}, scenario)
     for m in METRICS:
-        v = getattr(cur, m)
+        v = shifted[m]
         d = None if prev is None else round(v - getattr(prev, m), 2)
         unit = RANGES[m]["unit"]
         out[m] = {

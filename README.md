@@ -1,4 +1,4 @@
----
+﻿---
 title: B.I.P — Biomedical Intelligent Partner
 emoji: 🫀
 colorFrom: teal
@@ -17,12 +17,16 @@ O B.I.P acompanha o tripulante **fora da Terra** — por isso nenhuma conduta re
 
 | Tela | Função |
 | --- | --- |
-| **Início** | Avatar do tripulante **humano e editável** (traje, tom de pele, corte/cor de cabelo, pelos faciais, cor dos olhos, sardas) com emoções reativas, sinais vitais (FC, SpO₂, hidratação, dosimetria de radiação, PA, temperatura) em dashboard, relógio compacto no canto direito (Houston / Greenwich / Tóquio / **Sol médio de Marte**) com **céu celeste real** (sol, dourado, **fase da lua calculada** ou sol marciano) e o **Bip**, robô mascote conversacional |
+| **Início** | Avatar do tripulante **humano e editável** (traje, tom de pele, corte/cor de cabelo, pelos faciais, cor dos olhos, sardas) com emoções reativas, sinais vitais (FC, SpO₂, hidratação, dosimetria de radiação, PA, temperatura) em dashboard, relógio compacto no canto direito (Houston / Greenwich / Tóquio / **Sol médio de Marte**) com **céu celeste real** (sol, dourado, **fase da lua calculada** ou sol marciano) e o **B.I.P**, robô mascote conversacional |
 | **Rotinas** | Checklist gamificado por períodos (manhã/tarde/noite) com horários, streak, anel de progresso do dia, 9 **conquistas** e avatar que **muda de expressão**: feliz (tudo feito), aflito (pendências atrasadas), choroso (nada feito) |
-| **Diagnóstico** | Entrada por **texto e/ou imagem** (ferida, exantema, exame). A IA cruza **vitais + exames + rotina + sono + conversas com o Bip**, devolve hipóteses com probabilidade, **receituário de bordo** (dose, frequência, duração, instrução), conduta passo a passo, monitoramento, red flags e triagem: **a bordo → telemedicina MCC → aborto/retorno à Terra**. Histórico de resultados anteriores |
+| **Diagnóstico** | Entrada por **texto e/ou imagem** (ferida, exantema, exame). A IA cruza **vitais + exames + rotina + sono + conversas com o B.I.P**, devolve hipóteses com probabilidade, **receituário de bordo** (dose, frequência, duração, instrução), conduta passo a passo, monitoramento, red flags e triagem: **a bordo → telemedicina MCC → aborto/retorno à Terra**. Histórico de resultados anteriores |
 | **Exames** | Dossiê completo dos exames feitos em outros equipamentos (hemograma, ECG, DXA, dosimetria…), com valores, flags (alto/baixo/atenção), busca, filtro por categoria e **"Enviar para o diagnóstico"** |
 
 Barra inferior estilo **macOS Dock** (com magnificação no hover) + **badge de alerta** sobre o ícone de Rotinas quando há pendências atrasadas.
+
+## Idioma / Language / Idioma
+
+O B.I.P é **trilíngue (Português · English · Español)**, com detecção automática do idioma do navegador na primeira visita (PT/ES/EN, fallback `en`) e seletor manual no topo (PT · EN · ES) persistido em `localStorage`. Cobre toda a UI, conteúdo da missão (rotinas, exames, conquistas, kit de bordo), respostas da IA (Gemini no idioma escolhido) e até o motor offline. Chaves centralizadas em `static/js/i18n.js` + conteúdo servido pelo backend por `?lang=` / campo `lang`.
 
 ## IA — como funciona
 
@@ -71,15 +75,65 @@ git push space main
 - **Render** (free web service, Docker): acorde lento após inatividade (~30 s).
 - **Streamlit Cloud**: exigiria portar a UI (não recomendado para esta estética).
 
-## Arquitetura
+## Backend and ML
+
+FastAPI + SQLAlchemy (SQLite locally, Postgres in production) + numpy. Front-end API reference: [`docs/API_FRONT.md`](docs/API_FRONT.md); method and limitations: [`docs/METHOD_AND_LIMITATIONS.md`](docs/METHOD_AND_LIMITATIONS.md); plan: [`docs/BACKEND_PLAN.md`](docs/BACKEND_PLAN.md).
 
 ```
 app/
-  main.py   → FastAPI: serve o frontend + /api/vitals (drift fisiológico simulado),
-              /api/routines, /api/exams, /api/stock, /api/achievements,
-              /api/chat (Bip), /api/diagnose (Gemini | fallback offline)
-  ai.py     → cliente Gemini + prompt médico espacial + motor offline curado
-  data.py   → missão AURORA-7: tripulante, kit médico de bordo, rotinas, exames, conquistas
+  main.py            → wires routers and static files, initializes the database
+  config.py, db.py   → env vars; SQLAlchemy engine (DATABASE_URL)
+  models.py          → vitals, sleep, routines, mood, diagnoses, chat, stock, achievements, demo state, space-weather cache
+  schemas.py         → validation and guardrails for the AI response
+  ai.py              → Gemini (2 attempts) + curated offline engine (PT/EN/ES)
+  exams_data.py      → exam dossier (PT/EN/ES)
+  routers/           → vitals, tracking (routines/mood/stock/achievements), ai_routes, content, demo, spaceweather, health
+  services/
+    simulator.py     → deterministic simulated vitals/sleep (+ demo scenarios)
+    history.py       → persisted history (30-day backfill + per-request catch-up)
+    anomaly.py       → circadian baseline (15-min slots) + robust z + Mahalanobis
+    risk.py          → 0–100 risk score with explainable factors
+    context.py       → clinical context built on the server for the AI
+    spaceweather.py  → real NASA DONKI: CME impacts on Mars, SEP events
+    gamification.py  → streak and achievements
+    demo.py          → global demo scenario
+  snapshots/         → real NASA DONKI snapshot used when the API is unreachable
+tests/               → pytest (contract, history, anomaly, AI, tracking, demo, space weather, i18n)
+```
+
+### Environment variables
+
+| Variable | Purpose | Default |
+| --- | --- | --- |
+| `DATABASE_URL` | Postgres (e.g. Neon). Accepts `postgres://` | SQLite at `data/bip.db` (`/tmp` on Vercel) |
+| `GEMINI_API_KEY` | Real AI | none: offline engine |
+| `GEMINI_MODEL` / `GEMINI_TIMEOUT` | model / timeout in seconds | `gemini-2.5-flash` / `15` |
+| `HISTORY_DAYS` | days of vitals history | `30` |
+| `NASA_API_KEY` | NASA key (free at api.nasa.gov); without it `DEMO_KEY` is used (very small quota) | `DEMO_KEY` |
+| `SPACE_WEATHER` | `off` disables the NASA call (cache/snapshot only) | `on` |
+| `MAX_IMAGE_MB` | max image size for diagnosis | `5` |
+| `DEMO_TOKEN` | requires `X-Demo-Token` to change the demo scenario | off |
+
+### Tests
+
+```bash
+pip install -r requirements-dev.txt
+pytest -q
+```
+
+### Demo mode
+
+`POST /api/demo/scenario` with `{"scenario": "infection"}` (or `dehydration`, `stress`, `spe`) makes vitals, risk, context, diagnosis and space weather respond with the scenario; `{"scenario": null}` goes back to normal. Vitals and sleep are **simulated** (see the limitations doc). The `spe` scenario adds a **simulated, labelled** solar event; the rest of the space-weather data is real NASA DONKI.
+
+### Deploying to Vercel (untested)
+
+1. Create a Postgres database (Neon via the Vercel Marketplace) and set `DATABASE_URL`.
+2. Set `NASA_API_KEY`, `GEMINI_API_KEY` (optional) and `DEMO_TOKEN`.
+3. `api/index.py` exposes the app and `vercel.json` bundles `static/**` into the function. Without `DATABASE_URL` it falls back to SQLite in `/tmp` (ephemeral).
+
+## Front-end architecture
+
+```
 static/
   index.html → 4 telas + dock + chat (sem framework, SVG inline)
   css/styles.css → design system Frutiger Aero × terracota/azul-petróleo
@@ -87,8 +141,8 @@ static/
               diagnóstico, exames, chat, personalização do avatar, dock magnética
 ```
 
-- **Sem banco de dados**: estado do usuário (rotinas do dia, histórico, conquistas, conversas, diagnósticos) em `localStorage`; vitais simulados server-side com deriva suave.
-- **Avatar/Bip**: SVG vetorial animado (respiração, piscar, lágrimas, antena, olhos que olham ao redor).
+- **Avatar/B.I.P**: SVG vetorial animado (corpo inteiro sobre **palco**, respiração, piscar, lágrimas). O avatar é **interativo ao toque** (acenar, pular, rir, balão de fala) e **customizável** (roupa: astronauta/casual/voo/cargo · pele · cabelo · pelos faciais · olhos · sardas).
+- User state is moving from `localStorage` to the backend (see `docs/FRONT_DEMANDS.md`).
 
 ## Créditos / próximos passos
 

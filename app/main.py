@@ -10,7 +10,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from app import config, db
-from app.routers import ai_routes, content, health, vitals
+from app.routers import ai_routes, content, demo, health, spaceweather, tracking, vitals
 
 
 @asynccontextmanager
@@ -27,9 +27,21 @@ async def lifespan(_: FastAPI):
 
 
 app = FastAPI(title="B.I.P — Biomedical Intelligent Partner", version="0.2.0", lifespan=lifespan)
+
+
+@app.middleware("http")
+async def no_cache(request, call_next):
+    """Sempre revalidar HTML/CSS/JS: evita que o navegador misture versões antigas com novas."""
+    response = await call_next(request)
+    path = request.url.path
+    if path == "/" or path.startswith("/static") or path in ("/manifest.json", "/favicon.svg"):
+        response.headers["Cache-Control"] = "no-cache"
+    return response
+
+
 app.mount("/static", StaticFiles(directory=config.STATIC_DIR), name="static")
 
-for r in (health.router, vitals.router, content.router, ai_routes.router):
+for r in (health.router, vitals.router, content.router, tracking.router, ai_routes.router, demo.router, spaceweather.router):
     app.include_router(r)
 
 
