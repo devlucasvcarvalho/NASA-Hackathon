@@ -595,6 +595,35 @@ button { font-family: inherit; cursor: pointer; }
 /* braços robóticos em repouso; acena apenas ocasionalmente (a cada ~13s) */
 .bip-arm-l { transform-box: view-box; transform-origin: 33px 72px; }
 .bip-arm-r { transform-box: view-box; transform-origin: 63px 72px; animation: bipWaveOccasional 13s ease-in-out infinite; }
+
+/* ═══════════ B.I.P — HUMORES REATIVOS ═══════════ */
+.bip-eyes-variant, .bip-mouth-variant { display: none; }
+
+svg[data-mood] .bip-eyes-idle, svg[data-mood] .bip-mouth-idle { display: none; }
+svg[data-mood="happy"] .bip-eyes-happy, svg[data-mood="happy"] .bip-mouth-happy,
+svg[data-mood="serene"] .bip-eyes-serene, svg[data-mood="serene"] .bip-mouth-serene,
+svg[data-mood="serious"] .bip-eyes-serious, svg[data-mood="serious"] .bip-mouth-serious,
+svg[data-mood="alert"] .bip-eyes-alert, svg[data-mood="alert"] .bip-mouth-alert,
+svg[data-mood="love"] .bip-eyes-love, svg[data-mood="love"] .bip-mouth-love,
+svg[data-mood="sad"] .bip-eyes-sad, svg[data-mood="sad"] .bip-mouth-sad,
+svg[data-mood="idle"] .bip-eyes-idle, svg[data-mood="idle"] .bip-mouth-idle { display: inline; }
+svg[data-mood="idle"] .bip-eyes-idle { display: inline; }
+svg[data-mood="idle"] .bip-mouth-idle { display: inline; }
+
+svg[data-mood="happy"]   { --bip-eye:#8ff5e2; --bip-mouth:#8ff5e2; --bip-antenna:#ffd166; --bip-chest:#7df0cd; }
+svg[data-mood="serene"]  { --bip-eye:#8ff5e2; --bip-mouth:#8ff5e2; --bip-antenna:#ffd166; --bip-chest:#57e6c9; }
+svg[data-mood="serious"] { --bip-eye:#ffd166; --bip-mouth:#ffd166; --bip-antenna:#e0a33c; --bip-chest:#ffd166; }
+svg[data-mood="alert"]   { --bip-eye:#ff8a5c; --bip-mouth:#ff8a5c; --bip-antenna:#ff6d5c; --bip-chest:#ff6d5c; }
+svg[data-mood="love"]    { --bip-eye:#ff9eb0; --bip-mouth:#ff9eb0; --bip-antenna:#ff9eb0; --bip-chest:#ff9eb0; }
+svg[data-mood="sad"]     { --bip-eye:#a9dcef; --bip-mouth:#a9dcef; --bip-antenna:#9bd7ec; --bip-chest:#7fb6d9; }
+
+@keyframes bipMoodPop {
+  0%   { transform: scale(1, 1); }
+  30%  { transform: scale(1.16, .84); }
+  62%  { transform: scale(.93, 1.09); }
+  100% { transform: scale(1, 1); }
+}
+.bip-reactive.bip-mood-pop { animation: bipMoodPop .55s cubic-bezier(.3, 1.4, .4, 1); transform-box: fill-box; transform-origin: 50% 100%; }
 @keyframes bipWaveOccasional {
   0%, 80%, 100% { transform: rotate(0deg); }
   84% { transform: rotate(-105deg); }

@@ -676,6 +676,38 @@ const DEFAULT_CHIPS = [
 
 const checkIn = { step: null, phys: null, symptom: null, mental: null, sleep: null, physScore: 0, symptomScore: 0, mentalScore: 0, sleepScore: 0 };
 
+/* ═══ B.I.P REAGE ÀS MENSAGENS — detector de humor ═══ */
+const BIP_MOOD_RULES = [
+  ['alert',   /red flag|emergency|emergec|911|chest pain|can'?t breathe|heart attack|infarto|dolor en el pecho|sem respira[çc][aã]o|dor no peito|hemorrag|pass[eou] out|faint(ed|ing)?|collaps/],
+  ['love',    /i love|te amo|love you|gosto de voc[eê]|melhor amigo|best friend|thanks for being|obrigad[oa] por estar|you'?re the best|am[ab]?o voc[eê]|love this bot|sweetheart|darling bip/],
+  ['sad',     /\bsad\b|depress|lonely|alone|hopeless|exhausted|burn(ed|t)?[ -]?out|tears|cry(ing)?|miserable|worthless|can'?t go on|triste|solit[aá]ri|sozinh|exaust|cansad[oa]\s+demais|n[aã]o aguento|l[aá]grim|crying|desanimad|sem energia|sem vontade/],
+  ['serious', /\bpain\b|ache|sick|nausea|dizz|fever|headache|vomit|symptom|hurt|medication|medicine|pill|prescription|drug|dose|doctor|physician|hospital|diagnosis|do[srio]lor?|dor\b|n[aá]usea|tontura|tonto|febre|rem[eé]dio|medicamento|m[eé]dico|m[eé]dica|hospital|diagn[oó]stico|mareo|fiebre|pastilla|dolor/],
+  ['happy',   /great|awesome|amazing|wonderful|fantastic|brilliant|yay|haha|lol|lmao|funny|hilarious|:\)|:D|😄|😂|😎|thank you|thanks!|thanks so|incr[ií]vel|[oó]timo|perfeito|jaja|gracias|obrigad[oa]!|finalmente|top demais|too good/],
+  ['serene',  /calm|relax|peace(ful)?|quiet|chill|okay|ok\b|all good|fine|alright|no worries|sleep|rest|nap|serene|tranquil|calmo|tranquil|descans|durmi|bom dia|boa noite|good morning|good night|tudo bem/],
+];
+
+function detectBipMood(text) {
+  const t = String(text || '').toLowerCase();
+  for (const [mood, re] of BIP_MOOD_RULES) if (re.test(t)) return mood;
+  return 'idle';
+}
+
+function inlineBipBots() {
+  const src = document.getElementById('bipBot');
+  if (!src) return;
+  $$('.bip-reactive').forEach(svg => { svg.innerHTML = src.innerHTML; });
+}
+
+function setBipMood(mood) {
+  $$('.bip-reactive').forEach(svg => {
+    svg.dataset.mood = mood;
+    if (mood === 'idle') return;
+    svg.classList.remove('bip-mood-pop');
+    void svg.getBoundingClientRect();   // reinicia a animação a cada mudança
+    svg.classList.add('bip-mood-pop');
+  });
+}
+
 function chatTimestamp() { return new Date().toLocaleTimeString(window.LOCALES[window.BIP_LANG], { hour: '2-digit', minute: '2-digit' }); }
 function renderChat() {
   chatMessages.innerHTML = '';
@@ -797,9 +829,11 @@ async function handleCheckIn(text, chipKey) {
 async function sendChat(text) {
   const trimmed = text.trim(); if (!trimmed) return;
   addChatMsg('user', trimmed);
+  setBipMood(detectBipMood(trimmed));
   if (REDFLAG.test(trimmed)) {
     checkIn.step = null;
     renderChips(DEFAULT_CHIPS);
+    setBipMood('alert');
     return bipSay('Stop. That is a red flag, not a check-in item. Stop the activity, sit down somewhere safe, and contact Mission Control now — the 15:10–15:45 telemedicine window or the emergency channel. I am flagging this as urgent on your log. Use the kit stabilization protocol until you are through to MCC.', 900, { alert: true });
   }
   if (checkIn.step) return handleCheckIn(trimmed);
@@ -868,6 +902,7 @@ function flyClone(fromRect, toRect, opts = {}) {
 }
 
 function openChat() {
+  setBipMood('idle');
   const floatBtn = $('#bipBotBtn');
   const heroRobot = $('#chatHeroRobot');
   const floatRect = floatBtn.getBoundingClientRect();
@@ -1348,6 +1383,7 @@ function bootSequence() {
 
 async function init() {
   bootSequence();
+  inlineBipBots();
   hydrateAvatars();
   buildPersonalizePanel();
   applyPersonalize();
