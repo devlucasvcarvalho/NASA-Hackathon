@@ -1,4 +1,4 @@
-"""Dados estáticos da missão AURORA-7 (base do protótipo B.I.P)."""
+﻿"""Dados estáticos da missão AURORA-7 (base do protótipo B.I.P)."""
 
 LAUNCH_UTC = "2026-06-11T14:32:00Z"
 MISSION_NAME = "Expedition AURORA-7"
@@ -51,10 +51,10 @@ ROUTINE_TEMPLATE = [
         "window": "12:00 – 19:00",
         "tasks": [
             {"id": "t1", "title": "Almoço", "time": "12:30", "hint": "~780 kcal · proteína 32 g"},
-            {"id": "t2", "title": "Hidratação — 500 mL", "time": "14:00", "hint": "Lembrete automático do Bip"},
+            {"id": "t2", "title": "Hidratação — 500 mL", "time": "14:00", "hint": "Lembrete automático do B.I.P"},
             {"id": "t3", "title": "Atividade operacional da missão", "time": "15:00", "hint": "Janela de contato com MCC: 15:10–15:45"},
             {"id": "t4", "title": "Respiração guiada — 5 min", "time": "17:30", "hint": "Protocolo de coesão: 4-7-8 · reduz cortisol"},
-            {"id": "t5", "title": "Diário de humor (PHQ-2 rápido)", "time": "18:15", "hint": "2 perguntas · usado pelo Bip para alertas psicológicos"},
+            {"id": "t5", "title": "Diário de humor (PHQ-2 rápido)", "time": "18:15", "hint": "2 perguntas · usado pelo B.I.P para alertas psicológicos"},
         ],
     },
     {
@@ -66,7 +66,7 @@ ROUTINE_TEMPLATE = [
             {"id": "n2", "title": "Hidratação — 300 mL", "time": "20:30", "hint": "Última hidratação do dia"},
             {"id": "n3", "title": "Higiene + alongamento leve", "time": "21:15", "hint": "Foco em coluna e ombros (carga da EVA)"},
             {"id": "n4", "title": "Melatonina 3 mg (se necessário)", "time": "22:00", "hint": "Somente se latência de sono > 30 min por 3 noites"},
-            {"id": "n5", "title": "Registro de sono (Sleep-Smart)", "time": "22:30", "hint": "Sincroniza HR noturno e despertares com o Bip"},
+            {"id": "n5", "title": "Registro de sono (Sleep-Smart)", "time": "22:30", "hint": "Sincroniza HR noturno e despertares com o B.I.P"},
         ],
     },
 ]
@@ -189,6 +189,6 @@ ACHIEVEMENTS = [
     {"id": "hydration-7", "title": "Mestre da hidratação", "desc": "7 registros de hidratação no tempo certo", "tier": 2, "metric": "hydration_logs", "target": 7},
     {"id": "mornings-5", "title": "Madrugador orbital", "desc": "5 manhãs completas antes do meio-dia", "tier": 2, "metric": "mornings_full", "target": 5},
     {"id": "nights-7", "title": "Guardião do sono", "desc": "7 rotinas noturnas completas", "tier": 2, "metric": "nights_full", "target": 7},
-    {"id": "first-dx", "title": "Consulta astuta", "desc": "Primeiro diagnóstico realizado com o Bip", "tier": 1, "metric": "diagnoses", "target": 1},
+    {"id": "first-dx", "title": "Consulta astuta", "desc": "Primeiro diagnóstico realizado com o B.I.P", "tier": 1, "metric": "diagnoses", "target": 1},
     {"id": "first-upload", "title": "Olhos de águia", "desc": "Enviou uma imagem para análise", "tier": 1, "metric": "image_diagnoses", "target": 1},
 ]

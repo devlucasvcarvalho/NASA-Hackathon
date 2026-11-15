@@ -1,4 +1,4 @@
-/* ═══════════════════════════════════════════════
+﻿/* ═══════════════════════════════════════════════
    B.I.P — Biomedical Intelligent Partner · front-end
    ═══════════════════════════════════════════════ */
 'use strict';
@@ -365,7 +365,7 @@ function updateRoutinesUI() {
   }[mood];
   $('#moodLine').textContent = moodText;
   $('#moodCallout').textContent = {
-    happy: 'Tudo certo, comandante! O Bip está em êxtase (e regime de exercício em dia).',
+    happy: 'Tudo certo, comandante! O B.I.P está em êxtase (e regime de exercício em dia).',
     calm: 'Tudo tranquilo por enquanto. Se algo atrasar, eu aviso antes de te deixar esquecer.',
     worried: 'Psst… pendências acumulando. Resolve uma agora que o avatar volta a sorrir.',
     cry: 'Nada marcado hoje. Recomeça pelo check-in das 06:30 — o avatar seca as lágrimas na hora.',
@@ -546,7 +546,7 @@ function renderHistory() {
   const list = $('#dxHistoryList');
   const diagnoses = [...(store.get('bip.diagnoses', []))].reverse();
   if (!diagnoses.length) {
-    list.innerHTML = '<div class="history-empty">Nenhuma análise ainda.<br>Faça sua primeira consulta com o Bip. 🩺</div>';
+    list.innerHTML = '<div class="history-empty">Nenhuma análise ainda.<br>Faça sua primeira consulta com o B.I.P. 🩺</div>';
     return;
   }
   list.innerHTML = diagnoses.map((d, i) => `
@@ -629,7 +629,7 @@ $('#edSendToDx').addEventListener('click', () => {
   toast('Exame anexado — descreva o que está sentindo.');
 });
 
-/* ═════════ 8 · CHAT COM O BIP ═════════ */
+/* ═════════ 8 · CHAT COM O B.I.P ═════════ */
 const chatPanel = $('#chatPanel');
 const chatMessages = $('#chatMessages');
 let chatHistory = store.get('bip.chat', []);
@@ -678,7 +678,7 @@ $('#bipBotBtn').addEventListener('click', () => {
     const late = $$('#periodsGrid .task.late').length;
     addChatMsg('bip', late > 0
       ? `Oi, Elena! Vi que você tem ${late} ${late === 1 ? 'pendência' : 'pendências'} na rotina de hoje. Sem drama — quer que eu te ajude a começar por uma? 🚀`
-      : 'Oi, Elena! Eu sou o Bip, seu copiloto de saúde. Vim ver como você está — pode perguntar qualquer coisa: rotina, vitais, sono, treino… Ou só desabafar. 🙂');
+      : 'Oi, Elena! Eu sou o B.I.P, seu copiloto de saúde. Vim ver como você está — pode perguntar qualquer coisa: rotina, vitais, sono, treino… Ou só desabafar. 🙂');
   }
   if (opening) { $('#chatInput').focus(); renderChat(); }
 });

@@ -1,4 +1,4 @@
-"""Cliente de IA do B.I.P: Google Gemini com fallback local consistente.
+﻿"""Cliente de IA do B.I.P: Google Gemini com fallback local consistente.
 
 Sem GEMINI_API_KEY o app continua funcionando: um motor offline baseado em
 regras curadas (estoque de bordo + triagem) garante respostas coerentes no demo.
@@ -55,7 +55,7 @@ Regras de conteúdo:
 - Português com termos técnicos em inglês quando apropriado (ex.: tension-type headache).
 """
 
-CHAT_SYSTEM = """Você é o Bip, o copiloto de saúde da missão espacial Aurora-7. Personalidade: tranquila, gentil e brincalhona, como um amigo em quem se confia de olhos fechados — mas nunca banaliza saúde. Você chama a pessoa pelo nome do contexto. Fala português com termos técnicos em inglês quando útil. Respostas curtas (2 a 4 frases, pode usar 1 emoji no máximo).
+CHAT_SYSTEM = """Você é o B.I.P, o copiloto de saúde da missão espacial Aurora-7. Personalidade: tranquila, gentil e brincalhona, como um amigo em quem se confia de olhos fechados — mas nunca banaliza saúde. Você chama a pessoa pelo nome do contexto. Fala português com termos técnicos em inglês quando útil. Respostas curtas (2 a 4 frases, pode usar 1 emoji no máximo).
 
 Você pode ajudar com: rotina da missão, sinais vitais, hidratação, sono, exercício, humor/ansiedade, alimentação, medicamentos de bordo (consulte o inventário somente quando perguntado, sem citar doses), e sintomas — nesse último caso sugira o app Diagnóstico para uma análise completa ("Isso merece uma análise completa — abre o Diagnóstico ali na dock que eu monto o dossiê inteiro para você").
 
@@ -100,7 +100,7 @@ def _rule_based_diagnosis(text: str, context: dict[str, Any], stock_summary: str
     if context.get("routine_score") is not None:
         factors.append(f"Rotina de hoje: {context['routine_score']}% concluída")
     if context.get("chat_summary"):
-        factors.append("Conversas recentes com o Bip")
+        factors.append("Conversas recentes com o B.I.P")
 
     def base(title, severity, summary, causes, rx, proc, mon, action, red):
         return {
@@ -228,7 +228,7 @@ def _rule_based_diagnosis(text: str, context: dict[str, Any], stock_summary: str
                 {"item": "Atividade física moderada", "dose": "20–30 min", "frequency": "1×/dia", "duration": "contínuo", "instructions": "Melhora cortisol e qualidade de sono"},
                 {"item": "Melatonina 3 mg (se sono afetado)", "dose": "1 comprimido", "frequency": "à noite", "duration": "14 noites", "instructions": "Ver rotina de sono"},
             ],
-            ["1. Agendar conversa com psicólogo de voo na próxima janela de telemedicina (15:10)", "2. Reduzir 1 tarefa não essencial/dia durante 2 semanas", "3. Diário de humor diário (PHQ-2) — Bip acompanha tendência", "4. Contato humano: videochamada com família a cada 2 dias", "5. Se piora do humor ou pensamentos autolesivos → MCC imediato (emergência psicológica)"],
+            ["1. Agendar conversa com psicólogo de voo na próxima janela de telemedicina (15:10)", "2. Reduzir 1 tarefa não essencial/dia durante 2 semanas", "3. Diário de humor diário (PHQ-2) — B.I.P acompanha tendência", "4. Contato humano: videochamada com família a cada 2 dias", "5. Se piora do humor ou pensamentos autolesivos → MCC imediato (emergência psicológica)"],
             "PHQ-2 2×/semana por 4 semanas; sono e apetite diários; escalas pelo app",
             "telemedicine",
             ["Pensamentos de autolesão ou de morte", "Isolamento total > 48h", "Ataques de pânico incapacitantes", "Erros operacionais por atenção prejudicada"],
@@ -248,7 +248,7 @@ def _rule_based_diagnosis(text: str, context: dict[str, Any], stock_summary: str
                 {"item": "Loratadina 10 mg", "dose": "1 comprimido", "frequency": "1×/dia", "duration": "5 dias", "instructions": "Pela manhã; não excede 10 mg/dia"},
                 {"item": "Remover o agente suspeito", "dose": "—", "frequency": "imediato", "duration": "enquanto persistir", "instructions": "Dieta de exclusão do item suspeito; trocar material de contato"},
             ],
-            ["1. Fotografar a lesão e anexar ao prontuário do Bip", "2. Monitorar expansão da lesão 2×/dia", "3. Anti-histamínico conforme receita", "4. Se edema de lábios/língua, rouquidão ou falta de ar → EMERGÊNCIA (dexametasona + MCC)"],
+            ["1. Fotografar a lesão e anexar ao prontuário do B.I.P", "2. Monitorar expansão da lesão 2×/dia", "3. Anti-histamínico conforme receita", "4. Se edema de lábios/língua, rouquidão ou falta de ar → EMERGÊNCIA (dexametasona + MCC)"],
             "Lesões 2×/dia; saturação e respiração na pior hora do dia",
             "onboard",
             ["Edema de face/língua/glote", "Dispneia ou sibilância", "Anafilaxia prévia descrita", "Lesão crescendo apesar de loratadina"],
@@ -414,9 +414,9 @@ def chat_reply(message: str, history: list[dict[str, str]] | None = None, contex
             ctx = "Contexto atual: " + "; ".join(f"{k}: {v}" for k, v in context.items()) + "\n"
         convo = ""
         for h in (history or [])[-8:]:
-            role = "Tripulante" if h.get("role") == "user" else "Bip"
+            role = "Tripulante" if h.get("role") == "user" else "B.I.P"
             convo += f"{role}: {h.get('text', '')}\n"
-        prompt = ctx + convo + f"Tripulante: {message}\nBip:"
+        prompt = ctx + convo + f"Tripulante: {message}\nB.I.P:"
         raw = _call_gemini(prompt, system=CHAT_SYSTEM)
         if raw:
             raw = raw.strip()

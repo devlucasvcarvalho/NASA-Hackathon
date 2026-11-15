@@ -1,4 +1,4 @@
----
+﻿---
 title: B.I.P — Biomedical Intelligent Partner
 emoji: 🫀
 colorFrom: teal
@@ -17,9 +17,9 @@ O B.I.P acompanha o tripulante **fora da Terra** — por isso nenhuma conduta re
 
 | Tela | Função |
 | --- | --- |
-| **Início** | Avatar do tripulante **humano e editável** (traje, tom de pele, corte/cor de cabelo, pelos faciais, cor dos olhos, sardas) com emoções reativas, sinais vitais (FC, SpO₂, hidratação, dosimetria de radiação, PA, temperatura) em dashboard, relógio compacto no canto direito (Houston / Greenwich / Tóquio / **Sol médio de Marte**) com **céu celeste real** (sol, dourado, **fase da lua calculada** ou sol marciano) e o **Bip**, robô mascote conversacional |
+| **Início** | Avatar do tripulante **humano e editável** (traje, tom de pele, corte/cor de cabelo, pelos faciais, cor dos olhos, sardas) com emoções reativas, sinais vitais (FC, SpO₂, hidratação, dosimetria de radiação, PA, temperatura) em dashboard, relógio compacto no canto direito (Houston / Greenwich / Tóquio / **Sol médio de Marte**) com **céu celeste real** (sol, dourado, **fase da lua calculada** ou sol marciano) e o **B.I.P**, robô mascote conversacional |
 | **Rotinas** | Checklist gamificado por períodos (manhã/tarde/noite) com horários, streak, anel de progresso do dia, 9 **conquistas** e avatar que **muda de expressão**: feliz (tudo feito), aflito (pendências atrasadas), choroso (nada feito) |
-| **Diagnóstico** | Entrada por **texto e/ou imagem** (ferida, exantema, exame). A IA cruza **vitais + exames + rotina + sono + conversas com o Bip**, devolve hipóteses com probabilidade, **receituário de bordo** (dose, frequência, duração, instrução), conduta passo a passo, monitoramento, red flags e triagem: **a bordo → telemedicina MCC → aborto/retorno à Terra**. Histórico de resultados anteriores |
+| **Diagnóstico** | Entrada por **texto e/ou imagem** (ferida, exantema, exame). A IA cruza **vitais + exames + rotina + sono + conversas com o B.I.P**, devolve hipóteses com probabilidade, **receituário de bordo** (dose, frequência, duração, instrução), conduta passo a passo, monitoramento, red flags e triagem: **a bordo → telemedicina MCC → aborto/retorno à Terra**. Histórico de resultados anteriores |
 | **Exames** | Dossiê completo dos exames feitos em outros equipamentos (hemograma, ECG, DXA, dosimetria…), com valores, flags (alto/baixo/atenção), busca, filtro por categoria e **"Enviar para o diagnóstico"** |
 
 Barra inferior estilo **macOS Dock** (com magnificação no hover) + **badge de alerta** sobre o ícone de Rotinas quando há pendências atrasadas.
@@ -77,7 +77,7 @@ git push space main
 app/
   main.py   → FastAPI: serve o frontend + /api/vitals (drift fisiológico simulado),
               /api/routines, /api/exams, /api/stock, /api/achievements,
-              /api/chat (Bip), /api/diagnose (Gemini | fallback offline)
+              /api/chat (B.I.P), /api/diagnose (Gemini | fallback offline)
   ai.py     → cliente Gemini + prompt médico espacial + motor offline curado
   data.py   → missão AURORA-7: tripulante, kit médico de bordo, rotinas, exames, conquistas
 static/
@@ -88,7 +88,7 @@ static/
 ```
 
 - **Sem banco de dados**: estado do usuário (rotinas do dia, histórico, conquistas, conversas, diagnósticos) em `localStorage`; vitais simulados server-side com deriva suave.
-- **Avatar/Bip**: SVG vetorial animado (corpo inteiro sobre **palco**, respiração, piscar, lágrimas). O avatar é **interativo ao toque** (acenar, pular, rir, balão de fala) e **customizável** (roupa: astronauta/casual/voo/cargo · pele · cabelo · pelos faciais · olhos · sardas).
+- **Avatar/B.I.P**: SVG vetorial animado (corpo inteiro sobre **palco**, respiração, piscar, lágrimas). O avatar é **interativo ao toque** (acenar, pular, rir, balão de fala) e **customizável** (roupa: astronauta/casual/voo/cargo · pele · cabelo · pelos faciais · olhos · sardas).
 
 ## Créditos / próximos passos
 

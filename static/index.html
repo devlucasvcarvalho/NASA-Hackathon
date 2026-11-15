@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="pt-BR">
 <head>
   <meta charset="utf-8" />
@@ -7,14 +7,15 @@
   <title>B.I.P · Biomedical Intelligent Partner</title>
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   <link rel="manifest" href="/manifest.json" />
+  <link rel="apple-touch-icon" href="/favicon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/static/css/styles.css" />
+  <link rel="stylesheet" href="/static/css/styles.css?v=11" />
 </head>
 <body>
 
-<!-- ═══════════ SVG DEFS (Avatar do astronauta + Bip) ═══════════ -->
+<!-- ═══════════ SVG DEFS (Avatar do astronauta + B.I.P) ═══════════ -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
   <defs>
     <radialGradient id="skinGrad" cx="42%" cy="38%" r="75%">
@@ -300,10 +301,10 @@
         </g>
       </g>
     </symbol>
-    <!-- ══════ Bip — robozinho mascote ══════ -->
-    <symbol id="bipBot" viewBox="0 0 96 104">
-      <line x1="48" y1="6" x2="48" y2="17" stroke="#175f5e" stroke-width="3" stroke-linecap="round"/>
-      <circle class="bip-antenna" cx="48" cy="6.5" r="4.6" fill="#ffd166"/>
+    <!-- ══════ B.I.P — robô mascote ══════ -->
+    <symbol id="bipBot" viewBox="0 0 96 112">
+      <line x1="48" y1="4.5" x2="48" y2="16" stroke="#175f5e" stroke-width="3" stroke-linecap="round"/>
+      <circle class="bip-antenna" cx="48" cy="5" r="4.6" fill="#ffd166"/>
       <!-- ears -->
       <rect x="6" y="40" width="9" height="16" rx="4.5" fill="url(#bipBody)" stroke="rgba(255,255,255,.35)" stroke-width="1"/>
       <rect x="81" y="40" width="9" height="16" rx="4.5" fill="url(#bipBody)" stroke="rgba(255,255,255,.35)" stroke-width="1"/>
@@ -321,6 +322,23 @@
       <path d="M33 68h30l-4.5 24a8 8 0 0 1-8 7h-5a8 8 0 0 1-8-7Z" fill="url(#bipBody)" stroke="rgba(255,255,255,.35)" stroke-width="1.4"/>
       <circle class="bip-chest" cx="48" cy="80" r="4.4" fill="#ff8a5c"/>
       <circle cx="48" cy="80" r="7.4" fill="none" stroke="rgba(255,255,255,.28)" stroke-width="1.2"/>
+      <!-- braços robóticos + mãozinhas (repouso; acena ocasionalmente) -->
+      <g class="bip-arm bip-arm-l">
+        <circle cx="33" cy="71" r="4.4" fill="#103c3c" stroke="rgba(255,255,255,.4)" stroke-width="1.1"/>
+        <rect x="29.4" y="70.5" width="7.6" height="13" rx="3.5" transform="rotate(21 33 77)" fill="url(#bipBody)" stroke="rgba(255,255,255,.32)" stroke-width="1"/>
+        <circle cx="28.2" cy="84.5" r="3" fill="#0d3f3f" stroke="rgba(255,255,255,.4)" stroke-width="1"/>
+        <rect x="24.8" y="84" width="7.2" height="12" rx="3.2" transform="rotate(-12 28.4 90)" fill="url(#bipBody)" stroke="rgba(255,255,255,.32)" stroke-width="1"/>
+        <circle cx="27.6" cy="97.5" r="2.2" fill="#103c3c" stroke="rgba(255,255,255,.3)" stroke-width=".8"/>
+        <path d="M24.6 100.5 21.8 106M27.6 101.5v6M30.6 100.5l2.8 5.5" stroke="#8ff5e2" stroke-width="1.7" stroke-linecap="round" opacity=".9"/>
+      </g>
+      <g class="bip-arm bip-arm-r">
+        <circle cx="63" cy="71" r="4.4" fill="#103c3c" stroke="rgba(255,255,255,.4)" stroke-width="1.1"/>
+        <rect x="59.4" y="70.5" width="7.6" height="13" rx="3.5" transform="rotate(-21 63 77)" fill="url(#bipBody)" stroke="rgba(255,255,255,.32)" stroke-width="1"/>
+        <circle cx="67.8" cy="84.5" r="3" fill="#0d3f3f" stroke="rgba(255,255,255,.4)" stroke-width="1"/>
+        <rect x="64.4" y="84" width="7.2" height="12" rx="3.2" transform="rotate(12 68 90)" fill="url(#bipBody)" stroke="rgba(255,255,255,.32)" stroke-width="1"/>
+        <circle cx="68.4" cy="97.5" r="2.2" fill="#103c3c" stroke="rgba(255,255,255,.3)" stroke-width=".8"/>
+        <path d="M65.4 100.5l-2.8 5.5M68.4 101.5v6M71.4 100.5l2.8 5.5" stroke="#8ff5e2" stroke-width="1.7" stroke-linecap="round" opacity=".9"/>
+      </g>
     </symbol>
   </defs>
 </svg>
@@ -336,11 +354,17 @@
 <header class="topbar">
   <div class="brand">
     <span class="brand-mark" aria-hidden="true">
-      <svg viewBox="0 0 40 40" width="34" height="34">
-        <circle cx="20" cy="20" r="17.5" fill="#0f3e3d"/>
-        <path d="M20 32a12 12 0 0 0 12-12" fill="none" stroke="#c4714b" stroke-width="3" stroke-linecap="round"/>
-        <circle cx="20" cy="18" r="6.2" fill="#c4714b"/>
-        <circle cx="20" cy="18" r="2.4" fill="#f4e9de"/>
+      <svg viewBox="0 0 64 64" width="34" height="34">
+        <rect width="64" height="64" rx="14" fill="#0f3e3d"/>
+        <line x1="32" y1="10" x2="32" y2="18" stroke="#1b6a69" stroke-width="3.4" stroke-linecap="round"/>
+        <circle cx="32" cy="8.6" r="3.6" fill="#ffd166"/>
+        <rect x="10.5" y="30" width="6" height="12" rx="3" fill="#175f5e" stroke="rgba(255,255,255,.35)"/>
+        <rect x="47.5" y="30" width="6" height="12" rx="3" fill="#175f5e" stroke="rgba(255,255,255,.35)"/>
+        <rect x="15" y="18" width="34" height="29" rx="10.5" fill="#175f5e" stroke="rgba(255,255,255,.4)" stroke-width="1.4"/>
+        <path d="M21 23.5q6-3.4 13-3.4" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" opacity=".55" fill="none"/>
+        <rect x="22.5" y="28" width="6.6" height="9.6" rx="3.3" fill="#8ff5e2"/>
+        <rect x="34.9" y="28" width="6.6" height="9.6" rx="3.3" fill="#8ff5e2"/>
+        <path d="M25.5 42q6.5 4.4 13 0" stroke="#8ff5e2" stroke-width="2" fill="none" stroke-linecap="round"/>
       </svg>
     </span>
     <span class="brand-text">B.I.P<small>Biomedical Intelligent Partner</small></span>
@@ -479,7 +503,7 @@
       <div class="dx-grid">
         <div class="card glass dx-main">
           <h2 class="dx-title">Diga o que está sentindo</h2>
-          <p class="muted">Texto, imagem (ferida, exantema, exame caseiro) ou os dois. O Bip cruza tudo: sinais vitais, exames recentes, sua rotina, sono e conversas — e devolve hipóteses + plano de bordo.</p>
+          <p class="muted">Texto, imagem (ferida, exantema, exame caseiro) ou os dois. O B.I.P cruza tudo: sinais vitais, exames recentes, sua rotina, sono e conversas — e devolve hipóteses + plano de bordo.</p>
 
           <textarea id="dxText" class="dx-textarea" rows="4" maxlength="2000" placeholder="Ex.: Dor de cabeça opressiva desde ontem à tarde, piora à noite. Dormi mal, muita tarefa de EVA planejada…"></textarea>
 
@@ -534,7 +558,7 @@
     <!-- carregando / escaneando -->
     <div class="dx-view dx-loading" id="dxLoadingView" hidden>
       <div class="scan-wrap">
-        <svg class="bip-scan" viewBox="0 0 96 104" aria-hidden="true"><use href="#bipBot"></use></svg>
+        <svg class="bip-scan" viewBox="0 0 96 112" aria-hidden="true"><use href="#bipBot"></use></svg>
         <div class="scan-ring"></div>
       </div>
       <h2>Um instante, estou analisando…</h2>
@@ -564,7 +588,7 @@
             <h4 class="block-title">Possíveis causas</h4>
             <div class="causes" id="dxCauses"></div>
 
-            <h4 class="block-title">Dados que o Bip usou</h4>
+            <h4 class="block-title">Dados que o B.I.P usou</h4>
             <div class="factor-chips" id="dxFactors"></div>
           </div>
         </div>
@@ -634,16 +658,16 @@
 </main>
 
 <!-- ═══════════ ROBÔ MASCOTE ═══════════ -->
-<button class="bip-bot-btn" id="bipBotBtn" aria-label="Abrir conversa com o Bip, copiloto de saúde">
+<button class="bip-bot-btn" id="bipBotBtn" aria-label="Abrir conversa com o B.I.P, copiloto de saúde">
   <span class="bip-bubble" id="bipBubble">Psst… preciso de algo?</span>
-  <svg class="bip-bot-svg" viewBox="0 0 96 104" aria-hidden="true"><use href="#bipBot"></use></svg>
+  <svg class="bip-bot-svg" viewBox="0 0 96 112" aria-hidden="true"><use href="#bipBot"></use></svg>
 </button>
 
 <!-- ═══════════ CHAT ═══════════ -->
-<aside class="chat-panel glass-deep" id="chatPanel" hidden aria-modal="false" aria-label="Conversar com o Bip">
+<aside class="chat-panel glass-deep" id="chatPanel" hidden aria-modal="false" aria-label="Conversar com o B.I.P">
   <header class="chat-head">
-    <span class="chat-avatar"><svg viewBox="0 0 96 104" aria-hidden="true"><use href="#bipBot"></use></svg></span>
-    <span class="chat-meta"><strong>Bip</strong><small><span class="online-dot"></span>online · copiloto da missão Aurora-7</small></span>
+    <span class="chat-avatar"><svg viewBox="0 0 96 112" aria-hidden="true"><use href="#bipBot"></use></svg></span>
+    <span class="chat-meta"><strong>B.I.P</strong><small><span class="online-dot"></span>online · copiloto da missão Aurora-7</small></span>
     <button class="chat-close" id="chatCloseBtn" aria-label="Fechar chat">×</button>
   </header>
   <div class="chat-messages" id="chatMessages" aria-live="polite"></div>
@@ -654,7 +678,7 @@
     <button class="chip" data-q="Quanto posso beber de água hoje?">Meta de água</button>
   </div>
   <form class="chat-input-row" id="chatForm" autocomplete="off">
-    <input class="chat-input" id="chatInput" type="text" placeholder="Escreva para o Bip…" maxlength="500" aria-label="Mensagem para o Bip" />
+    <input class="chat-input" id="chatInput" type="text" placeholder="Escreva para o B.I.P…" maxlength="500" aria-label="Mensagem para o B.I.P" />
     <button class="chat-send" type="submit" aria-label="Enviar mensagem">
       <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
     </button>
@@ -685,6 +709,6 @@
 </nav>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="/static/js/app.js"></script>
+<script src="/static/js/app.js?v=10"></script>
 </body>
 </html>

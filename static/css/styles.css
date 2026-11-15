@@ -1,4 +1,4 @@
-/* ══════════════════════════════════════════════════════════════
+﻿/* ══════════════════════════════════════════════════════════════
    B.I.P — Biomedical Intelligent Partner
    Estética: Frutiger Aero × Y2K gloss × missão espacial
    Paleta: azul-petróleo profundo · terracota · areia calma
@@ -140,6 +140,8 @@ button { font-family: inherit; cursor: pointer; }
 .avatar-card { display: flex; flex-direction: column; align-items: stretch; overflow: hidden; }
 .avatar-stage { position: relative; flex: 1; display: grid; place-items: center; min-height: 0; padding: 4px 0; }
 .avatar { overflow: visible; cursor: pointer; }
+.avatar:focus, .avatar:focus-visible { outline: none; }
+.avatar:focus-visible { filter: drop-shadow(0 0 18px rgba(87,230,201,.75)) drop-shadow(0 22px 26px rgba(15,62,61,.35)); }
 .avatar-hero { height: min(48vh, 420px); width: auto; max-width: 100%; filter: drop-shadow(0 22px 26px rgba(15,62,61,.35)); transition: filter .2s; }
 .avatar-hero:hover { filter: drop-shadow(0 26px 30px rgba(15,62,61,.42)); }
 .avatar-routine { width: 118px; flex: none; }
@@ -459,7 +461,7 @@ button { font-family: inherit; cursor: pointer; }
 .ed-table td { padding: 8px 12px; border-top: 1px solid rgba(23,58,58,.08); font-weight: 700; color: var(--ink); }
 .ed-table td:last-child { font-weight: 900; }
 
-/* ─────────── Robô Bip + chat ─────────── */
+/* ─────────── Robô B.I.P + chat ─────────── */
 .bip-bot-btn { position: fixed; right: 22px; bottom: 96px; z-index: 45; border: none; background: none; display: flex; flex-direction: column; align-items: center; gap: 0; }
 .bip-bot-svg { width: 92px; filter: drop-shadow(0 12px 20px rgba(15,62,61,.4)); animation: bipHover 3.2s ease-in-out infinite; transition: transform .2s; }
 .bip-bot-btn:hover .bip-bot-svg { transform: scale(1.12) rotate(-2deg); }
@@ -472,6 +474,17 @@ button { font-family: inherit; cursor: pointer; }
 .bip-smile { transform-box: fill-box; transform-origin: center; }
 .bip-chest { animation: pulse 2s infinite; }
 .bip-antenna { animation: pulse 1.5s infinite; }
+/* braços robóticos em repouso; acena apenas ocasionalmente (a cada ~13s) */
+.bip-arm-l { transform-box: view-box; transform-origin: 33px 72px; }
+.bip-arm-r { transform-box: view-box; transform-origin: 63px 72px; animation: bipWaveOccasional 13s ease-in-out infinite; }
+@keyframes bipWaveOccasional {
+  0%, 80%, 100% { transform: rotate(0deg); }
+  84% { transform: rotate(-105deg); }
+  88% { transform: rotate(-72deg); }
+  91% { transform: rotate(-105deg); }
+  94% { transform: rotate(-72deg); }
+  97% { transform: rotate(-100deg); }
+}
 
 .chat-panel { position: fixed; right: 22px; bottom: 96px; z-index: 50; width: 348px; max-width: calc(100vw - 44px); height: 470px; max-height: calc(100vh - 160px); border-radius: var(--radius); display: flex; flex-direction: column; overflow: hidden; color: #dff5ec; animation: chatIn .32s cubic-bezier(.2,.9,.3,1.1); }
 @keyframes chatIn { from { opacity: 0; transform: translateY(22px) scale(.92); } to { opacity: 1; transform: none; } }
