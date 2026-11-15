@@ -69,25 +69,30 @@ const spark = (seed, n = 15, base = 16, amp = 9) => {
   }
   return pts;
 };
-const vitalDefs = [
-  { key: 'heart_rate', label: 'Frequência Cardíaca', unit: 'bpm', iconClass: '', delta: '+2 bpm vs ontem', deltaKind: 'ok', status: 'Normal', statusKind: 'ok', sparkSeed: 1.6, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.3s-6.6-4.4-9.1-9.1C1.7 8.6 3.8 6 7 6c2.1 0 3.7 1.2 5 3 1.3-1.8 2.9-3 5-3 3.2 0 5.3 2.6 4.1 5.2-2.5 4.7-9.1 9.1-9.1 9.1Z"/></svg>' },
-  { key: 'spo2', label: 'Saturação de O₂', unit: '%', iconClass: 'sky', delta: 'estável', deltaKind: 'ok', status: 'Normal', statusKind: 'ok', sparkSeed: 4.1, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c3.2 4.4 5.4 7.7 5.4 11a5.4 5.4 0 0 1-10.8 0C6.6 10.7 8.8 7.4 12 3Z"/><path d="M9.5 14.5a2.6 2.6 0 0 0 2.5 2.7"/></svg>' },
-  { key: 'hydration', label: 'Hidratação', unit: '%', iconClass: 'sky', delta: 'meta 2,5 L/dia', deltaKind: 'ok', status: 'OK', statusKind: 'ok', meter: true, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10M8.5 3 6.6 8.2a4.9 4.9 0 1 0 10.8 0L15.5 3"/><path d="M7.3 13h9.4"/></svg>' },
-  { key: 'radiation', label: 'Radiação · Dosimetria', unit: 'mSv/dia', iconClass: 'gold', delta: 'limite 180 mSv/missão', deltaKind: 'warn', status: 'Vigilância', statusKind: 'watch', meter: true, meterMax: 180, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/><path d="M12 2a10 10 0 0 1 8.7 5.1l-4.4 2.5M12 22a10 10 0 0 1-8.7-5.1l4.4-2.5M22 12a10 10 0 0 1-5 8.7l-2.5-4.4M2 12a10 10 0 0 1 5-8.7l2.5 4.4"/></svg>' },
-  { key: 'bp', label: 'Pressão Arterial', unit: 'mmHg', iconClass: 'terra', delta: 'sentado · braço esq.', deltaKind: 'ok', status: 'Normal', statusKind: 'ok', sparkSeed: 2.8, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4a8 8 0 0 1 8 8h-2.4"/><path d="M12 4a8 8 0 0 0-8 8h2.4"/><path d="M12 12l3.4-3.4"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg>' },
-  { key: 'temperature', label: 'Temperatura Corporal', unit: '°C', iconClass: '', delta: 'faixa 35.8–37.3', deltaKind: 'ok', status: 'Normal', statusKind: 'ok', sparkSeed: 5.3, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13.6V5a2 2 0 0 1 4 0v8.6a4.5 4.5 0 1 1-4 0Z"/><circle cx="12" cy="17.5" r="1.4" fill="currentColor" stroke="none"/></svg>' },
-];
+// definições de cards de sinais vitais (reconstruídas por idioma)
+function vitalDefs() {
+  const T = window.t ? window.t : (k) => k;
+  return [
+  { key: 'heart_rate', label: T('vital.hr'), unit: 'bpm', iconClass: '', delta: T('vital.delta_hr'), deltaKind: 'ok', status: T('vital.status.normal'), statusKind: 'ok', sparkSeed: 1.6, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20.3s-6.6-4.4-9.1-9.1C1.7 8.6 3.8 6 7 6c2.1 0 3.7 1.2 5 3 1.3-1.8 2.9-3 5-3 3.2 0 5.3 2.6 4.1 5.2-2.5 4.7-9.1 9.1-9.1 9.1Z"/></svg>' },
+  { key: 'spo2', label: T('vital.spo2'), unit: '%', iconClass: 'sky', delta: T('vital.delta_spo2'), deltaKind: 'ok', status: T('vital.status.normal'), statusKind: 'ok', sparkSeed: 4.1, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3c3.2 4.4 5.4 7.7 5.4 11a5.4 5.4 0 0 1-10.8 0C6.6 10.7 8.8 7.4 12 3Z"/><path d="M9.5 14.5a2.6 2.6 0 0 0 2.5 2.7"/></svg>' },
+  { key: 'hydration', label: T('vital.hyd'), unit: '%', iconClass: 'sky', delta: T('vital.delta_hyd'), deltaKind: 'ok', status: T('vital.status.ok'), statusKind: 'ok', meter: true, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 3h10M8.5 3 6.6 8.2a4.9 4.9 0 1 0 10.8 0L15.5 3"/><path d="M7.3 13h9.4"/></svg>' },
+  { key: 'radiation', label: T('vital.rad'), unit: 'mSv/dia', iconClass: 'gold', delta: T('vital.delta_rad'), deltaKind: 'warn', status: T('vital.status.watch'), statusKind: 'watch', meter: true, meterMax: 180, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2.2" fill="currentColor" stroke="none"/><path d="M12 2a10 10 0 0 1 8.7 5.1l-4.4 2.5M12 22a10 10 0 0 1-8.7-5.1l4.4-2.5M22 12a10 10 0 0 1-5 8.7l-2.5-4.4M2 12a10 10 0 0 1 5-8.7l2.5 4.4"/></svg>' },
+  { key: 'bp', label: T('vital.bp'), unit: 'mmHg', iconClass: 'terra', delta: T('vital.delta_bp'), deltaKind: 'ok', status: T('vital.status.normal'), statusKind: 'ok', sparkSeed: 2.8, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4a8 8 0 0 1 8 8h-2.4"/><path d="M12 4a8 8 0 0 0-8 8h2.4"/><path d="M12 12l3.4-3.4"/><circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none"/></svg>' },
+  { key: 'temperature', label: T('vital.temp'), unit: '°C', iconClass: '', delta: T('vital.delta_temp'), deltaKind: 'ok', status: T('vital.status.normal'), statusKind: 'ok', sparkSeed: 5.3, icon: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13.6V5a2 2 0 0 1 4 0v8.6a4.5 4.5 0 1 1-4 0Z"/><circle cx="12" cy="17.5" r="1.4" fill="currentColor" stroke="none"/></svg>' },
+  ];
+}
 
 function renderVitals(v) {
   lastVitals = v;
-  $('#vitalsGrid').innerHTML = vitalDefs.map(def => {
+  const T = window.t;
+  $('#vitalsGrid').innerHTML = vitalDefs().map(def => {
     let valueHtml, footExtra = '';
     if (def.key === 'bp') {
       valueHtml = `${Math.round(v.bp_sys)}<small>/</small>${Math.round(v.bp_dia)}<small> mmHg</small>`;
     } else if (def.key === 'radiation') {
       valueHtml = `${v.radiation_dose_rate.toFixed(2)}<small> mSv/dia</small>`;
       const pct = Math.min(100, (v.radiation_cumulative / 180) * 100);
-      footExtra = `<div class="meter radiation" title="${v.radiation_cumulative.toFixed(1)} mSv de 180 mSv (limite de carreira da missão)"><span style="width:${pct.toFixed(1)}%"></span></div><div class="vital-delta delta-warn" style="margin-top:4px">acumulado ${v.radiation_cumulative.toFixed(1)} mSv · ${pct.toFixed(1)}% do limite</div>`;
+      footExtra = `<div class="meter radiation" title="${v.radiation_cumulative.toFixed(1)} mSv / 180 mSv"><span style="width:${pct.toFixed(1)}%"></span></div><div class="vital-delta delta-warn" style="margin-top:4px">${v.radiation_cumulative.toFixed(1)} mSv · ${pct.toFixed(1)}% ${T('vital.rad_of_limit')}</div>`;
     } else if (def.key === 'hydration') {
       valueHtml = `${Math.round(v.hydration)}<small>%</small>`;
       footExtra = `<div class="meter"><span style="width:${v.hydration}%"></span></div>`;
@@ -148,15 +153,15 @@ function moonPhase(date = new Date()) {
   const idx = Math.floor(((p + 1 / 16) % 1) * 8);
   return { p, illum, name: names[idx] };
 }
-function moonPhaseName(p) {
-  if (p < 0.033 || p > 0.967) return 'Lua Nova';
-  if (p < 0.216) return 'Crescente';
-  if (p < 0.283) return 'Quarto Crescente';
-  if (p < 0.466) return 'Gibosa Crescente';
-  if (p < 0.534) return 'Lua Cheia';
-  if (p < 0.717) return 'Gibosa Minguante';
-  if (p < 0.784) return 'Quarto Minguante';
-  return 'Minguante';
+function moonPhaseIdx(p) {
+  if (p < 0.033 || p > 0.967) return 'moon.new';
+  if (p < 0.216) return 'moon.waxcres';
+  if (p < 0.283) return 'moon.waxq';
+  if (p < 0.466) return 'moon.waxgib';
+  if (p < 0.534) return 'moon.full';
+  if (p < 0.717) return 'moon.waningib';
+  if (p < 0.784) return 'moon.waningq';
+  return 'moon.waningc';
 }
 
 const MISSION_DAYS = 400;
@@ -181,6 +186,8 @@ function celestSvg(kind, isMars) {
 }
 
 function tickClock() {
+  const T = window.t;
+  const locale = window.LOCALES[window.BIP_LANG];
   const isMars = currentTz === 'mars';
   let hour, hhmmss, dateLabel;
   if (isMars) {
@@ -188,14 +195,14 @@ function tickClock() {
     hour = mn.hour; hhmmss = mn.hhmmss;
     dateLabel = `Sol ${mn.sol} · Ares`;
     $('#stripMoon').textContent = `Sol ${mn.sol}`;
-    $('#stripMoonName').textContent = 'sol atual';
+    $('#stripMoonName').textContent = T('strip.sol_label');
   } else {
     const en = earthNow(TZ_META[currentTz].tz);
     hour = en.hour; hhmmss = en.hhmmss;
-    dateLabel = new Intl.DateTimeFormat('pt-BR', { timeZone: TZ_META[currentTz].tz, weekday: 'short', day: '2-digit', month: 'short' }).format(new Date()).replaceAll('.', '');
+    dateLabel = new Intl.DateTimeFormat(locale, { timeZone: TZ_META[currentTz].tz, weekday: 'short', day: '2-digit', month: 'short' }).format(new Date()).replaceAll('.', '');
     const ph = moonPhase();
     $('#stripMoon').textContent = `${Math.round(ph.illum * 100)}%`;
-    $('#stripMoonName').textContent = moonPhaseName(ph.p);
+    $('#stripMoonName').textContent = T(moonPhaseIdx(ph.p)).toUpperCase();
   }
   $('#clockTime').textContent = hhmmss.slice(0, 5);
   $('#clockDate').textContent = dateLabel;
@@ -208,10 +215,10 @@ function tickClock() {
   $('#stripMet').textContent = `${pad(metDays, 3)}d ${pad(Math.floor(sec / 3600) % 24)}h`;
   $('#stripRemaining').textContent = String(Math.max(0, MISSION_DAYS - metDays));
 
-  $('#greetName').textContent = `${hour < 6 ? 'Boa madrugada' : hour < 12 ? 'Bom dia' : hour < 18 ? 'Boa tarde' : 'Boa noite'}, Elena`;
+  $('#greetName').textContent = `${hour < 6 ? T('greet.dawn') : hour < 12 ? T('greet.morning') : hour < 18 ? T('greet.afternoon') : T('greet.night')}, Elena`;
   const rd = $('#routineDate');
   if (rd) rd.textContent = isMars ? `Sol ${marsNow().sol} · Base Ares`
-    : new Intl.DateTimeFormat('pt-BR', { timeZone: TZ_META[currentTz].tz, weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(new Date());
+    : new Intl.DateTimeFormat(locale, { timeZone: TZ_META[currentTz].tz, weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(new Date());
 }
 tzSelect.addEventListener('change', () => { currentTz = tzSelect.value; store.set('bip.tz', currentTz); tickClock(); });
 
@@ -237,6 +244,7 @@ function allTaskIds() { return routineTemplate.flatMap(p => p.tasks.map(t => t.i
 function periodDone(period) { return period.tasks.every(t => doneIds.includes(t.id)); }
 function routineScore() { const all = allTaskIds(); return all.length ? Math.round((doneIds.filter(id => all.includes(id)).length / all.length) * 100) : 0; }
 
+let routinesBound = false;
 function buildRoutines() {
   const grid = $('#periodsGrid');
   grid.innerHTML = routineTemplate.map(period => `
@@ -251,20 +259,23 @@ function buildRoutines() {
           <input type="checkbox" data-id="${t.id}" ${doneIds.includes(t.id) ? 'checked' : ''} aria-label="${t.title}">
           <span class="task-box"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="#eafff6" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4.5 12.5l5 5L19.5 6.5"/></svg></span>
           <span><span class="task-title">${t.title}</span>
-            <span class="task-meta"><span class="task-time">${t.time}</span><span class="late-tag" hidden>Atrasada</span></span>
+            <span class="task-meta"><span class="task-time">${t.time}</span><span class="late-tag" hidden>${window.t('rotina.late_tag')}</span></span>
             <span class="task-hint">${t.hint}</span>
           </span>
         </label>`).join('')}
     </div>`).join('');
 
-  grid.addEventListener('change', e => {
-    const id = e.target.dataset.id; if (!id) return;
-    if (e.target.checked) { if (!doneIds.includes(id)) doneIds.push(id); }
-    else doneIds = doneIds.filter(x => x !== id);
-    store.set(ROUTINE_KEY(), doneIds);
-    persistHistory();
-    updateRoutinesUI();
-  });
+  if (!routinesBound) {
+    routinesBound = true;
+    grid.addEventListener('change', e => {
+      const id = e.target.dataset.id; if (!id) return;
+      if (e.target.checked) { if (!doneIds.includes(id)) doneIds.push(id); }
+      else doneIds = doneIds.filter(x => x !== id);
+      store.set(ROUTINE_KEY(), doneIds);
+      persistHistory();
+      updateRoutinesUI();
+    });
+  }
 }
 
 function persistHistory() {
@@ -306,7 +317,7 @@ function evaluateAchievements(silent = true) {
     if ((metrics[a.metric] || 0) >= a.target && !unlocked.has(a.id)) {
       unlocked.add(a.id);
       store.set('bip.achievements', [...unlocked]);
-      toast(`🏆 Conquista desbloqueada: ${a.title}!`);
+      toast(`${window.t('toast.achievement')}${a.title}!`);
       ding(1046);
     }
   });
@@ -357,19 +368,8 @@ function updateRoutinesUI() {
   const mood = pct === 100 ? 'happy' : (late > 0 && done === 0 ? 'cry' : (late > 0 ? 'worried' : 'calm'));
   currentMood = mood;
   $$('.avatar').forEach(a => { if (!a.classList.contains('react-wave') && !a.classList.contains('react-hop') && !a.classList.contains('react-laugh')) a.setAttribute('data-mood', mood); });
-  const moodText = {
-    happy: 'Humor: radiante — tudo certo por aqui ✨',
-    calm: 'Humor: em equilíbrio · mantenha o ritmo',
-    worried: 'Humor: apreensivo — tem pendência no ar',
-    cry: 'Humor: chorando — nada feito ainda, vamos começar?',
-  }[mood];
-  $('#moodLine').textContent = moodText;
-  $('#moodCallout').textContent = {
-    happy: 'Tudo certo, comandante! O B.I.P está em êxtase (e regime de exercício em dia).',
-    calm: 'Tudo tranquilo por enquanto. Se algo atrasar, eu aviso antes de te deixar esquecer.',
-    worried: 'Psst… pendências acumulando. Resolve uma agora que o avatar volta a sorrir.',
-    cry: 'Nada marcado hoje. Recomeça pelo check-in das 06:30 — o avatar seca as lágrimas na hora.',
-  }[mood];
+  $('#moodLine').textContent = window.t(`home.mood_${mood}`);
+  $('#moodCallout').textContent = window.t(`rotina.callout_${mood}`);
 
   // badge da dock
   const badge = $('#dockBadge');
@@ -387,13 +387,13 @@ function applyDxContextChip() {
   const chip = $('#dxContextChip');
   if (pendingExamContext) {
     chip.hidden = false;
-    chip.innerHTML = `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 3h6v4a4 4 0 0 1-6 0Z"/><path d="M9 7H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3"/></svg><span>${pendingExamContext.label} anexado ao diagnóstico</span>`;
+    chip.innerHTML = `<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M9 3h6v4a4 4 0 0 1-6 0Z"/><path d="M9 7H6a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3"/></svg><span>${pendingExamContext.label} ${window.t('dx.attached')}</span>`;
   } else { chip.hidden = true; }
 }
 
 $('#dxSuggestChips').addEventListener('click', e => {
   const btn = e.target.closest('.chip'); if (!btn) return;
-  $('#dxText').value = btn.dataset.fill;
+  $('#dxText').value = window.t(btn.dataset.fillKey);
   $('#dxText').focus();
 });
 const dxImageInput = $('#dxImageInput');
@@ -437,23 +437,26 @@ function animateScanSteps() {
 
 async function analyzeSymptoms() {
   const text = $('#dxText').value.trim();
-  if (text.length < 4 && !dxImageDataUrl) { toast('Descreva o que está sentindo (ou anexe uma imagem).'); return; }
+  if (text.length < 4 && !dxImageDataUrl) { toast(window.t('dx.describe_first')); return; }
   showDxView('loading');
   animateScanSteps();
 
   const chat = store.get('bip.chat', []);
   const chatSummary = chat.filter(m => m.role === 'user').slice(-3).map(m => m.text).join(' | ');
   const v = lastVitals || {};
+  // exames relevantes no idioma da interface
+  const flagged = (exams || []).filter(e => (e.values || []).some(x => x.flag && x.flag !== 'normal')).slice(0, 4);
+  const examSummary = flagged.map(e => `${e.name}: ${e.summary}`).join(' · ');
   const context = {
     heart_rate: v.heart_rate ? `${Math.round(v.heart_rate)} bpm` : undefined,
     spo2: v.spo2 ? `${v.spo2}%` : undefined,
     bp: v.bp_sys ? `${Math.round(v.bp_sys)}/${Math.round(v.bp_dia)} mmHg` : undefined,
     temperature: v.temperature ? `${v.temperature} °C` : undefined,
-    sleep_hours: '7.2 h (média 6 noites)',
+    sleep_hours: '7.2 h',
     radiation_cumulative: v.radiation_cumulative ? `${v.radiation_cumulative.toFixed(1)} mSv` : undefined,
     routine_score: routineScore(),
-    chat_summary: chatSummary || 'sem conversas recentes',
-    exams: 'Cortisol AM 24.6 µg/dL ALTO (05/out) · Hemoglobina 12.1 g/dL (02/nov) · DMO colo fêmur −1.8% (30/set, atenção) · Dosimetria acumulada 32.4 mSv (10/nov) · ECG normal (21/out)',
+    chat_summary: chatSummary || undefined,
+    exams: examSummary || undefined,
     exam_sent: pendingExamContext ? pendingExamContext.detail : undefined,
     crew: 'Elena Ricci · Flight Engineer · SpEx-47 · Expedition AURORA-7',
   };
@@ -463,7 +466,7 @@ async function analyzeSymptoms() {
   try {
     const res = await fetch('/api/diagnose', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ text: text || '(imagem anexada para análise)', image: dxImageDataUrl, context }),
+      body: JSON.stringify({ text: text || `(${window.t('dx.image_attached')})`, image: dxImageDataUrl, context, lang: window.BIP_LANG }),
     });
     result = await res.json();
   } catch (e) { console.error(e); }
@@ -471,7 +474,7 @@ async function analyzeSymptoms() {
   await new Promise(r => setTimeout(r, Math.max(0, 2400 - 0))); // garante a animação mínima
   if (!result || !result.severity) {
     showDxView('form');
-    toast('Não consegui concluir a análise. Verifique a conexão e tente de novo.');
+    toast(window.t('dx.fail'));
     return;
   }
   const diagnoses = store.get('bip.diagnoses', []);
@@ -483,11 +486,7 @@ async function analyzeSymptoms() {
   evaluateAchievements();
 }
 
-const TRIAGE_META = {
-  leve:      { title: 'Conduta a bordo', detail: 'Quadro estável — manejável com os recursos da missão e monitoramento tranquilo.', action: 'onboard' },
-  moderado:  { title: 'Telemedicina com o MCC', detail: 'Conduta a bordo + revisão com o médico de voo na janela das 15:10–15:45 (link prioritário).', action: 'telemedicine' },
-  grave:     { title: 'ABORTAR MISSÃO — RETORNO À TERRA', detail: 'Emergência off-Terra: estabilizar AGORA, comunicar o MCC pelo link de emergência e preparar o retorno.', action: 'abort' },
-};
+const TRIAGE_KEY = { leve: 'leve', moderado: 'mod', grave: 'grave' };
 const SEV_ICON = {
   leve: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>',
   moderado: '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v5"/><path d="M12 16.5h.01"/><circle cx="12" cy="12" r="9.2"/></svg>',
@@ -497,15 +496,17 @@ const SEV_ICON = {
 function renderDiagnosisResult(d) {
   showDxView('result');
   const sev = (d.severity || 'leve').toLowerCase();
-  const meta = TRIAGE_META[sev] || TRIAGE_META.leve;
+  const key = TRIAGE_KEY[sev] || 'leve';
+  const T = window.t;
   const banner = $('#triageBanner');
   banner.dataset.level = sev;
   $('#triageIcon').innerHTML = SEV_ICON[sev] || SEV_ICON.leve;
-  $('#triageTitle').textContent = meta.title;
-  $('#triageDetail').textContent = meta.detail;
+  $('#triageTitle').textContent = T(`triage.${key}_title`);
+  $('#triageDetail').textContent = T(`triage.${key}_detail`);
 
-  $('#dxAnalyzedAt').textContent = `Análise ${d.analyzed_at ? new Date(d.analyzed_at).toLocaleString('pt-BR') : 'agora'}${d.image_attached ? ' · com imagem anexada' : ''}`;
-  $('#dxResultTitle').textContent = d.title || 'Resultado';
+  const locale = window.LOCALES[window.BIP_LANG];
+  $('#dxAnalyzedAt').textContent = `${T('dx.analyzed_at')} ${d.analyzed_at ? new Date(d.analyzed_at).toLocaleString(locale) : T('dx.new')}${d.image_attached ? ' · ' + T('dx.image_attached') : ''}`;
+  $('#dxResultTitle').textContent = d.title || T('dx.history_title');
   $('#dxSummary').textContent = d.summary || '';
 
   $('#dxCauses').innerHTML = (d.causes || []).map(c => `
@@ -521,9 +522,9 @@ function renderDiagnosisResult(d) {
     <div class="rx-item"><span class="rx-num">${pad(i + 1)}</span>
       <span><h5>${p.item || '—'}</h5>
         <div class="rx-posology">
-          ${p.dose ? `<span><b>Dose:</b> ${p.dose}</span>` : ''}
-          ${p.frequency ? `<span><b>Frequência:</b> ${p.frequency}</span>` : ''}
-          ${p.duration ? `<span><b>Duração:</b> ${p.duration}</span>` : ''}
+          ${p.dose ? `<span><b>${window.t('rx.dose')}</b> ${p.dose}</span>` : ''}
+          ${p.frequency ? `<span><b>${window.t('rx.freq')}</b> ${p.frequency}</span>` : ''}
+          ${p.duration ? `<span><b>${window.t('rx.dur')}</b> ${p.duration}</span>` : ''}
         </div>
         ${p.instructions ? `<small>${p.instructions}</small>` : ''}
       </span>
@@ -532,7 +533,7 @@ function renderDiagnosisResult(d) {
   $('#dxProcedures').innerHTML = (d.procedures || []).map(p => `<li>${p}</li>`).join('');
   $('#dxMonitoring').textContent = d.monitoring || '—';
   $('#dxRedFlags').innerHTML = (d.red_flags || []).map(r => `<li>${r}</li>`).join('');
-  $('#dxDisclaimer').textContent = d.disclaimer || 'Apoio à decisão — a palavra final é do médico de voo do MCC.';
+  $('#dxDisclaimer').textContent = d.disclaimer || window.t('rx.disclaimer_default');
   // animar barras após pintura
   requestAnimationFrame(() => $$('#dxCauses .cause-bar > span').forEach(s => { s.style.width = s.style.width; }));
 }
@@ -546,14 +547,14 @@ function renderHistory() {
   const list = $('#dxHistoryList');
   const diagnoses = [...(store.get('bip.diagnoses', []))].reverse();
   if (!diagnoses.length) {
-    list.innerHTML = '<div class="history-empty">Nenhuma análise ainda.<br>Faça sua primeira consulta com o B.I.P. 🩺</div>';
+    list.innerHTML = `<div class="history-empty">${window.t('dx.empty')}</div>`;
     return;
   }
   list.innerHTML = diagnoses.map((d, i) => `
     <button class="history-item" data-idx="${diagnoses.length - 1 - i}">
       <span class="history-sev ${d.severity || 'leve'}"></span>
-      <span><h4>${d.title || 'Análise'}</h4>
-      <p>${d.analyzed_at ? new Date(d.analyzed_at).toLocaleString('pt-BR') : ''} · “${(d.query || '').slice(0, 90)}${(d.query || '').length > 90 ? '…' : ''}”</p></span>
+      <span><h4>${d.title || window.t('dx.analyzed_at')}</h4>
+      <p>${d.analyzed_at ? new Date(d.analyzed_at).toLocaleString(window.LOCALES[window.BIP_LANG]) : ''} · “${(d.query || '').slice(0, 90)}${(d.query || '').length > 90 ? '…' : ''}”</p></span>
     </button>`).join('');
 }
 $('#dxHistoryBtn').addEventListener('click', () => { renderHistory(); showDxView('history'); });
@@ -568,30 +569,33 @@ $('#dxHistoryList').addEventListener('click', e => {
 
 /* ═════════ 7 · EXAMES ═════════ */
 let exams = [];
-let examFilter = 'Todos';
+let examFilter = 'all';
 let examQuery = '';
-const FLAG_LABEL = { normal: 'normal', atencao: 'atenção', alto: 'alto', baixo: 'baixo' };
+const examFlagLabel = (flag) => window.t(`exams.flag_${flag || 'normal'}`);
+const examStatusLabel = (status) => status === 'concluido' ? window.t('exams.concluido') : status === 'agendado' ? window.t('exams.agendado') : window.t('exams.pendente');
 
 async function loadExams() {
-  try { exams = (await (await fetch('/api/exams')).json()).exams; } catch { exams = []; }
-  const cats = ['Todos', ...new Set(exams.map(e => e.category))];
-  $('#examFilters').innerHTML = cats.map(c => `<button class="filter-chip${c === examFilter ? ' is-active' : ''}" data-cat="${c}">${c}</button>`).join('');
+  try { exams = (await (await fetch(`/api/exams?lang=${window.BIP_LANG}`)).json()).exams; } catch { exams = []; }
+  const allLabel = window.t('exams.all');
+  const cats = ['all', ...new Set(exams.map(e => e.category))];
+  $('#examFilters').innerHTML = cats.map(c => `<button class="filter-chip${c === examFilter ? ' is-active' : ''}" data-cat="${c}">${c === 'all' ? allLabel : c}</button>`).join('');
   renderExams();
 }
 function renderExams() {
+  const locale = window.LOCALES[window.BIP_LANG];
   const q = examQuery.trim().toLowerCase();
-  const filtered = exams.filter(e => (examFilter === 'Todos' || e.category === examFilter) &&
+  const filtered = exams.filter(e => (examFilter === 'all' || e.category === examFilter) &&
     (!q || `${e.name} ${e.summary} ${e.date}`.toLowerCase().includes(q)));
   $('#examsGrid').innerHTML = filtered.map(e => {
     const flagged = (e.values || []).filter(v => v.flag && v.flag !== 'normal');
     return `<button class="exam-card" data-id="${e.id}">
       <div class="exam-card-top"><h3>${e.name}</h3><span class="exam-cat">${e.category}</span></div>
-      <span class="exam-date mono">${new Date(e.date + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' })}</span>
+      <span class="exam-date mono">${new Date(e.date + 'T00:00:00').toLocaleDateString(locale, { day: '2-digit', month: 'short', year: 'numeric' })}</span>
       <p class="exam-summary">${e.summary}</p>
-      ${flagged.length ? `<div class="flag-row">${flagged.map(f => `<span class="mini-flag ${f.flag}">${f.name}: ${FLAG_LABEL[f.flag] || f.flag}</span>`).join('')}</div>` : ''}
-      <span class="status-badge ${e.status}">${e.status === 'concluido' ? 'Concluído' : e.status === 'agendado' ? 'Agendado' : 'Pendente'}</span>
+      ${flagged.length ? `<div class="flag-row">${flagged.map(f => `<span class="mini-flag ${f.flag}">${f.name}: ${examFlagLabel(f.flag)}</span>`).join('')}</div>` : ''}
+      <span class="status-badge ${e.status}">${examStatusLabel(e.status)}</span>
     </button>`;
-  }).join('') || '<p class="muted" style="grid-column:1/-1;text-align:center;padding:40px">Nenhum exame encontrado.</p>';
+  }).join('') || `<p class="muted" style="grid-column:1/-1;text-align:center;padding:40px">${window.t('exams.empty')}</p>`;
 }
 $('#examFilters').addEventListener('click', e => {
   const btn = e.target.closest('.filter-chip'); if (!btn) return;
@@ -606,27 +610,30 @@ $('#examsGrid').addEventListener('click', e => {
   const card = e.target.closest('.exam-card'); if (!card) return;
   const exam = exams.find(x => x.id === card.dataset.id); if (!exam) return;
   currentExam = exam;
-  $('#edMeta').textContent = `${new Date(exam.date + 'T00:00:00').toLocaleDateString('pt-BR')} · ${exam.lab}`;
+  const locale = window.LOCALES[window.BIP_LANG];
+  const dt = new Date(exam.date + 'T00:00:00');
+  $('#edMeta').textContent = `${dt.toLocaleDateString(locale)} · ${exam.lab}`;
   $('#edTitle').textContent = exam.name;
-  $('#edStatus').textContent = exam.status === 'concluido' ? 'Concluído' : exam.status === 'agendado' ? 'Agendado' : 'Pendente';
+  $('#edStatus').textContent = examStatusLabel(exam.status);
   $('#edStatus').className = `status-badge ${exam.status}`;
   $('#edSummary').textContent = exam.summary;
   const tbody = $('#edTable tbody');
-  tbody.innerHTML = (exam.values || []).map(v => `<tr><td>${v.name}</td><td class="mono">${v.value}${v.unit ? ' ' + v.unit : ''}</td><td>${v.ref || '—'}</td><td><span class="mini-flag ${v.flag || 'normal'}">${FLAG_LABEL[v.flag] || v.flag || 'normal'}</span></td></tr>`).join('') || '<tr><td colspan="4" class="muted">Sem laudo ainda — exame agendado.</td></tr>';
+  tbody.innerHTML = (exam.values || []).map(v => `<tr><td>${v.name}</td><td class="mono">${v.value}${v.unit ? ' ' + v.unit : ''}</td><td>${v.ref || '—'}</td><td><span class="mini-flag ${v.flag || 'normal'}">${examFlagLabel(v.flag)}</span></td></tr>`).join('') || `<tr><td colspan="4" class="muted">${window.t('exams.no_report')}</td></tr>`;
   $('#examDetail').hidden = false;
 });
 $('#examDetailClose').addEventListener('click', () => { $('#examDetail').hidden = true; });
 $('#examDetail').addEventListener('click', e => { if (e.target.id === 'examDetail') $('#examDetail').hidden = true; });
 $('#edSendToDx').addEventListener('click', () => {
   if (!currentExam) return;
+  const locale = window.LOCALES[window.BIP_LANG];
   pendingExamContext = {
-    label: `${currentExam.name} (${new Date(currentExam.date + 'T00:00:00').toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' })})`,
+    label: `${currentExam.name} (${new Date(currentExam.date + 'T00:00:00').toLocaleDateString(locale, { day: '2-digit', month: '2-digit' })})`,
     detail: `${currentExam.name} (${currentExam.date}): ${currentExam.summary}`,
   };
   applyDxContextChip();
   $('#examDetail').hidden = true;
   switchScreen('screen-diagnostico');
-  toast('Exame anexado — descreva o que está sentindo.');
+  toast(window.t('exams.sent'));
 });
 
 /* ═════════ 8 · CHAT COM O B.I.P ═════════ */
@@ -634,7 +641,7 @@ const chatPanel = $('#chatPanel');
 const chatMessages = $('#chatMessages');
 let chatHistory = store.get('bip.chat', []);
 
-function chatTimestamp() { return new Date().toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' }); }
+function chatTimestamp() { return new Date().toLocaleTimeString(window.LOCALES[window.BIP_LANG], { hour: '2-digit', minute: '2-digit' }); }
 function renderChat() {
   chatMessages.innerHTML = chatHistory.map(m => `
     <div class="msg ${m.role === 'user' ? 'msg-user' : 'msg-bip'}">${escapeHtml(m.text)}<div class="msg-time">${m.time || ''}</div></div>`).join('');
@@ -663,10 +670,10 @@ async function sendChat(text) {
   try {
     const res = await fetch('/api/chat', {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: trimmed, history: chatHistory.slice(-8), context: { ...(lastVitals || {}), pending_tasks: $$('#periodsGrid .task.late').length, routine_score: routineScore() } }),
+      body: JSON.stringify({ message: trimmed, history: chatHistory.slice(-8), context: { ...(lastVitals || {}), pending_tasks: $$('#periodsGrid .task.late').length, routine_score: routineScore() }, lang: window.BIP_LANG }),
     });
     reply = (await res.json()).reply;
-  } catch { reply = 'Ops… sinal fraco com o MCC. Tenta de novo em instantes? 📡'; }
+  } catch { reply = window.t('chat.offline'); }
   typing.remove();
   addChatMsg('bip', reply || 'Hmm, me perdi por aqui. Repete?');
 }
@@ -676,9 +683,10 @@ $('#bipBotBtn').addEventListener('click', () => {
   chatPanel.hidden = !chatPanel.hidden;
   if (opening && !chatHistory.length) {
     const late = $$('#periodsGrid .task.late').length;
+    const pendKey = late === 1 ? 'chat.greeting_pend_one' : 'chat.greeting_pend_many';
     addChatMsg('bip', late > 0
-      ? `Oi, Elena! Vi que você tem ${late} ${late === 1 ? 'pendência' : 'pendências'} na rotina de hoje. Sem drama — quer que eu te ajude a começar por uma? 🚀`
-      : 'Oi, Elena! Eu sou o B.I.P, seu copiloto de saúde. Vim ver como você está — pode perguntar qualquer coisa: rotina, vitais, sono, treino… Ou só desabafar. 🙂');
+      ? window.t('chat.greeting_late', { n: late, pend: window.t(pendKey) })
+      : window.t('chat.greeting_fresh'));
   }
   if (opening) { $('#chatInput').focus(); renderChat(); }
 });
@@ -690,29 +698,63 @@ $('#chatForm').addEventListener('submit', e => {
 });
 $('#chatQuick').addEventListener('click', e => {
   const chip = e.target.closest('.chip'); if (!chip) return;
-  sendChat(chip.dataset.q);
+  sendChat(window.t(chip.dataset.qKey));
 });
 
 /* ═════════ 9 · PERSONALIZAÇÃO DO AVATAR ═════════ */
 // Variáveis CSS vivem no :root (document.documentElement): assim os gradientes
 // do <symbol> compartilhado enxergam a cor escolhida em TODAS as instâncias.
-const outfitOptions = [{ id: 'astronaut', n: 'Astronauta' }, { id: 'casual', n: 'Casual' }, { id: 'voo', n: 'Voo' }, { id: 'cargo', n: 'Cargo' }];
-const skinOptions = [{ a: '#f6d3b3', b: '#ddb08a', n: 'Clara' }, { a: '#f2c4a0', b: '#d9a074', n: 'Médio-clara' }, { a: '#d9a97b', b: '#b87f52', n: 'Média' }, { a: '#c98e5a', b: '#a06a3d', n: 'Bronzeada' }, { a: '#8a5a33', b: '#5f3a1e', n: 'Escura' }, { a: '#5f3d24', b: '#3a2412', n: 'Profunda' }];
-const hairStyleOptions = [{ id: 'bald', n: 'Calvo' }, { id: 'crop', n: 'Crop' }, { id: 'sweep', n: 'Topete' }, { id: 'curly', n: 'Cacheado' }, { id: 'ponytail', n: 'Rabo de cavalo' }, { id: 'bob', n: 'Bob' }, { id: 'bun', n: 'Coque' }];
-const hairColorOptions = [{ c: '#1d1712', n: 'Preto' }, { c: '#3a2a1e', n: 'Castanho escuro' }, { c: '#6b4a2a', n: 'Castanho' }, { c: '#a8552f', n: 'Ruivo' }, { c: '#d9b36a', n: 'Loiro' }, { c: '#c9c9c9', n: 'Grisalho' }, { c: '#7a3fa0', n: 'Violeta fantasia' }];
-const facialHairOptions = [{ id: 'none', n: 'Nenhum' }, { id: 'beard', n: 'Barba' }, { id: 'mustache', n: 'Bigode' }, { id: 'goatee', n: 'Cavanhaque' }];
-const eyeColorOptions = [{ c: '#4a3423', n: 'Castanho' }, { c: '#6b4a2a', n: 'Avelã' }, { c: '#2e7d5b', n: 'Verde' }, { c: '#3f7fa6', n: 'Azul' }, { c: '#6b6b6b', n: 'Cinza' }];
+const outfitOptions = ['astronaut', 'casual', 'voo', 'cargo'].map(id => ({ id, tkey: `outfit.${id}` }));
+const skinOptions = [
+  { id: 'clara', a: '#f6d3b3', b: '#ddb08a', tkey: 'skin.clara' },
+  { id: 'medio', a: '#f2c4a0', b: '#d9a074', tkey: 'skin.medio' },
+  { id: 'media', a: '#d9a97b', b: '#b87f52', tkey: 'skin.media' },
+  { id: 'bronze', a: '#c98e5a', b: '#a06a3d', tkey: 'skin.bronze' },
+  { id: 'escura', a: '#8a5a33', b: '#5f3a1e', tkey: 'skin.escura' },
+  { id: 'profunda', a: '#5f3d24', b: '#3a2412', tkey: 'skin.profunda' },
+];
+const hairStyleOptions = ['bald', 'crop', 'sweep', 'curly', 'ponytail', 'bob', 'bun'].map(id => ({ id, tkey: `hairstyle.${id}` }));
+const hairColorOptions = [
+  { id: 'preto', c: '#1d1712', tkey: 'hairc.preto' },
+  { id: 'escuro', c: '#3a2a1e', tkey: 'hairc.escuro' },
+  { id: 'castanho', c: '#6b4a2a', tkey: 'hairc.castanho' },
+  { id: 'ruivo', c: '#a8552f', tkey: 'hairc.ruivo' },
+  { id: 'loiro', c: '#d9b36a', tkey: 'hairc.loiro' },
+  { id: 'grisalho', c: '#c9c9c9', tkey: 'hairc.grisalho' },
+  { id: 'violeta', c: '#7a3fa0', tkey: 'hairc.violeta' },
+];
+const facialHairOptions = ['none', 'beard', 'mustache', 'goatee'].map(id => ({ id, tkey: `beard.${id}` }));
+const eyeColorOptions = [
+  { id: 'castanho', c: '#4a3423', tkey: 'eye.castanho' },
+  { id: 'avela', c: '#6b4a2a', tkey: 'eye.avela' },
+  { id: 'verde', c: '#2e7d5b', tkey: 'eye.verde' },
+  { id: 'azul', c: '#3f7fa6', tkey: 'eye.azul' },
+  { id: 'cinza', c: '#6b6b6b', tkey: 'eye.cinza' },
+];
 const personalizeKey = 'bip.personalize';
-const PERSONALIZE_DEFAULTS = { outfit: 'astronaut', skin: 'Médio-clara', hairStyle: 'sweep', hair: 'Castanho escuro', beard: 'none', eyes: 'Castanho', freckles: false };
+const PERSONALIZE_DEFAULTS = { outfit: 'astronaut', skin: 'medio', hairStyle: 'sweep', hair: 'escuro', beard: 'none', eyes: 'castanho', freckles: false };
+// migração de nome (PT) -> id
+const LEGACY_ID = { 'Clara': 'clara', 'Médio-clara': 'medio', 'Média': 'media', 'Bronzeada': 'bronze', 'Escura': 'escura', 'Profunda': 'profunda', 'Preto': 'preto', 'Castanho escuro': 'escuro', 'Castanho': 'castanho', 'Ruivo': 'ruivo', 'Loiro': 'loiro', 'Grisalho': 'grisalho', 'Violeta fantasia': 'violeta', 'Avelã': 'avela', 'Verde': 'verde', 'Azul': 'azul', 'Cinza': 'cinza' };
 
-function getPersonalize() { return { ...PERSONALIZE_DEFAULTS, ...store.get(personalizeKey, {}) }; }
+function getPersonalize() {
+  const stored = store.get(personalizeKey, {});
+  const migrated = { ...stored };
+  for (const key of ['skin', 'hair', 'eyes']) {
+    if (migrated[key] && LEGACY_ID[migrated[key]]) migrated[key] = LEGACY_ID[migrated[key]];
+  }
+  // legado: nomes de saída em PT -> id
+  if (migrated.suit && !migrated.outfit) {
+    migrated.outfit = 'astronaut';
+  }
+  return { ...PERSONALIZE_DEFAULTS, ...migrated };
+}
 
 function applyPersonalize() {
   const p = getPersonalize();
   const root = document.documentElement;
-  const skin = skinOptions.find(s => s.n === p.skin) || skinOptions[1];
-  const hair = hairColorOptions.find(s => s.n === p.hair) || hairColorOptions[1];
-  const eyes = eyeColorOptions.find(s => s.n === p.eyes) || eyeColorOptions[0];
+  const skin = skinOptions.find(s => s.id === p.skin) || skinOptions[1];
+  const hair = hairColorOptions.find(s => s.id === p.hair) || hairColorOptions[1];
+  const eyes = eyeColorOptions.find(s => s.id === p.eyes) || eyeColorOptions[0];
   root.style.setProperty('--skin-a', skin.a);
   root.style.setProperty('--skin-b', skin.b);
   root.style.setProperty('--hair', hair.c);
@@ -723,35 +765,36 @@ function applyPersonalize() {
     a.setAttribute('data-freckles', p.freckles ? 'on' : 'off');
     a.setAttribute('data-outfit', p.outfit || 'astronaut');
   });
-  const mark = (container, key, value) =>
-    $$(`${container} [data-key]`).forEach(el => el.setAttribute('aria-pressed', String((el.dataset.n || el.dataset.id) === value)));
-  mark('#skinSwatches', 'skin', skin.n);
-  mark('#hairColors', 'hair', hair.n);
-  mark('#eyeColors', 'eyes', eyes.n);
-  mark('#hairStyles', 'hairStyle', p.hairStyle);
-  mark('#facialHair', 'beard', p.beard);
-  mark('#outfitPicker', 'outfit', p.outfit || 'astronaut');
+  const mark = (container, value) =>
+    $$(`${container} [data-id]`).forEach(el => el.setAttribute('aria-pressed', String(el.dataset.id === value)));
+  mark('#skinSwatches', skin.id);
+  mark('#hairColors', hair.id);
+  mark('#eyeColors', eyes.id);
+  mark('#hairStyles', p.hairStyle);
+  mark('#facialHair', p.beard);
+  mark('#outfitPicker', p.outfit || 'astronaut');
   const ft = $('#frecklesToggle');
   if (ft) ft.checked = !!p.freckles;
 }
 
 function buildPersonalizePanel() {
   const mkSwatch = (opts, containerId, key) => {
-    $(containerId).innerHTML = opts.map(o =>
-      `<button class="swatch" style="background:${o.a ? `linear-gradient(150deg, ${o.a}, ${o.b})` : o.c}" data-key="${key}" data-n="${o.n}" aria-pressed="false" aria-label="${o.n}" title="${o.n}"></button>`
-    ).join('');
+    $(containerId).innerHTML = opts.map(o => {
+      const label = window.t(o.tkey);
+      return `<button class="swatch" style="background:${o.a ? `linear-gradient(150deg, ${o.a}, ${o.b})` : o.c}" data-key="${key}" data-id="${o.id}" aria-pressed="false" aria-label="${label}" title="${label}"></button>`;
+    }).join('');
   };
   mkSwatch(skinOptions, '#skinSwatches', 'skin');
   mkSwatch(hairColorOptions, '#hairColors', 'hair');
   mkSwatch(eyeColorOptions, '#eyeColors', 'eyes');
-  $('#outfitPicker').innerHTML = outfitOptions.map(o => `<button class="pill" data-key="outfit" data-id="${o.id}" aria-pressed="false">${o.n}</button>`).join('');
-  $('#hairStyles').innerHTML = hairStyleOptions.map(o => `<button class="pill" data-key="hairStyle" data-id="${o.id}" aria-pressed="false">${o.n}</button>`).join('');
-  $('#facialHair').innerHTML = facialHairOptions.map(o => `<button class="pill" data-key="beard" data-id="${o.id}" aria-pressed="false">${o.n}</button>`).join('');
+  $('#outfitPicker').innerHTML = outfitOptions.map(o => `<button class="pill" data-key="outfit" data-id="${o.id}" aria-pressed="false">${window.t(o.tkey)}</button>`).join('');
+  $('#hairStyles').innerHTML = hairStyleOptions.map(o => `<button class="pill" data-key="hairStyle" data-id="${o.id}" aria-pressed="false">${window.t(o.tkey)}</button>`).join('');
+  $('#facialHair').innerHTML = facialHairOptions.map(o => `<button class="pill" data-key="beard" data-id="${o.id}" aria-pressed="false">${window.t(o.tkey)}</button>`).join('');
 
   $$('#skinSwatches .swatch, #hairColors .swatch, #eyeColors .swatch').forEach(sw =>
     sw.addEventListener('click', () => {
       const p = getPersonalize();
-      p[sw.dataset.key] = sw.dataset.n;
+      p[sw.dataset.key] = sw.dataset.id;
       store.set(personalizeKey, p);
       applyPersonalize();
     }));
@@ -774,7 +817,7 @@ $('#personalizeBtn').addEventListener('click', () => {
   panel.hidden = !panel.hidden;
   $('#personalizeBtn').setAttribute('aria-expanded', String(!panel.hidden));
 });
-$('#personalizeReset').addEventListener('click', () => { store.del(personalizeKey); applyPersonalize(); toast('Avatar restaurado ao padrão Aurora.'); });
+$('#personalizeReset').addEventListener('click', () => { store.del(personalizeKey); applyPersonalize(); toast(window.t('toast.reset')); });
 
 /* ═════════ 10 · INIT ═════════ */
 // O <symbol>#avatarBody serve de template; clonamos o conteúdo para dentro de
@@ -790,11 +833,11 @@ function hydrateAvatars() {
 /* ═════════ 10.5 · Reações ao toque (avatar interativo) ═════════ */
 let currentMood = 'calm';
 const reactionCycle = [
-  { cls: 'react-wave', text: 'Oi, tripulante!' },
-  { cls: 'react-hop', text: 'Houston, está tudo certo por aqui!' },
-  { cls: 'react-laugh', text: 'Haha! Gostei dessa!' },
-  { cls: 'react-wave', text: 'Um alô da Estação Aurora!' },
-  { cls: 'react-hop', text: 'Eureca! Bora conferir as rotinas?' },
+  { cls: 'react-wave', text: () => window.t('react.hi') },
+  { cls: 'react-hop', text: () => window.t('react.allgood') },
+  { cls: 'react-laugh', text: () => window.t('react.lol') },
+  { cls: 'react-wave', text: () => window.t('react.hail') },
+  { cls: 'react-hop', text: () => window.t('react.eureka') },
 ];
 let reactionIdx = 0;
 function bindAvatarReactions() {
@@ -809,7 +852,7 @@ function bindAvatarReactions() {
     $$('.avatar').forEach(a => a.setAttribute('data-mood', 'happy'));
     ding(1318);
     if (bubble) {
-      bubble.textContent = reaction.text;
+      bubble.textContent = reaction.text();
       bubble.hidden = false;
       clearTimeout(bubbleTimer);
     }
@@ -826,31 +869,47 @@ function bindAvatarReactions() {
   });
 }
 
+// (re)carrega o conteúdo que depende do idioma e re-renderiza
+async function loadDynamicContent() {
+  try { routineTemplate = (await (await fetch(`/api/routines?lang=${window.BIP_LANG}`)).json()).periods; } catch { routineTemplate = []; }
+  try { achievements = (await (await fetch(`/api/achievements?lang=${window.BIP_LANG}`)).json()).achievements; } catch { achievements = []; }
+  try {
+    const stock = (await (await fetch(`/api/stock?lang=${window.BIP_LANG}`)).json()).items;
+    $('#stockList').innerHTML = stock.map(i => `<li class="stock-item"><b>${i.name}</b>${i.qty != null ? ` · ${i.qty} un.` : ''}<small>${i.for}</small></li>`).join('');
+  } catch {}
+  buildRoutines();
+  updateRoutinesUI();
+  renderAchievements(computeMetrics());
+  await loadExams();
+  renderChat();
+}
+
 async function init() {
   hydrateAvatars();
   buildPersonalizePanel();
   applyPersonalize();
+  // liga o seletor de idioma → recarrega conteúdo e reaplica textos
+  $$('.lang-pill').forEach(btn => btn.addEventListener('click', () => window.bipSetLang(btn.dataset.lang)));
+  window.bipRefreshContent = async () => {
+    buildPersonalizePanel();   // reconstrói rótulos no idioma novo
+    applyPersonalize();
+    await loadDynamicContent();
+    tickClock();
+    refreshVitals();
+    applyLang();               // reaplica data-i18n (sem persistir de novo)
+  };
   tickClock();
   setInterval(tickClock, 1000);
   setInterval(refreshVitals, 5000);
 
   await refreshVitals();
-  try { routineTemplate = (await (await fetch('/api/routines')).json()).periods; } catch { routineTemplate = []; }
-  try { achievements = (await (await fetch('/api/achievements')).json()).achievements; } catch { achievements = []; }
-  try {
-    const stock = (await (await fetch('/api/stock')).json()).items;
-    $('#stockList').innerHTML = stock.map(i => `<li class="stock-item"><b>${i.name}</b>${i.qty != null ? ` · ${i.qty} un.` : ''}<small>${i.for}</small></li>`).join('');
-  } catch {}
-
-  buildRoutines();
+  await loadDynamicContent();
   persistHistory();          // registra snapshot do dia e dispara verificação de conquistas
-  updateRoutinesUI();
   evaluateAchievements(true);
-  await loadExams();
   bindAvatarReactions();
 
   $('#dxHistoryCount').textContent = String((store.get('bip.diagnoses', []) || []).length);
   renderChat();
-  $('#routineDate').textContent = new Intl.DateTimeFormat('pt-BR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' }).format(new Date());
+  window.applyLang && window.applyLang();
 }
 init();

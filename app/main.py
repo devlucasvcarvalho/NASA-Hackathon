@@ -1,8 +1,9 @@
-"""B.I.P — Biomedical Intelligent Partner · backend FastAPI.
+﻿"""B.I.P — Biomedical Intelligent Partner · backend FastAPI.
 
 Protótipo navegável para a NASA Space Apps. Dados de bordo simulados com
 drift fisiológico suave; IA via Google Gemini quando GEMINI_API_KEY existe,
 com fallback local curado (offline-friendly) — funciona 100% no demo.
+Conteúdo em PT / EN / ES (parâmetro `lang`).
 """
 
 import math
@@ -17,9 +18,16 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from app import ai, data
+from app.exams_data import EXAMS
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 STATIC_DIR = BASE_DIR / "static"
+
+
+def norm_lang(value) -> str:
+    lang = (value or "").lower().split("-")[0]
+    return lang if lang in data.LANGS else "en"
+
 
 app = FastAPI(title="B.I.P — Biomedical Intelligent Partner", version="0.1.0")
 
@@ -32,6 +40,8 @@ async def no_cache(request, call_next):
     if path == "/" or path.startswith("/static") or path in ("/manifest.json", "/favicon.svg"):
         response.headers["Cache-Control"] = "no-cache"
     return response
+
+
 app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
 
 
@@ -77,28 +87,33 @@ def vitals():
 
 
 @app.get("/api/routines")
-def routines():
-    return {"periods": data.ROUTINE_TEMPLATE}
+def routines(lang: str = "en"):
+    lang = norm_lang(lang)
+    return {"periods": data.ROUTINE_TEMPLATE[lang], "lang": lang}
 
 
 @app.get("/api/achievements")
-def achievements():
-    return {"achievements": data.ACHIEVEMENTS}
+def achievements(lang: str = "en"):
+    lang = norm_lang(lang)
+    return {"achievements": data.ACHIEVEMENTS[lang], "lang": lang}
 
 
 @app.get("/api/stock")
-def stock():
-    return {"items": data.MISSION_STOCK}
+def stock(lang: str = "en"):
+    lang = norm_lang(lang)
+    return {"items": data.MISSION_STOCK[lang], "lang": lang}
 
 
 @app.get("/api/exams")
-def exams():
-    return {"exams": data.EXAMS}
+def exams(lang: str = "en"):
+    lang = norm_lang(lang)
+    return {"exams": EXAMS[lang], "lang": lang}
 
 
 @app.get("/api/exams/{exam_id}")
-def exam_detail(exam_id: str):
-    for e in data.EXAMS:
+def exam_detail(exam_id: str, lang: str = "en"):
+    lang = norm_lang(lang)
+    for e in EXAMS[lang]:
         if e["id"] == exam_id:
             return e
     return JSONResponse({"error": "exam not found"}, status_code=404)
@@ -108,22 +123,26 @@ class ChatIn(BaseModel):
     message: str
     history: list[dict] = []
     context: dict = {}
+    lang: str = "en"
 
 
 @app.post("/api/chat")
 def chat(payload: ChatIn):
-    reply = ai.chat_reply(payload.message, payload.history, payload.context or simulated_vitals())
-    return {"reply": reply}
+    lang = norm_lang(payload.lang)
+    reply = ai.chat_reply(payload.message, payload.history, payload.context or simulated_vitals(), lang)
+    return {"reply": reply, "lang": lang}
 
 
 class DiagnoseIn(BaseModel):
     text: str
     image: str | None = None
     context: dict = {}
+    lang: str = "en"
 
 
 @app.post("/api/diagnose")
 def diagnose_endpoint(payload: DiagnoseIn):
+    lang = norm_lang(payload.lang)
     v = simulated_vitals()
     context = dict(payload.context or {})
     context.setdefault("heart_rate", f"{v['heart_rate']} bpm")
@@ -132,7 +151,7 @@ def diagnose_endpoint(payload: DiagnoseIn):
     context.setdefault("temperature", f"{v['temperature']} °C")
     context.setdefault("sleep_hours", f"{v['sleep_hours']} h")
     context.setdefault("radiation_cumulative", f"{v['radiation_cumulative']} mSv")
-    result = ai.diagnose(payload.text, context, payload.image)
+    result = ai.diagnose(payload.text, context, payload.image, lang)
     result["analyzed_at"] = datetime.now(timezone.utc).isoformat()
     result["query"] = payload.text
     if payload.image:

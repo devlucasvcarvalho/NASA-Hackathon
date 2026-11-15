@@ -1,5 +1,5 @@
 ﻿<!doctype html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -11,7 +11,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Nunito:ital,wght@0,400;0,600;0,700;0,800;1,400&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/static/css/styles.css?v=11" />
+  <link rel="stylesheet" href="/static/css/styles.css?v=14" />
+  <script src="/static/js/i18n.js?v=14"></script>
 </head>
 <body>
 
@@ -369,7 +370,7 @@
     </span>
     <span class="brand-text">B.I.P<small>Biomedical Intelligent Partner</small></span>
   </div>
-  <div class="met-chip" title="Mission Elapsed Time — desde o lançamento (11/jun/2026)">
+  <div class="met-chip" title="Mission Elapsed Time — since launch (June 11, 2026)" data-i18n-title="met.title">
     <span class="met-dot"></span>MET <span id="metClock" class="mono">000:00:00:00</span>
   </div>
   <div class="crew-chip" title="Tripulante monitorada">
@@ -387,44 +388,44 @@
       <div class="card glass avatar-card">
         <div class="card-head">
           <div>
-            <h1 class="h-greet" id="greetName">Bom dia, Elena</h1>
-            <p class="muted small" id="moodLine">Humor estável · em equilíbrio com a missão</p>
+            <h1 class="h-greet" id="greetName" data-i18n="home.greet_default">Bom dia, Elena</h1>
+            <p class="muted small" id="moodLine" data-i18n="home.mood_calm">Humor: em equilíbrio · mantenha o ritmo</p>
           </div>
           <button class="btn btn-ghost" id="personalizeBtn" aria-expanded="false" aria-controls="personalizePanel">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33h.01a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82v.01a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z"/></svg>
-            Personalizar
+            <span data-i18n="home.personalize">Personalizar</span>
           </button>
         </div>
 
         <div class="avatar-stage">
-          <svg class="avatar avatar-hero" data-mood="calm" data-hair="sweep" data-beard="none" data-freckles="off" data-outfit="astronaut" viewBox="0 0 240 352" role="button" tabindex="0" aria-label="Avatar da tripulante — toque para brincar"></svg>
+          <svg class="avatar avatar-hero" data-mood="calm" data-hair="sweep" data-beard="none" data-freckles="off" data-outfit="astronaut" viewBox="0 0 240 352" role="button" tabindex="0" data-i18n-aria="avatar.aria" aria-label="Avatar da tripulante — toque para brincar"></svg>
           <div class="avatar-bubble" id="avatarBubble" role="status" aria-live="polite" hidden></div>
 
           <div class="personalize-panel glass-deep" id="personalizePanel" hidden>
-            <p class="panel-title">Faça o avatar a sua cara</p>
-            <div class="opt-group"><span>Roupa</span><div class="pillset" id="outfitPicker"></div></div>
-            <div class="opt-group"><span>Tom de pele</span><div class="swatches" id="skinSwatches"></div></div>
-            <div class="opt-group"><span>Corte de cabelo</span><div class="pillset" id="hairStyles"></div></div>
-            <div class="opt-group"><span>Cor do cabelo</span><div class="swatches" id="hairColors"></div></div>
-            <div class="opt-group"><span>Pelos faciais</span><div class="pillset" id="facialHair"></div></div>
-            <div class="opt-group"><span>Cor dos olhos</span><div class="swatches" id="eyeColors"></div></div>
-            <div class="opt-group"><span>Sardas</span>
-              <label class="mini-switch"><input type="checkbox" id="frecklesToggle"><span class="ms-track"><span class="ms-thumb"></span></span>mostrar sardas</label>
+            <p class="panel-title" data-i18n="panel.title">Faça o avatar a sua cara</p>
+            <div class="opt-group"><span data-i18n="panel.outfit">Roupa</span><div class="pillset" id="outfitPicker"></div></div>
+            <div class="opt-group"><span data-i18n="panel.skin">Tom de pele</span><div class="swatches" id="skinSwatches"></div></div>
+            <div class="opt-group"><span data-i18n="panel.hairstyle">Corte de cabelo</span><div class="pillset" id="hairStyles"></div></div>
+            <div class="opt-group"><span data-i18n="panel.haircolor">Cor do cabelo</span><div class="swatches" id="hairColors"></div></div>
+            <div class="opt-group"><span data-i18n="panel.beard">Pelos faciais</span><div class="pillset" id="facialHair"></div></div>
+            <div class="opt-group"><span data-i18n="panel.eyes">Cor dos olhos</span><div class="swatches" id="eyeColors"></div></div>
+            <div class="opt-group"><span data-i18n="panel.freckles">Sardas</span>
+              <label class="mini-switch"><input type="checkbox" id="frecklesToggle"><span class="ms-track"><span class="ms-thumb"></span></span><span data-i18n="panel.show_freckles">mostrar sardas</span></label>
             </div>
-            <button class="btn btn-soft" id="personalizeReset">Restaurar padrão</button>
+            <button class="btn btn-soft" id="personalizeReset" data-i18n="panel.reset">Restaurar padrão</button>
           </div>
         </div>
 
         <div class="avatar-foot">
-          <span class="live-dot"></span> Smart-Tex conectado · transmissão contínua de biosinais
+          <span class="live-dot"></span> <span data-i18n="home.foot">Smart-Tex conectado · transmissão contínua de biosinais</span>
         </div>
       </div>
 
       <div class="dash-col">
         <div class="dash-head">
           <div class="dash-title-wrap">
-            <h1 class="dash-title">Dashboard da missão</h1>
-            <p class="muted small">Expedition AURORA-7 · Elena Ricci · sinais contínuos via Smart-Tex</p>
+            <h1 class="dash-title" data-i18n="dash.title">Dashboard da missão</h1>
+            <p class="muted small" data-i18n="dash.subtitle">Expedition AURORA-7 · Elena Ricci · sinais contínuos via Smart-Tex</p>
           </div>
           <!-- relógio: detalhe compacto no canto superior direito -->
           <div class="clock-pill" id="clockPill" title="Hora local da missão">
@@ -432,11 +433,11 @@
             <span class="clock-pill-text">
               <span class="clock-time mono" id="clockTime">--:--</span>
               <span class="clock-sub"><span id="clockDate">—</span>
-                <select class="clock-tz" id="tzSelect" aria-label="Escolher fuso">
+                <select class="clock-tz" id="tzSelect" aria-label="Escolher fuso" data-i18n-aria="dash.tz_label">
                   <option value="houston">Houston · MCC</option>
                   <option value="utc">Greenwich · UTC</option>
                   <option value="tokyo">Tóquio · UTC+9</option>
-                  <option value="mars">Base Ares · Sol médio</option>
+                  <option value="mars" data-i18n="clock.mars">Base Ares · Sol médio</option>
                 </select>
               </span>
             </span>
@@ -448,11 +449,11 @@
 
         <!-- faixa de resumo da missão -->
         <div class="dash-strip glass-soft">
-          <div class="strip-item"><span class="strip-num mono" id="stripMet">000:00</span><span class="strip-lbl">MET · dias</span></div>
+          <div class="strip-item"><span class="strip-num mono" id="stripMet">000:00</span><span class="strip-lbl" data-i18n="strip.met_label">MET · DIAS</span></div>
           <span class="strip-sep"></span>
-          <div class="strip-item"><span class="strip-num mono" id="stripRemaining">400</span><span class="strip-lbl">dias restantes</span></div>
+          <div class="strip-item"><span class="strip-num mono" id="stripRemaining">400</span><span class="strip-lbl" data-i18n="strip.remaining_label">DIAS RESTANTES</span></div>
           <span class="strip-sep"></span>
-          <div class="strip-item"><span class="strip-num mono" id="stripMoon">—</span><span class="strip-lbl" id="stripMoonName">Lua</span></div>
+          <div class="strip-item"><span class="strip-num mono" id="stripMoon">—</span><span class="strip-lbl" id="stripMoonName">LUA</span></div>
         </div>
       </div>
     </div>
@@ -462,12 +463,12 @@
   <section class="screen" id="screen-rotina" aria-label="Rotinas diárias">
     <div class="routines-layout">
       <div class="card glass routine-hero">
-        <svg class="avatar avatar-routine" data-mood="calm" data-hair="sweep" data-beard="none" data-freckles="off" data-outfit="astronaut" viewBox="0 0 240 352" role="button" tabindex="0" aria-label="Avatar da tripulante — toque para brincar"></svg>
+        <svg class="avatar avatar-routine" data-mood="calm" data-hair="sweep" data-beard="none" data-freckles="off" data-outfit="astronaut" viewBox="0 0 240 352" role="button" tabindex="0" data-i18n-aria="avatar.aria" aria-label="Avatar da tripulante — toque para brincar"></svg>
         <div class="routine-hero-info">
-          <h2>Rotinas diárias</h2>
+          <h2 data-i18n="rotina.title">Rotinas diárias</h2>
           <p class="muted" id="routineDate">—</p>
           <div class="routine-stats">
-            <div class="ring-wrap" title="Conclusão do dia">
+            <div class="ring-wrap" title="Conclusão do dia" data-i18n-title="rotina.ring_title">
               <svg class="progress-ring" viewBox="0 0 84 84" width="84" height="84">
                 <circle class="ring-bg" cx="42" cy="42" r="34"/>
                 <circle class="ring-fg" id="dayRing" cx="42" cy="42" r="34"/>
@@ -475,12 +476,12 @@
               <span class="ring-label mono" id="dayRingLabel">0%</span>
             </div>
             <div class="routine-kpis">
-              <div class="kpi"><span class="kpi-num mono" id="kpiDone">0/16</span><span class="kpi-lbl">tarefas hoje</span></div>
-              <div class="kpi"><span class="kpi-num mono" id="kpiStreak">0</span><span class="kpi-lbl">dias de sequência</span></div>
-              <div class="kpi kpi-warn"><span class="kpi-num mono" id="kpiPending">0</span><span class="kpi-lbl">pendências agora</span></div>
+              <div class="kpi"><span class="kpi-num mono" id="kpiDone">0/16</span><span class="kpi-lbl" data-i18n="rotina.tasks">tarefas hoje</span></div>
+              <div class="kpi"><span class="kpi-num mono" id="kpiStreak">0</span><span class="kpi-lbl" data-i18n="rotina.streak">dias de sequência</span></div>
+              <div class="kpi kpi-warn"><span class="kpi-num mono" id="kpiPending">0</span><span class="kpi-lbl" data-i18n="rotina.pending">pendências agora</span></div>
             </div>
           </div>
-          <div class="mood-callout" id="moodCallout">Seu avatar reage ao seu ritmo — complete as rotinas para vê-lo sorrir.</div>
+          <div class="mood-callout" id="moodCallout" data-i18n="rotina.callout_calm">Seu avatar reage ao seu ritmo — complete as rotinas para vê-lo sorrir.</div>
         </div>
       </div>
 
@@ -488,7 +489,7 @@
 
       <div class="card glass achievements-card">
         <div class="card-head">
-          <div><h3>Conquistas de missão</h3><p class="muted small">Marque as rotinas no tempo certo e desbloqueie medalhas de constância</p></div>
+          <div><h3 data-i18n="rotina.achieve_title">Conquistas de missão</h3><p class="muted small" data-i18n="rotina.achieve_sub">Marque as rotinas no tempo certo e desbloqueie medalhas de constância</p></div>
         </div>
         <div class="achievements-rail" id="achievementsRail"></div>
       </div>
@@ -502,17 +503,17 @@
     <div class="dx-view" id="dxFormView">
       <div class="dx-grid">
         <div class="card glass dx-main">
-          <h2 class="dx-title">Diga o que está sentindo</h2>
-          <p class="muted">Texto, imagem (ferida, exantema, exame caseiro) ou os dois. O B.I.P cruza tudo: sinais vitais, exames recentes, sua rotina, sono e conversas — e devolve hipóteses + plano de bordo.</p>
+          <h2 class="dx-title" data-i18n="dx.title">Diga o que está sentindo</h2>
+          <p class="muted" data-i18n="dx.subtitle">Texto, imagem (ferida, exantema, exame caseiro) ou os dois. O B.I.P cruza tudo: sinais vitais, exames recentes, sua rotina, sono e conversas — e devolve hipóteses + plano de bordo.</p>
 
-          <textarea id="dxText" class="dx-textarea" rows="4" maxlength="2000" placeholder="Ex.: Dor de cabeça opressiva desde ontem à tarde, piora à noite. Dormi mal, muita tarefa de EVA planejada…"></textarea>
+          <textarea id="dxText" class="dx-textarea" rows="4" maxlength="2000" data-i18n-ph="dx.placeholder" placeholder="Ex.: Dor de cabeça opressiva desde ontem à tarde, piora à noite. Dormi mal, muita tarefa de EVA planejada…"></textarea>
 
           <div class="dx-chips" id="dxSuggestChips">
-            <button class="chip" data-fill="Dor de cabeça opressiva desde ontem à tarde. Piora à noite e com esforço.">Cefaleia opressiva</button>
-            <button class="chip" data-fill="Náusea e enjoo fortes ao acordar, sem vômito. Começou há 2 dias.">Náusea ao acordar</button>
-            <button class="chip" data-fill="Acordei tonto, a visão embaçou por alguns segundos ao levantar da cama.">Tontura ao levantar</button>
-            <button class="chip" data-fill="Desde o contato com o MCC não consigo desligar: mente acelerada, sono ruim há 4 noites.">Mente acelerada / sono ruim</button>
-            <button class="chip" data-fill="Coceira e manchas vermelhas nas mãos desde ontem, após manusear o filtro de ar.">Manchas na pele</button>
+            <button class="chip" data-fill-key="dx.s1t" data-i18n="dx.s1">Cefaleia opressiva</button>
+            <button class="chip" data-fill-key="dx.s2t" data-i18n="dx.s2">Náusea ao acordar</button>
+            <button class="chip" data-fill-key="dx.s3t" data-i18n="dx.s3">Tontura ao levantar</button>
+            <button class="chip" data-fill-key="dx.s4t" data-i18n="dx.s4">Mente acelerada / sono ruim</button>
+            <button class="chip" data-fill-key="dx.s5t" data-i18n="dx.s5">Manchas na pele</button>
           </div>
 
           <div class="dx-attach-row">
@@ -521,7 +522,7 @@
               <span class="dz-icon" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="8.5" cy="10" r="1.6"/><path d="M21 15l-4.5-4.5L9 18"/></svg>
               </span>
-              <span class="dz-text"><strong>Anexar imagem</strong><small>arraste ou clique · feridas, manchas, exames</small></span>
+              <span class="dz-text"><strong data-i18n="dx.attach_strong">Anexar imagem</strong><small data-i18n="dx.attach_small">arraste ou clique · feridas, manchas, exames</small></span>
             </label>
             <div class="dx-preview" id="dxPreview" hidden>
               <img id="dxPreviewImg" alt="Imagem anexada para análise" />
@@ -534,22 +535,22 @@
           <div class="dx-actions">
             <button class="btn btn-primary btn-big" id="dxAnalyzeBtn">
               <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a4 4 0 0 0-4 4v1a4 4 0 0 0 8 0V7a4 4 0 0 0-4-4Z"/><path d="M4 13a8 8 0 0 0 16 0"/><path d="M12 21v-4"/></svg>
-              Analisar sintomas
+              <span data-i18n="dx.analyze">Analisar sintomas</span>
             </button>
             <button class="btn btn-ghost" id="dxHistoryBtn">
               <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/><path d="M12 7v5l3.2 2"/></svg>
-              Resultados anteriores <span class="count-pill mono" id="dxHistoryCount">0</span>
+              <span data-i18n="dx.history">Resultados anteriores</span> <span class="count-pill mono" id="dxHistoryCount">0</span>
             </button>
           </div>
         </div>
 
         <aside class="card glass dx-side">
-          <h3>Kit médico de bordo</h3>
-          <p class="muted small">Inventário real da missão Aurora-7 — o diagnóstico só prescreve o que existe a bordo.</p>
+          <h3 data-i18n="dx.kit_title">Kit médico de bordo</h3>
+          <p class="muted small" data-i18n="dx.kit_sub">Inventário real da missão Aurora-7 — o diagnóstico só prescreve o que existe a bordo.</p>
           <ul class="stock-list" id="stockList"></ul>
           <div class="stock-note">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="9.2"/><path d="M12 8v5"/><path d="M12 16h.01"/></svg>
-            <span>Casos graves seguem protocolo espacial: estabilização + <strong>aborto da missão e retorno à Terra</strong>. Telemedicina com o MCC todos os dias, 15:10–15:45.</span>
+            <span><span data-i18n="dx.kit_note">Casos graves seguem protocolo espacial: estabilização + </span><strong data-i18n="dx.kit_note_b">aborto da missão e retorno à Terra</strong><span data-i18n="dx.kit_note_end">. Telemedicina com o MCC todos os dias, 15:10–15:45.</span></span>
           </div>
         </aside>
       </div>
@@ -561,13 +562,13 @@
         <svg class="bip-scan" viewBox="0 0 96 112" aria-hidden="true"><use href="#bipBot"></use></svg>
         <div class="scan-ring"></div>
       </div>
-      <h2>Um instante, estou analisando…</h2>
+      <h2 data-i18n="dx.loading_title">Um instante, estou analisando…</h2>
       <ul class="scan-steps" id="scanSteps">
-        <li data-step="0">Coletando sinais vitais em tempo real…</li>
-        <li data-step="1">Cruzando hemograma, dosimetria e exames…</li>
-        <li data-step="2">Consultando inventário do kit médico de bordo…</li>
-        <li data-step="3">Verificando conversas com o copiloto (fator psicológico)…</li>
-        <li data-step="4">Montando hipóteses e plano de conduta…</li>
+        <li data-step="0" data-i18n="dx.step0">Coletando sinais vitais em tempo real…</li>
+        <li data-step="1" data-i18n="dx.step1">Cruzando hemograma, dosimetria e exames…</li>
+        <li data-step="2" data-i18n="dx.step2">Consultando inventário do kit médico de bordo…</li>
+        <li data-step="3" data-i18n="dx.step3">Verificando conversas com o copiloto (fator psicológico)…</li>
+        <li data-step="4" data-i18n="dx.step4">Montando hipóteses e plano de conduta…</li>
       </ul>
     </div>
 
@@ -585,32 +586,32 @@
             <h2 id="dxResultTitle">—</h2>
             <p class="muted" id="dxSummary">—</p>
 
-            <h4 class="block-title">Possíveis causas</h4>
+            <h4 class="block-title" data-i18n="dx.causes_title">Possíveis causas</h4>
             <div class="causes" id="dxCauses"></div>
 
-            <h4 class="block-title">Dados que o B.I.P usou</h4>
+            <h4 class="block-title" data-i18n="dx.factors_title">Dados que o B.I.P usou</h4>
             <div class="factor-chips" id="dxFactors"></div>
           </div>
         </div>
 
         <div class="dx-col">
           <div class="card glass rx-card">
-            <h3 class="rx-title">Receituário de bordo <span class="rx-badge mono">ON-BOARD RX</span></h3>
+            <h3 class="rx-title"><span data-i18n="dx.rx_title">Receituário de bordo</span> <span class="rx-badge mono">ON-BOARD RX</span></h3>
             <div class="rx-list" id="dxPrescription"></div>
 
-            <h4 class="block-title">Conduta passo a passo</h4>
+            <h4 class="block-title" data-i18n="dx.steps_title">Conduta passo a passo</h4>
             <ol class="rx-procedures" id="dxProcedures"></ol>
 
-            <h4 class="block-title">Monitoramento</h4>
+            <h4 class="block-title" data-i18n="dx.monitoring_title">Monitoramento</h4>
             <p class="rx-monitoring" id="dxMonitoring">—</p>
 
-            <h4 class="block-title">Red flags — quando escalar para o MCC</h4>
+            <h4 class="block-title" data-i18n="dx.flags_title">Red flags — quando escalar para o MCC</h4>
             <ul class="red-flags" id="dxRedFlags"></ul>
 
             <p class="rx-disclaimer" id="dxDisclaimer">Apoio à decisão — a palavra final é do médico de voo do MCC.</p>
             <div class="rx-actions">
-              <button class="btn btn-primary" id="dxNewConsultBtn">Nova consulta</button>
-              <button class="btn btn-ghost" id="dxBackHistoryBtn">Ver resultados anteriores</button>
+              <button class="btn btn-primary" id="dxNewConsultBtn" data-i18n="dx.new">Nova consulta</button>
+              <button class="btn btn-ghost" id="dxBackHistoryBtn" data-i18n="dx.see_history">Ver resultados anteriores</button>
             </div>
           </div>
         </div>
@@ -620,8 +621,8 @@
     <!-- histórico -->
     <div class="dx-view" id="dxHistoryView" hidden>
       <div class="history-head">
-        <h2>Resultados anteriores</h2>
-        <button class="btn btn-ghost" id="dxHistoryBackBtn">← Voltar</button>
+        <h2 data-i18n="dx.history_title">Resultados anteriores</h2>
+        <button class="btn btn-ghost" id="dxHistoryBackBtn" data-i18n="dx.history_back">← Voltar</button>
       </div>
       <div class="history-list" id="dxHistoryList"></div>
     </div>
@@ -631,9 +632,9 @@
   <section class="screen" id="screen-exames" aria-label="Exames">
     <div class="exams-wrap">
       <div class="exams-head">
-        <div><h2>Exames</h2><p class="muted">Dossiê completo de exames realizados em outros equipamentos da missão</p></div>
+        <div><h2 data-i18n="exams.title">Exames</h2><p class="muted" data-i18n="exams.sub">Dossiê completo de exames realizados em outros equipamentos da missão</p></div>
         <div class="exams-controls">
-          <input type="search" class="exam-search" id="examSearch" placeholder="Buscar exame, resultado…" aria-label="Buscar exame" />
+          <input type="search" class="exam-search" id="examSearch" data-i18n-ph="exams.search" placeholder="Buscar exame, resultado…" aria-label="Buscar exame" data-i18n-aria="exams.search" />
         </div>
       </div>
       <div class="exam-filters" id="examFilters"></div>
@@ -647,10 +648,10 @@
         <h2 id="edTitle">—</h2>
         <span class="status-badge" id="edStatus">Concluído</span>
         <p class="muted ed-summary" id="edSummary">—</p>
-        <div class="ed-table-wrap"><table class="ed-table" id="edTable"><thead><tr><th>Parâmetro</th><th>Resultado</th><th>Ref.</th><th>Flag</th></tr></thead><tbody></tbody></table></div>
+        <div class="ed-table-wrap"><table class="ed-table" id="edTable"><thead><tr><th data-i18n="exams.tbl_param">Parâmetro</th><th data-i18n="exams.tbl_result">Resultado</th><th data-i18n="exams.tbl_ref">Ref.</th><th data-i18n="exams.tbl_flag">Flag</th></tr></thead><tbody></tbody></table></div>
         <button class="btn btn-primary" id="edSendToDx">
           <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
-          Enviar para o diagnóstico
+          <span data-i18n="exams.send">Enviar para o diagnóstico</span>
         </button>
       </div>
     </aside>
@@ -658,28 +659,28 @@
 </main>
 
 <!-- ═══════════ ROBÔ MASCOTE ═══════════ -->
-<button class="bip-bot-btn" id="bipBotBtn" aria-label="Abrir conversa com o B.I.P, copiloto de saúde">
-  <span class="bip-bubble" id="bipBubble">Psst… preciso de algo?</span>
+<button class="bip-bot-btn" id="bipBotBtn" data-i18n-aria="chat.open" aria-label="Abrir conversa com o B.I.P, copiloto de saúde">
+  <span class="bip-bubble" id="bipBubble" data-i18n="chat.bubble">Psst… preciso de algo?</span>
   <svg class="bip-bot-svg" viewBox="0 0 96 112" aria-hidden="true"><use href="#bipBot"></use></svg>
 </button>
 
 <!-- ═══════════ CHAT ═══════════ -->
-<aside class="chat-panel glass-deep" id="chatPanel" hidden aria-modal="false" aria-label="Conversar com o B.I.P">
+<aside class="chat-panel glass-deep" id="chatPanel" hidden aria-modal="false" data-i18n-aria="chat.title_aria" aria-label="Conversar com o B.I.P">
   <header class="chat-head">
     <span class="chat-avatar"><svg viewBox="0 0 96 112" aria-hidden="true"><use href="#bipBot"></use></svg></span>
-    <span class="chat-meta"><strong>B.I.P</strong><small><span class="online-dot"></span>online · copiloto da missão Aurora-7</small></span>
-    <button class="chat-close" id="chatCloseBtn" aria-label="Fechar chat">×</button>
+    <span class="chat-meta"><strong>B.I.P</strong><small><span class="online-dot"></span><span data-i18n="chat.sub">online · copiloto da missão Aurora-7</span></small></span>
+    <button class="chat-close" id="chatCloseBtn" data-i18n-aria="chat.close" aria-label="Fechar chat">×</button>
   </header>
   <div class="chat-messages" id="chatMessages" aria-live="polite"></div>
   <div class="chat-quick" id="chatQuick">
-    <button class="chip" data-q="Quais rotinas estão pendentes hoje?">Pendências de hoje</button>
-    <button class="chip" data-q="Estou com dor de cabeça desde ontem.">Estou com dor de cabeça</button>
-    <button class="chip" data-q="Não consigo dormir direito há 4 dias.">Sono ruim</button>
-    <button class="chip" data-q="Quanto posso beber de água hoje?">Meta de água</button>
+    <button class="chip" data-q-key="chat.q_today" data-i18n="chat.q1">Pendências de hoje</button>
+    <button class="chip" data-q-key="chat.q_headache" data-i18n="chat.q2">Estou com dor de cabeça</button>
+    <button class="chip" data-q-key="chat.q_sleep" data-i18n="chat.q3">Sono ruim</button>
+    <button class="chip" data-q-key="chat.q_water" data-i18n="chat.q4">Meta de água</button>
   </div>
   <form class="chat-input-row" id="chatForm" autocomplete="off">
-    <input class="chat-input" id="chatInput" type="text" placeholder="Escreva para o B.I.P…" maxlength="500" aria-label="Mensagem para o B.I.P" />
-    <button class="chat-send" type="submit" aria-label="Enviar mensagem">
+    <input class="chat-input" id="chatInput" type="text" data-i18n-ph="chat.input" placeholder="Escreva para o B.I.P…" maxlength="500" data-i18n-aria="chat.input" aria-label="Mensagem para o B.I.P" />
+    <button class="chat-send" type="submit" data-i18n-aria="chat.send" aria-label="Enviar mensagem">
       <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4Z"/></svg>
     </button>
   </form>
@@ -688,27 +689,27 @@
 <!-- ═══════════ DOCK (navbar inferior estilo macOS) ═══════════ -->
 <nav class="dock-wrap" aria-label="Navegação principal">
   <div class="dock" id="dock">
-    <button class="dock-btn is-active" data-screen="screen-home" aria-label="Início">
+    <button class="dock-btn is-active" data-screen="screen-home" data-i18n-aria="dock.home" aria-label="Início">
       <span class="dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11.2 12 3l9 8.2"/><path d="M5.4 9.8V21h13.2V9.8"/><path d="M9.5 21v-6h5v6"/></svg></span>
-      <span class="dock-label">Início</span>
+      <span class="dock-label" data-i18n="dock.home">Início</span>
     </button>
-    <button class="dock-btn" data-screen="screen-rotina" aria-label="Rotinas diárias">
+    <button class="dock-btn" data-screen="screen-rotina" data-i18n-aria="dock.routine" aria-label="Rotinas diárias">
       <span class="dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4.5" width="16" height="17" rx="3.4"/><path d="M9 12.2l2.1 2.1 4-4.6"/><path d="M9 8h6"/></svg></span>
       <span class="dock-badge" id="dockBadge" hidden>0</span>
-      <span class="dock-label">Rotinas</span>
+      <span class="dock-label" data-i18n="dock.routine">Rotinas</span>
     </button>
-    <button class="dock-btn" data-screen="screen-diagnostico" aria-label="Diagnóstico">
+    <button class="dock-btn" data-screen="screen-diagnostico" data-i18n-aria="dock.diagnosis" aria-label="Diagnóstico">
       <span class="dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-6.8-4.6-9.3-9.3C1.4 8.9 3.5 6 6.9 6c2.2 0 3.9 1.2 5.1 3.1C13.2 7.2 14.9 6 17.1 6c3.4 0 5.5 2.9 4.2 5.7C18.8 16.4 12 21 12 21Z"/><path d="M4 13h4l1.6-3 2 4.4L14 9l1.6 3H20"/></svg></span>
-      <span class="dock-label">Diagnóstico</span>
+      <span class="dock-label" data-i18n="dock.diagnosis">Diagnóstico</span>
     </button>
-    <button class="dock-btn" data-screen="screen-exames" aria-label="Exames">
+    <button class="dock-btn" data-screen="screen-exames" data-i18n-aria="dock.exams" aria-label="Exames">
       <span class="dock-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9.5 3h5"/><path d="M10.5 3v5.2L5.7 15a3.4 3.4 0 0 0 3.2 4.4h6.2a3.4 3.4 0 0 0 3.2-4.4l-4.8-6.8V3"/><path d="M7.8 13h8.4"/></svg></span>
-      <span class="dock-label">Exames</span>
+      <span class="dock-label" data-i18n="dock.exams">Exames</span>
     </button>
   </div>
 </nav>
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
-<script src="/static/js/app.js?v=10"></script>
+<script src="/static/js/app.js?v=14"></script>
 </body>
 </html>

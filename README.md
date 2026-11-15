@@ -24,6 +24,10 @@ O B.I.P acompanha o tripulante **fora da Terra** — por isso nenhuma conduta re
 
 Barra inferior estilo **macOS Dock** (com magnificação no hover) + **badge de alerta** sobre o ícone de Rotinas quando há pendências atrasadas.
 
+## Idioma / Language / Idioma
+
+O B.I.P é **trilíngue (Português · English · Español)**, com detecção automática do idioma do navegador na primeira visita (PT/ES/EN, fallback `en`) e seletor manual no topo (PT · EN · ES) persistido em `localStorage`. Cobre toda a UI, conteúdo da missão (rotinas, exames, conquistas, kit de bordo), respostas da IA (Gemini no idioma escolhido) e até o motor offline. Chaves centralizadas em `static/js/i18n.js` + conteúdo servido pelo backend por `?lang=` / campo `lang`.
+
 ## IA — como funciona
 
 - **Com `GEMINI_API_KEY`**: respostas reais via Google Gemini (`gemini-2.5-flash` por padrão), com system prompt estrito: off-Terra, kit de bordo, sem "procure um médico", JSON estruturado.

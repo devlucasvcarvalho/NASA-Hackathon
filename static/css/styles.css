@@ -84,6 +84,12 @@ button { font-family: inherit; cursor: pointer; }
 .met-dot { width: 8px; height: 8px; border-radius: 50%; background: #57e6c9; animation: pulse 1.6s ease-in-out infinite; }
 @keyframes pulse { 0%,100% { box-shadow: 0 0 0 0 rgba(87,230,201,.6);} 50% { box-shadow: 0 0 0 5px rgba(87,230,201,0);} }
 
+/* seletor de idioma (PT · EN · ES) */
+.lang-switch { display: flex; align-items: center; gap: 4px; padding: 5px 6px; border-radius: 999px; background: var(--glass-strong); border: 1px solid var(--line); box-shadow: var(--shadow-sm), var(--inset-hi); }
+.lang-pill { border: none; background: transparent; font-family: 'Space Grotesk'; font-weight: 700; font-size: .68rem; letter-spacing: .08em; color: var(--ink-soft); border-radius: 999px; padding: 6px 13px; transition: all .15s; }
+.lang-pill:hover { background: rgba(15,62,61,.09); color: var(--deep); }
+.lang-pill[aria-pressed="true"] { background: var(--deep); color: #d7f5ea; box-shadow: 0 3px 9px rgba(15,62,61,.4); }
+
 .crew-chip { display: flex; align-items: center; gap: 10px; padding: 6px 14px 6px 8px; border-radius: 999px;
   background: var(--glass-strong); border: 1px solid var(--line); box-shadow: var(--shadow-sm), var(--inset-hi); }
 .crew-live { width: 30px; height: 30px; border-radius: 50%; background: radial-gradient(circle at 35% 35%, #1f8a86, #0e4e4d); position: relative; }
