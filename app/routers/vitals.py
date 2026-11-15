@@ -4,7 +4,8 @@ from sqlalchemy.orm import Session
 
 from app.db import get_db
 from app.models import SleepNight
-from app.services import history, simulator
+from app.services import anomaly, history, simulator
+from app.services import risk as risk_svc
 from app.services.ranges import METRICS
 
 router = APIRouter(prefix="/api", tags=["vitals"])
@@ -41,6 +42,20 @@ def vitals_history(
         raise HTTPException(422, f"metric inválida; use uma de {METRICS}")
     _safe_ensure(db)
     return history.series(db, metric, hours, points)
+
+
+@router.get("/vitals/status")
+def vitals_status(scenario: str | None = Query(None, description=f"demo: {', '.join(simulator.SCENARIOS)}"), db: Session = Depends(get_db)):
+    """Por métrica: valor, esperado p/ a hora, z robusto, status; + anomalia multivariada."""
+    _safe_ensure(db)
+    return anomaly.evaluate(db, scenario=scenario)
+
+
+@router.get("/risk")
+def risk(scenario: str | None = Query(None, description=f"demo: {', '.join(simulator.SCENARIOS)}"), db: Session = Depends(get_db)):
+    """Risco global 0–100 com fatores explicáveis."""
+    _safe_ensure(db)
+    return risk_svc.compute(db, scenario=scenario)
 
 
 @router.get("/sleep")

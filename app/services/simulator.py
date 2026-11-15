@@ -89,6 +89,24 @@ def sleep_night(day: str) -> dict:
     }
 
 
+SCENARIOS = {
+    # deslocamentos aplicados ao instante atual (demo); não são gravados no histórico
+    "infection":   {"temperature": +1.6, "heart_rate": +22, "hrv": -20, "spo2": -2.0, "hydration": -6},
+    "dehydration": {"hydration": -28, "heart_rate": +12, "bp_sys": -10, "hrv": -10},
+    "stress":      {"heart_rate": +15, "hrv": -18, "bp_sys": +12, "bp_dia": +8},
+    "spe":         {"radiation_rate": +2.4},  # evento de partículas solares
+}
+
+
+def apply_scenario(sample: dict, scenario: str | None) -> dict:
+    if not scenario or scenario not in SCENARIOS:
+        return dict(sample)
+    out = dict(sample)
+    for k, d in SCENARIOS[scenario].items():
+        out[k] = round(out[k] + d, 3)
+    return out
+
+
 def _aligned(ts: float) -> int:
     return int(ts // STEP) * STEP
 
